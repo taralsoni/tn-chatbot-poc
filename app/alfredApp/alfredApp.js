@@ -95,9 +95,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '</div>' +
                     '</li>';
             } else {
-
+                text=JSON.parse(text);
                 vm.displayString=text.displayString;
-                if(text.type=='listOfCity'){
+                if(text.type=='listOfCompany'){
                     
                     vm.list=text.data.list;
 
@@ -184,51 +184,53 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         vm.resetChat();
 
         //-- Print Messages
-       // vm.insertChat("you", "Welcome...", 0);
+        /*vm.welcome={
+            "type":"text",
+            "data":{
+                "text":"Welcome...!"
+            }
+        };
+        vm.insertChat("you",vm.welcome, 0);*/
 
         vm.askApi=function(query){
             var client = new ApiAi.ApiAiClient({accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"});
      
-            client.textRequest(query)//"Give me overview of Aegify")//"Companies in Mumbai")
+            client.textRequest(query)//"tell me more"//"Give me overview of Aegify")//"Companies in Mumbai")
               .then(function(response) {
                var result,displayText;
                try {
                  result = response.result.fulfillment.speech;
                  displayText=response.result.fulfillment.displayText;
 
-
-                 /*displayText={
-                                    
-                                   "type": "multipleVariables",
-                                   "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
-                                   "data": {
-                                        "multipleFields":{
-                                            "company":"Aegify",
-                                            "overview":"Cloud base security risk and compliance assurance solution",
-                                            "year":"2007",
-                                            "website":"http://www.aegify.com"
-                                        },
-                                        "text":"Hello world!",
-                                        "link":"http://www.google.com",
-                                       "list": [
-                                           "1 Martian Way",
-                                           "1MarketView",
-                                           "ABFL Direct",
-                                           "Absentia Virtual Reality",
-                                           "Accsure",
-                                           "Aerialair",
-                                           "Airpay",
-                                           "Airpix"
-                                       ]
-                                   }
-                               }*/
-                 //displayText="Companies in Mumbai are:"
+                 /*displayText={                                
+                               "type": "multipleVariables",
+                               "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
+                               "data": {
+                                    "multipleFields":{
+                                        "company":"Aegify",
+                                        "overview":"Cloud base security risk and compliance assurance solution",
+                                        "year":"2007",
+                                        "website":"http://www.aegify.com"
+                                    },
+                                    "text":"Hello world!",
+                                    "link":"http://www.google.com",
+                                   "list": [
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix"
+                                   ]
+                               }
+                            };*/
+                 
                  vm.insertChat("you", displayText, 0);
                } catch(error) {
                  result = "";
                }
              })
         }
-
-
     }]);
