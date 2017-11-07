@@ -13,7 +13,6 @@ angular.module('TN_App.alfredApp', ['ui.router'])
     .controller('alfredAppCtrl', ['$scope', function($scope,) {
         var vm = this;
 
-
         vm.me = {
             avatar: "https://randomuser.me/api/portraits/med/men/83.jpg"
         };
@@ -95,20 +94,48 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '</div>' +
                     '</li>';
             } else {
-                control = '<li style="width:100%;">' +
+                vm.displayString=text.displayString;
+                if(text.type=='listOfCity'){
+                    
+                    vm.list=text.data.list;
+
+                    control = '<li style="width:100%;">' +
                     '<div class="msj-rta macro">' +
                     '<div class="text text-r">' +
-                    '<p>' + text + '</p>' +
-                    '<p><small>' + date + '</small></p>' +
+                    '<p>' + vm.displayString + '</p><br>';
+                             
+                    
+
+                    for(var i=0;i<vm.list.length;i++){
+                        control =control + '<p>' + vm.list[i] + '</p>' ;
+                    }
+
+                    control=control+
+                    '<p><small>' + date + '</small></p>';
+                    '</div>' +
                     '</div>' +
                     '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
                     '</li>';
+                    
+                }else if(text.type=='string'){
+                    control = '<li style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + vm.displayString + '</p>' +
+                        '<p><small>' + date + '</small></p>' +
+                        '</div>' +
+                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
+                        '</li>';
+                }
             }
-            setTimeout(
-                function() {
-                    $("ul").append(control);
+          
+            $("ul").append(control);
 
-                }, time);
+            // setTimeout(
+            //     function() {
+            //         $("ul").append(control);
+
+            //     }, time);
 
         }
 
@@ -120,6 +147,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
             if (e.which == 13) {
                 var text = $(this).val();
                 if (text !== "") {
+
+                    //call apiservice
+                    vm.askApi();
 
                     vm.insertChat("me", text);
                     $(this).val('');
@@ -133,7 +163,40 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         //-- Print Messages
         vm.insertChat("you", "Welcome...", 0);
 
-        vm.askApi
+        vm.askApi=function(){
+            var client = new ApiAi.ApiAiClient({accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"});
+     
+            client.textRequest("Companies in Mumbai")
+              .then(function(response) {
+               var result,displayText;
+               try {
+                 result = response.result.fulfillment.speech;
+                 displayText=response.result.fulfillment.displayText;
+
+
+                 displayText={
+                                   "type": "listOfCity",
+                                   "displayString": "Showing list of companies in mumbai: ",
+                                   "data": {
+                                       "list": [
+                                           "1 Martian Way",
+                                           "1MarketView",
+                                           "ABFL Direct",
+                                           "Absentia Virtual Reality",
+                                           "Accsure",
+                                           "Aerialair",
+                                           "Airpay",
+                                           "Airpix"
+                                       ]
+                                   }
+                               }
+                 //displayText="Companies in Mumbai are:"
+                 vm.insertChat("you", displayText, 0);
+               } catch(error) {
+                 result = "";
+               }
+             })
+        }
 
 
     }]);
