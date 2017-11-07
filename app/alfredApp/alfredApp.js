@@ -85,7 +85,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                 if (text.includes("history") || text.includes("version")){
                   vm.getVersionHistory();
                 }
-                control = '<li style="width:100%">' +
+                control = '<li style="width:100%;padding-left: 10px;">' +
                     '<div class="msj macro">' +
                     '<div class="avatar"><img class="img-circle" style="width:50%;" src="' + vm.me.avatar + '" /></div>' +
                     '<div class="text text-l">' +
