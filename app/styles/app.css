@@ -30,7 +30,7 @@
 
 
 .mytext{
-    border:0;padding:10px;background:whitesmoke;
+    border:0;padding:10px;background:white;
 }
 .text{
     width:75%;display:flex;flex-direction:column;
@@ -78,6 +78,8 @@
 }
 ul {
     width:100%;
+    height:96%;
+    overflow-y:scroll;
     list-style-type: none;
     padding:18px;
     position:absolute;
@@ -112,6 +114,26 @@ ul {
     border-width: 13px 13px 0 0;
     border-color: whitesmoke transparent transparent transparent;
 }
+
+.api-res-data{
+    border-left: #31708f solid;
+    padding-left: 1%;
+    font-size: 0.9em;
+}
+
+.img-logo-size{
+    height: 30%;
+    width: 3%;
+}
+
+.center-text{
+    text-align:center;
+}
+
+.btn-width{
+    width: 50%;
+}
+
 input:focus{
     outline: none;
 }
