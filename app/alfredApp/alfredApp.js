@@ -10,7 +10,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         });
     }])
 
-    .controller('alfredAppCtrl', ['$scope', function($scope,) {
+    .controller('alfredAppCtrl', ['$scope', '$compile', function($scope,$compile) {
         var vm = this;
 
         vm.me = {
@@ -115,6 +115,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
             var control = "";
             var date = vm.formatAMPM(new Date());
 
+
             if (who == "me") {
                 if (text.includes("history") || text.includes("version")){
                   vm.getVersionHistory();
@@ -129,8 +130,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '</div>' +
                     '</li>';
             } else {
+                text=JSON.parse(text);
                 vm.displayString=text.displayString;
-                if(text.type=='listOfCity'){
+                if(text.type=='listOfCompany'){
                     
                     vm.list=text.data.list;
 
@@ -138,22 +140,43 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '<div class="msj-rta macro">' +
                     '<div class="text text-r">' +
                     '<p>' + vm.displayString + '</p><br>';
-                             
                     for(var i=0;i<vm.list.length;i++){
                         control =control + '<p>' + vm.list[i] + '</p>' ;
                     }
                     control=control+
-                    '<p><small>' + date + '</small></p>';
-                    '</div>' +
+                    '<p><small>' + date + '</small></p>'+                    
                     '</div>' +
                     '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
                     '</li>';
                     
-                }else if(text.type=='string'){
+                }else if(text.type=='text'){
+                    control = '<li style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + text.data.text + '</p>' +
+                        '<p><small>' + date + '</small></p>' +
+                        '</div>' +
+                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
+                        '</li>';
+                }else if(text.type=='link'){
                     control = '<li style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<p>' + vm.displayString + '</p>' +
+                        '<p><a href="'+text.data.link+'">' + text.data.link + '</p></a>' +
+                        '<p><small>' + date + '</small></p>' +
+                        '</div>' +
+                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
+                        '</li>';
+                }else if(text.type=='multipleVariables'){
+                    control = '<li style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + vm.displayString + '</p><br>' +
+                        '<p> Comapany Name: ' + text.data.multipleFields.company + '</p>' +
+                        '<p> Overview: ' + text.data.multipleFields.overview + '</p>' +
+                        '<p> year: ' + text.data.multipleFields.year + '</p>' +
+                        '<p> website: <a href="'+text.data.multipleFields.website+'">' + text.data.multipleFields.website + '</p></a>' +
                         '<p><small>' + date + '</small></p>' +
                         '</div>' +
                         '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
@@ -176,6 +199,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                 }
             }
           
+
             $("ul").append(control);
 
             // setTimeout(
@@ -196,7 +220,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                 if (text !== "") {
 
                     //call apiservice
-                    vm.askApi();
+                    vm.askApi(text);
 
                     vm.insertChat("me", text);
                     $(this).val('');
@@ -208,42 +232,72 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         vm.resetChat();
 
         //-- Print Messages
-        vm.insertChat("you", "Welcome...", 0);
+        /*vm.welcome={
+            "type":"text",
+            "data":{
+                "text":"Welcome...!"
+            }
+        };
+        vm.insertChat("you",vm.welcome, 0);*/
 
-        vm.askApi=function(){
+        vm.askApi=function(query){
             var client = new ApiAi.ApiAiClient({accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"});
      
-            client.textRequest("Companies in Mumbai")
+            client.textRequest(query)//"tell me more"//"Give me overview of Aegify")//"Companies in Mumbai")
               .then(function(response) {
                var result,displayText;
                try {
                  result = response.result.fulfillment.speech;
                  displayText=response.result.fulfillment.displayText;
 
-
-                 displayText={
-                                   "type": "graph",
-                                   "displayString": "Showing list of companies in mumbai: ",
-                                   "data": {
-                                       "list": [
-                                           "1 Martian Way",
-                                           "1MarketView",
-                                           "ABFL Direct",
-                                           "Absentia Virtual Reality",
-                                           "Accsure",
-                                           "Aerialair",
-                                           "Airpay",
-                                           "Airpix"
-                                       ]
-                                   }
+//<<<<<<< HEAD
+//
+//                 displayText={
+//                                   "type": "graph",
+//                                   "displayString": "Showing list of companies in mumbai: ",
+//                                   "data": {
+//                                       "list": [
+//                                           "1 Martian Way",
+//                                           "1MarketView",
+//                                           "ABFL Direct",
+//                                           "Absentia Virtual Reality",
+//                                           "Accsure",
+//                                           "Aerialair",
+//                                           "Airpay",
+//                                           "Airpix"
+//                                       ]
+//                                   }
+//=======
+                 /*displayText={                                
+                               "type": "multipleVariables",
+                               "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
+                               "data": {
+                                    "multipleFields":{
+                                        "company":"Aegify",
+                                        "overview":"Cloud base security risk and compliance assurance solution",
+                                        "year":"2007",
+                                        "website":"http://www.aegify.com"
+                                    },
+                                    "text":"Hello world!",
+                                    "link":"http://www.google.com",
+                                   "list": [
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix"
+                                   ]
+>>>>>>> f9df5a5e7c9bc3dd765d0cbfcf40303da107e936
                                }
-                 //displayText="Companies in Mumbai are:"
+                            };*/
+                 
                  vm.insertChat("you", displayText, 0);
                } catch(error) {
                  result = "";
                }
              })
         }
-
-
     }]);
