@@ -26,6 +26,41 @@ angular.module('TN_App.alfredApp', ['ui.router'])
             //"baseUrl": "http://ec2-13-126-130-219.ap-south-1.compute.amazonaws.com:8080/alfresco/service/api/",
             
         }
+        
+        $scope.myDataSource = {
+          chart: {
+        caption: "Age profile of website visitors",
+        subcaption: "Last Year",
+        startingangle: "120",
+        showlabels: "0",
+        showlegend: "1",
+        enablemultislicing: "0",
+        slicingdistance: "15",
+        showpercentvalues: "1",
+        showpercentintooltip: "0",
+        plottooltext: "Age group : $label Total visit : $datavalue",
+        theme: "fint"
+        },
+    data: [
+        {
+            label: "Teenage",
+            value: "1250400"
+        },
+        {
+            label: "Adult",
+            value: "1463300"
+        },
+        {
+            label: "Mid-age",
+            value: "1050700"
+        },
+        {
+            label: "Senior",
+            value: "491000"
+        }
+    ]
+}
+
         /*Config ends here*/        
 
 
@@ -104,12 +139,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '<div class="text text-r">' +
                     '<p>' + vm.displayString + '</p><br>';
                              
-                    
-
                     for(var i=0;i<vm.list.length;i++){
                         control =control + '<p>' + vm.list[i] + '</p>' ;
                     }
-
                     control=control+
                     '<p><small>' + date + '</small></p>';
                     '</div>' +
@@ -126,6 +158,21 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                         '</div>' +
                         '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
                         '</li>';
+                }
+                else if(text.type=='graph'){
+                     control = '<li style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<fusioncharts width="600" height="400" type="pie3d" datasource={{' + $scope.myDataSource + '}}></fusioncharts>' +
+                        '<p><small>' + date + '</small></p>' +
+                        '</div>' +
+                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
+                        '</li>';
+//                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
+                      
+                      
+                      
+                      
                 }
             }
           
@@ -175,7 +222,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
 
 
                  displayText={
-                                   "type": "listOfCity",
+                                   "type": "graph",
                                    "displayString": "Showing list of companies in mumbai: ",
                                    "data": {
                                        "list": [

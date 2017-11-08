@@ -68,9 +68,10 @@
 .frame{
     background:#e0e0de;
     height:1200px;
-    overflow:hidden;
+/*    overflow:hidden;*/
     padding:0;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
 }
 .frame > div:last-of-type{
