@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('TN_App.alfredApp', ['ui.router'])
+angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
     .config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
         $stateProvider.state('investment', {
@@ -44,7 +44,10 @@ angular.module('TN_App.alfredApp', ['ui.router'])
 
     .controller('alfredAppCtrl', ['$scope', '$compile', function($scope,$compile) {
         var vm = this;
-
+        
+        $scope.name = 'Neha';
+        vm.conversationHistory = [];
+  
         vm.me = {
             avatar: "https://randomuser.me/api/portraits/med/men/83.jpg"
         };
@@ -52,11 +55,34 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         vm.you = {
             avatar: "https://az705183.vo.msecnd.net/dam/skype/media/concierge-assets/avatar/avatarcnsrg-800.png"
         };
+       
 
         /*All the configuration goes here*/
         vm.config = {
             //"baseUrl": "http://ec2-13-126-130-219.ap-south-1.compute.amazonaws.com:8080/alfresco/service/api/",
             
+        }
+        
+        
+        vm.formatAMPM = function(date) {
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
+        
+        
+        vm.init = function(){
+            var history = {};
+            history.user = 'Rosey@Fintech';
+            history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
+            history.text =  '<div class="text text-l">' + '<p>' + 'Hi Rosey here. How can I help you!' + '</p>' + '</div>';
+            history.ts =  vm.formatAMPM(new Date());
+            vm.conversationHistory.push(history);
         }
         
         $scope.myDataSource = {
@@ -132,43 +158,50 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         }
 
 
-        vm.formatAMPM = function(date) {
-            var hours = date.getHours();
-            var minutes = date.getMinutes();
-            var ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            var strTime = hours + ':' + minutes + ' ' + ampm;
-            return strTime;
-        }
+        
 
         vm.insertChat = function(who, text, time = 0) {
             var control = "";
             var date = vm.formatAMPM(new Date());
+          
+            var history = {};
+            if (who == "me"){
+                history.user = 'Sheldon Fernandes';
+                history.image = vm.me.avatar;
+                control = '<div class="text text-l">' + '<p>' + text + '</p>' + '</div>';
+            }
+            else{
+                history.user = 'Rosey@Fintech';
+                history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
+                history.text =  '<div class="text text-l">' + '<p>' + 'This is a text' + '</p>' + '</div>';
+                        
+            
+            
+               /*
+              if (text.type == "list"){
+                  history.text = chatService.getHtmlForList(startText, list, endText);
+                 
+              }
+              
+              chatService.getHtmlForList = function(){
+                  var html = 
+              
+              
+              }
+               
+               
+               */
+          
 
 
-            if (who == "me") {
-                if (text.includes("history") || text.includes("version")){
-                  vm.getVersionHistory();
-                }
-                control = '<li style="width:100%;padding-left: 10px;">' +
-                    '<div class="msj macro">' +
-                    '<div class="avatar"><img class="img-circle" style="width:50%;" src="' + vm.me.avatar + '" /></div>' +
-                    '<div class="text text-l">' +
-                    '<p>' + text + '</p>' +
-                    '<p><small>' + date + '</small></p>' +
-                    '</div>' +
-                    '</div>' +
-                    '</li>';
-            } else {
+            
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
                 if(text.type=='listOfCompany'){
                     
                     vm.list=text.data.list;
 
-                    control = '<li style="width:100%;">' +
+                    control = '<div style="width:100%;">' +
                     '<div class="msj-rta macro">' +
                     '<div class="text text-r">' +
                     '<h5>' + vm.displayString + '</h5><p class="api-res-data">';
@@ -178,31 +211,28 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     }
                     control=control+
                     '</p><p><small>' + date + '</small></p>'+                    
-                    '</div>' +
-                    '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                    '</li>';
+                    '</div>'  +
+                    '</div>';
                     
                 }else if(text.type=='Description'){
-                    control = '<li style="width:100%;">' +
+                    control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<p>' + text.data.text + '</p>' +
                         '<p><small>' + date + '</small></p>' +
-                        '</div>' +
-                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                        '</li>';
+                        '</div>'  +
+                        '</div>';
                 }else if(text.type=='link'){
-                    control = '<li style="width:100%;">' +
+                    control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<p>' + vm.displayString + '</p>' +
                         '<p><a href="'+text.data.link+'">' + text.data.link + '</p></a>' +
                         '<p><small>' + date + '</small></p>' +
-                        '</div>' +
-                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                        '</li>';
+                        '</div>'  +
+                        '</div>';
                 }else if(text.type=='multipleVariables'){
-                    control = '<li style="width:100%;">' +
+                    control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<p>' + vm.displayString + '</p><br>'+
@@ -213,21 +243,19 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                         '<p> website: <a href="'+text.data.multipleFields.website+'">' + text.data.multipleFields.website + '</a></p>' +
                         '</div>'+
                         '<p><small>' + date + '</small></p>' +
-                        '</div>' +
-                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                        '</li>';
+                        '</div>'  +
+                        '</div>';
                 }else if(text.type=="image"){    
                     //vm.encodedImg = arrayBufferToBase64(displayText.data.image);         
-                    control = '<li style="width:100%;">' +
+                    control = '<div style="width:100%;">' +
                             '<div class="msj-rta macro">' +
                             '<div class="text text-r">' +
                             '<p>' + vm.displayString + '</p>' +
                             '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ text.data.image  + ')"/><p>'+                            
                             '<img ng-show="' + vm.showImg + '" class="img-preview-size" ng-src="data:image/*;base64,{{'+ vm.encodedImg +'}}"/>'+
                             '<p><small>' + date + '</small></p>' +
-                            '</div>' +
-                            '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                            '</li>';        
+                            '</div>'  +
+                            '</div>';        
                                          
                 }/*else if(text.type=="pdf"){
                     var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
@@ -237,24 +265,27 @@ angular.module('TN_App.alfredApp', ['ui.router'])
 
                 
                 else if(text.type=='graph'){
-                     control = '<li style="width:100%;">' +
+                     control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<fusioncharts width="600" height="400" type="pie3d" datasource="' + $scope.myDataSource + '"></fusioncharts>' +
                         '<p><small>' + date + '</small></p>' +
-                        '</div>' +
-                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
-                        '</li>';
+                        '</div>'  +
+                        '</div>';
 //                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
                       
                       
                       
                       
                 }
+                
             }
+            history.text = control;
+                history.ts = vm.formatAMPM(new Date());
+                vm.conversationHistory.push(history);
           
 
-            $("ul").append(control);
+//            $("ul").append(control);
 
             // setTimeout(
             //     function() {
@@ -296,7 +327,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                 "text":"Welcome...!"
             }
         };
-        vm.insertChat("you",JSON.stringify(vm.welcome), 0);
+//        vm.insertChat("you",JSON.stringify(vm.welcome), 0);
 
         vm.askApi=function(query){
             var client;
@@ -418,6 +449,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                }
              })
         }
+         vm.init();
     }])
 
 

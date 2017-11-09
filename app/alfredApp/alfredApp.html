@@ -1,16 +1,22 @@
 <section class="content container-fluid ng-scope">
 <div class="row">
 <div class="col-sm-12 chat-window">
-  <ul style="padding-bottom: 100px;"></ul>
-<!--
-  <div>
-    <div class="msj macro" style="margin:auto">
-      <div class="text text-r">
-        <input class="mytext" placeholder="Ask something" ng-model="vm.userText"/>
-      </div>
-    </div>
-  </div>
--->
+    
+    <ol class="timeline">
+      <li data-ng-repeat="history in vm.conversationHistory">
+  
+          <img class="fa direct-chat-img" src="{{history.image}}" alt="">
+                    <div class="timeline-item">
+              
+                        <h3 class="timeline-header"><a style="margin-right: 5px;">{{history.user}}</a><i class="fa fa-clock-o"></i> {{history.ts}}</h3>
+                        <div class="timeline-body">
+                          <span ng-bind-html="history.text"></span>
+                        </div>
+                    
+                    </div>
+
+        </li> 
+    </ol>
 </div>
 
   
@@ -20,6 +26,7 @@
 </section>
 
 <div class="box-footer">
+    
     <div class="input-group">
         <input type="text" name="message" placeholder="Type Message ..." class="form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
         <span class="input-group-btn">

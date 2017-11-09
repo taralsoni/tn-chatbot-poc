@@ -153,8 +153,10 @@ input:focus{
 
 
 
+/** 9th Nov 2017 **/
+/** CSS  classes for Chatbot Background **/
+/** Neha Chandak **/
 
-/*** Neha CSS for Chat bot Background ***/
 .content{
     min-height: 250px;
     padding: 15px;
@@ -195,4 +197,74 @@ input:focus{
     -moz-box-shadow: none;
     box-shadow: none;
     border-width: 1px;
+}
+
+.timeline {
+    position: relative;
+    margin: 0 0 30px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline > li {
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.timeline > li > .fa, .timeline > li > .glyphicon, .timeline > li > .ion {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    line-height: 30px;
+    position: absolute;
+    color: #666;
+    background: #d2d6de;
+    border-radius: 50%;
+    text-align: center;
+    left: 18px;
+    top: 0;
+}
+
+
+.direct-chat-img {
+    border-radius: 50%;
+    float: left;
+    width: 40px;
+    height: 40px;
+}
+
+.timeline > li > .timeline-item {
+    margin-top: 0;
+    background: #fff;
+    color: #444;
+    margin-left: 60px;
+    margin-right: 15px;
+    padding: 0;
+    position: relative;
+}
+
+.timeline > li > .timeline-item > .timeline-header {
+    margin: 0;
+    color: #555;
+    /* border-bottom: 1px solid #f4f4f4; */
+    padding: 0px 0px 0px 0px;
+    font-size: 16px;
+    line-height: 1.1;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.timeline > li > .timeline-item > .timeline-body {
+    padding: 0px 10px 10px 0px;
 }
