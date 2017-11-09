@@ -326,6 +326,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 }*/
 
                 
+
                 else if(text.type=='graph'){ 
                     control=chatService.getHtmlForGraph($scope.myDataSource); 
                 }
@@ -443,8 +444,9 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                      }else{
                         displayText=response.result.fulfillment.displayText;
                      }
-                }                            
-                 vm.insertChat("you", displayText, 0);
+                }                           
+                vm.insertChat("you", displayText, 0);
+
                } catch(error) {
                   result = "";
                }
