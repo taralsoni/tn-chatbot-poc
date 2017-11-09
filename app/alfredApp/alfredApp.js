@@ -58,53 +58,38 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
        var control;
        return{
             getHtmlForList:function(displayString,list){
-                control = '<div style="width:100%;">' +
-                    '<div class="msj-rta macro">' +
-                    '<div class="text text-r">' +
-                    '<h5>' + displayString + '</h5><p class="api-res-data">';
-                    
-                    for(var i=0;i<list.length;i++){
-                        control =control  + list[i]  + '<br><br>';
+                
+                  control=displayString + '<br><br>'+
+                  '<div class="div-border-left">';
+                  for(var i=0;i<list.length;i++){
+                        control =control + '<strong>' + list[i]  + '</strong><br>';
                     }
-                    control=control+
-                    '</p>'+                    
-                    '</div>'  +
-                    '</div></div>';
+                    control=control+'</div>';
                 return control;    
             },
             getHtmlForDesc:function(description){
-                    control = '<div style="width:100%;">' +
+                    /*control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
                         '<p>' + description + '</p>' +
                         '</div>'  +
-                        '</div>';
+                        '</div>';*/
+                        control=description;
                         return control;
             },
             getHtmlForJson:function(displayString,dataJsonArray){
-                control = '<div style="width:100%;">' +
-                        '<div class="msj-rta macro">' +
-                        '<div class="text text-r">' +
-                        '<p>' + displayString + '</p><br>'+
-                        '<div class="api-res-data">' ;
+                control =  displayString +
+                            '<br><br><div class="div-border-left">';
+
                         for(var i=0;i<dataJsonArray.length;i++){
-                                                    
-                            if(dataJsonArray[i].type=='Description'){
-                                control=control+'<p>'+ dataJsonArray[i].key +':'  + dataJsonArray[i].value + '</p>' ;
+                            dataJsonArray[i].key= (!!dataJsonArray[i].key) ? dataJsonArray[i].key.charAt(0).toUpperCase() + dataJsonArray[i].key.substr(1).toLowerCase() : '';
+                            if(dataJsonArray[i].type=='description'){
+                                control=control+'<p> <strong>'+ dataJsonArray[i].key +': </strong>'  + dataJsonArray[i].value + '</p>' ;
                             }else if(dataJsonArray[i].type=='link'){
-                                control=control+'<p>' + dataJsonArray[i].key + ':<a href="'+ dataJsonArray[i].value +'">' + dataJsonArray[i].value + '</a></p>';
+                                control=control+'<p>  <strong>' + dataJsonArray[i].key + ': </strong><a href="'+ dataJsonArray[i].value +'">' + dataJsonArray[i].value + '</a></p>';
                             }
                         }
-
-                        /*control=control+
-                        '<p> Comapany Name: ' + dataJson.company + '</p>' +
-                        '<p> Overview: ' + dataJson.overview + '</p>' +
-                        '<p> year: ' + dataJson.year + '</p>' +
-                        '<p> website: <a href="'+dataJson.website+'">' + dataJson.website + '</a></p>' +
-                        */
-                        control=control+'</div>'+
-                        '</div>'  +
-                        '</div></div>';
+                        control=control+'</div>';
                 return control;
             },
             getHtmlForGraph:function(myDataSource){
@@ -293,56 +278,25 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             else{
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-               
-                        
-            
-            
-               /*
-              if (text.type == "list"){
-                  history.text = chatService.getHtmlForList(startText, list, endText);
-                 
-              }
-              
-              chatService.getHtmlForList = function(){
-                  var html = 
-              
-              
-              }
-               
-               
-               */
 
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
-                text.type = 'buttons';
-                if(text.type=='listOfCompany'){
-                    
-                    vm.list=text.data.list;
 
-                    /*control = '<div style="width:100%;">' +
-                    '<div class="msj-rta macro">' +
-                    '<div class="text text-r">' +
-                    '<h5>' + vm.displayString + '</h5><p class="api-res-data">';
+               // text.type = 'buttons';
+               
+                if(text.type=='list'){
+                  vm.list=text.data.list;
+                  control=chatService.getHtmlForList(vm.displayString,vm.list);
                     
-                    for(var i=0;i<vm.list.length;i++){
-                        control =control  + vm.list[i]  + '<br><br>';
-                    }
-                    control=control+                    
-                    '</div>'  +
-                    '</div>';*/
-
-                    control=chatService.getHtmlForList(vm.displayString,vm.list);
-                    
-                }else if(text.type=='Description'){
+                }else if(text.type=='description'){
 
                     control=chatService.getHtmlForDesc(text.data.text);
                     
                 }else if(text.type=='link'){
                     
                     control=chatService.getHtmlForLink(vm.displayString,text.data.link);
-                }else if(text.type=='multipleVariables'){
-                    
-
+                }else if(text.type=='longDescription'){
+                
                         control=chatService.getHtmlForJson(vm.displayString,text.data.multipleFields);
                 }else if(text.type=="image"){    
                     //vm.encodedImg = arrayBufferToBase64(displayText.data.image);  
@@ -357,8 +311,6 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                 
                 else if(text.type=='graph'){
-                    
-//                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
                       chatService.getHtmlForGraph($scope.myDataSource);  
                 }
                 else if(text.type=='buttons'){
@@ -368,7 +320,6 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                         'callBackFn' : 'vm.buttonCallBackFunction'     
                     }
                     control = chatService.getHtmlForButtons(jsonData);
-                  
                 }
                 
             }
@@ -414,7 +365,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
         //-- Print Messages
         vm.welcome={
-            "type":"Description",
+            "type":"description",
             "data":{
                 "text":"Welcome...!"
             }
@@ -447,113 +398,33 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                  //displayText=response.result.fulfillment.displayText;
                  vm.sessionId=response.sessionId;
 
-                 if(response.result.action.indexOf('smalltalk')!==-1){
+                 if(!response.result.fulfillment.hasOwnProperty('displayText') && result=="") {
                     displayText={
-                        "displayString": response.result.fulfillment.speech,
-                        "data":{
-                            "text":response.result.fulfillment.speech
-                        },
-                        "type":"Description"
-                    }
-                    displayText=JSON.stringify(displayText);
+                            "displayString": 'Sorry',
+                            "data":{
+                                "text":'Sorry.. We could not find anything! Can you try with a different query..'
+                            },
+                            "type":"description"
+                        }
+                        displayText=JSON.stringify(displayText);
                  }else{
-                    displayText=response.result.fulfillment.displayText;
-                 }
-                  
-                 
+                     if(response.result.action.indexOf('smalltalk')!==-1){
+                        displayText={
+                            "displayString": response.result.fulfillment.speech,
+                            "data":{
+                                "text":response.result.fulfillment.speech
+                            },
+                            "type":"description"
+                        }
+                        displayText=JSON.stringify(displayText);
+                     }else{
+                        displayText=response.result.fulfillment.displayText;
+                     }
 
-//                 /*displayText={                                
-//                               "type": "multipleVariables",
-//                               "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
-//                               "data": {
-//                                    "multipleFields":[
-//                                        {
-//                                            "key":"company",
-//                                            "value":"Aegify",
-//                                            "type":"Description"
-//                                        },
-//                                        {
-//                                            "key":"overview",
-//                                            "value":"Cloud base security risk and compliance assurance solution",
-//                                            "type":"Description"
-//                                        },
-//                                        {
-//                                            "key":"year",
-//                                            "value":"2007",
-//                                            "type":"Description"
-//                                        },
-//                                        {
-//                                            "key":"website",
-//                                            "value":"http://www.aegify.com",
-//                                            "type":"link"
-//                                        }
-//                                        
-//
-//                                        /*"company":"Aegify",
-//                                        "overview":"Cloud base security risk and compliance assurance solution",
-//                                        "year":"2007",
-//                                        "website":"http://www.aegify.com"*/
-//                                    ],
-//                                    "image":"",
-//                                    "text":"Hello world!",
-//                                    "link":"http://www.google.com",
-//                                   "list": [
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix",
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix",
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix",
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix",
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix",
-//                                       "1 Martian Way",
-//                                       "1MarketView",
-//                                       "ABFL Direct",
-//                                       "Absentia Virtual Reality",
-//                                       "Accsure",
-//                                       "Aerialair",
-//                                       "Airpay",
-//                                       "Airpix"
-//                                   ]
-//                               }
-//                            };
-                           // displayText=JSON.stringify(displayText);
-                 
-                 vm.insertChat("you", displayText, 0);
+                }                            
+                  vm.insertChat("you", displayText, 0);
                } catch(error) {
-                 result = "";
+                  result = "";
                }
              })
         }
