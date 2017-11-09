@@ -40,12 +40,104 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         };
     })
   
+  .service('chatService', function(){
+       var control;
+       return{
+            getHtmlForList:function(displayString,list){
+                control = '<div style="width:100%;">' +
+                    '<div class="msj-rta macro">' +
+                    '<div class="text text-r">' +
+                    '<h5>' + displayString + '</h5><p class="api-res-data">';
+                    
+                    for(var i=0;i<list.length;i++){
+                        control =control  + list[i]  + '<br><br>';
+                    }
+                    control=control+
+                    '</p>'+                    
+                    '</div>'  +
+                    '</div></div>';
+                return control;    
+            },
+            getHtmlForDesc:function(description){
+                    control = '<div style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + description + '</p>' +
+                        '</div>'  +
+                        '</div>';
+                        return control;
+            },
+            
+            getHtmlForJson:function(displayString,dataJsonArray){
+                control = '<div style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + displayString + '</p><br>'+
+                        '<div class="api-res-data">' ;
+                        for(var i=0;i<dataJsonArray.length;i++){
+                                                    
+                            if(dataJsonArray[i].type=='Description'){
+                                control=control+'<p>'+ dataJsonArray[i].key +':'  + dataJsonArray[i].value + '</p>' ;
+                            }else if(dataJsonArray[i].type=='link'){
+                                control=control+'<p>' + dataJsonArray[i].key + ':<a href="'+ dataJsonArray[i].value +'">' + dataJsonArray[i].value + '</a></p>';
+                            }
+                        }
+
+                        /*control=control+
+                        '<p> Comapany Name: ' + dataJson.company + '</p>' +
+                        '<p> Overview: ' + dataJson.overview + '</p>' +
+                        '<p> year: ' + dataJson.year + '</p>' +
+                        '<p> website: <a href="'+dataJson.website+'">' + dataJson.website + '</a></p>' +
+                        */
+                        control=control+'</div>'+
+                        '</div>'  +
+                        '</div></div>';
+                return control;
+            },
+            getHtmlForGraph:function(myDataSource){
+                 control = '<div style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<fusioncharts width="600" height="400" type="pie3d" datasource="' + smyDataSource + '"></fusioncharts>' +
+                        '</div>'  +
+                        '</div>';
+                return control;
+            },
+            getHtmlForLink:function(displayString,link){
+                control = '<div style="width:100%;">' +
+                        '<div class="msj-rta macro">' +
+                        '<div class="text text-r">' +
+                        '<p>' + displayString + '</p>' +
+                        '<p><a href="'+link+'">' + link + '</p></a>' +
+                        '</div>'  +
+                        '</div>';
+                return control;
+            },
+            getHtmlForImage:function(displayString,image){
+                 control = '<div style="width:100%;">' +
+                            '<div class="msj-rta macro">' +
+                            '<div class="text text-r">' +
+                            '<p>' + displayString + '</p>' +
+                            '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ image  + ')"/><p>'+                            
+                            /*'<img ng-show="' + vm.showImg + '" class="img-preview-size" ng-src="data:image/*;base64,{{'+ vm.encodedImg +'}}"/>'+*/
+                            '</div>'  +
+                            '</div>';  
+                return control;
+            }, 
+            getHtmlForPdf:function(displayString,list){
+                return;
+            },
+            getHtmlForMap:function(displayString,list){
+                return;
+            }
+       } 
+    })
   
 
-    .controller('alfredAppCtrl', ['$scope', '$compile', function($scope,$compile) {
+    .controller('alfredAppCtrl', ['$scope', '$compile','chatService', function($scope,$compile,chatService) {
         var vm = this;
         
-        $scope.name = 'Neha';
+        
         vm.conversationHistory = [];
   
         vm.me = {
@@ -198,7 +290,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     
                     vm.list=text.data.list;
 
-                    control = '<div style="width:100%;">' +
+                    /*control = '<div style="width:100%;">' +
                     '<div class="msj-rta macro">' +
                     '<div class="text text-r">' +
                     '<h5>' + vm.displayString + '</h5><p class="api-res-data">';
@@ -206,53 +298,27 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     for(var i=0;i<vm.list.length;i++){
                         control =control  + vm.list[i]  + '<br><br>';
                     }
-                    control=control+
-                    '</p><p><small>' + date + '</small></p>'+                    
+                    control=control+                    
                     '</div>'  +
-                    '</div>';
+                    '</div>';*/
+
+                    control=chatService.getHtmlForList(vm.displayString,vm.list);
                     
                 }else if(text.type=='Description'){
-                    control = '<div style="width:100%;">' +
-                        '<div class="msj-rta macro">' +
-                        '<div class="text text-r">' +
-                        '<p>' + text.data.text + '</p>' +
-                        '<p><small>' + date + '</small></p>' +
-                        '</div>'  +
-                        '</div>';
+
+                    control=chatService.getHtmlForDesc(text.data.text);
+                    
                 }else if(text.type=='link'){
-                    control = '<div style="width:100%;">' +
-                        '<div class="msj-rta macro">' +
-                        '<div class="text text-r">' +
-                        '<p>' + vm.displayString + '</p>' +
-                        '<p><a href="'+text.data.link+'">' + text.data.link + '</p></a>' +
-                        '<p><small>' + date + '</small></p>' +
-                        '</div>'  +
-                        '</div>';
+                    
+                    control=chatService.getHtmlForLink(vm.displayString,text.data.link);
                 }else if(text.type=='multipleVariables'){
-                    control = '<div style="width:100%;">' +
-                        '<div class="msj-rta macro">' +
-                        '<div class="text text-r">' +
-                        '<p>' + vm.displayString + '</p><br>'+
-                        '<div class="api-res-data">' +
-                        '<p> Comapany Name: ' + text.data.multipleFields.company + '</p>' +
-                        '<p> Overview: ' + text.data.multipleFields.overview + '</p>' +
-                        '<p> year: ' + text.data.multipleFields.year + '</p>' +
-                        '<p> website: <a href="'+text.data.multipleFields.website+'">' + text.data.multipleFields.website + '</a></p>' +
-                        '</div>'+
-                        '<p><small>' + date + '</small></p>' +
-                        '</div>'  +
-                        '</div>';
+                    
+
+                        control=chatService.getHtmlForJson(vm.displayString,text.data.multipleFields);
                 }else if(text.type=="image"){    
-                    //vm.encodedImg = arrayBufferToBase64(displayText.data.image);         
-                    control = '<div style="width:100%;">' +
-                            '<div class="msj-rta macro">' +
-                            '<div class="text text-r">' +
-                            '<p>' + vm.displayString + '</p>' +
-                            '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ text.data.image  + ')"/><p>'+                            
-                            '<img ng-show="' + vm.showImg + '" class="img-preview-size" ng-src="data:image/*;base64,{{'+ vm.encodedImg +'}}"/>'+
-                            '<p><small>' + date + '</small></p>' +
-                            '</div>'  +
-                            '</div>';        
+                    //vm.encodedImg = arrayBufferToBase64(displayText.data.image);  
+                         
+                    control=chatService.getHtmlForImage(vm.displayString,text.data.image);       
                                          
                 }/*else if(text.type=="pdf"){
                     var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
@@ -262,14 +328,9 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                 
                 else if(text.type=='graph'){
-                     control = '<div style="width:100%;">' +
-                        '<div class="msj-rta macro">' +
-                        '<div class="text text-r">' +
-                        '<fusioncharts width="600" height="400" type="pie3d" datasource="' + $scope.myDataSource + '"></fusioncharts>' +
-                        '<p><small>' + date + '</small></p>' +
-                        '</div>'  +
-                        '</div>';
+                    
 //                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
+                        chatService.getHtmlForGraph($scope.myDataSource);
                       
                       
                       
@@ -365,37 +426,38 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     displayText=response.result.fulfillment.displayText;
                  }
 
-
-
-  //<<<<<<< HEAD
-  //
-  //                 displayText={
-  //                                   "type": "graph",
-  //                                   "displayString": "Showing list of companies in mumbai: ",
-  //                                   "data": {
-  //                                       "list": [
-  //                                           "1 Martian Way",
-  //                                           "1MarketView",
-  //                                           "ABFL Direct",
-  //                                           "Absentia Virtual Reality",
-  //                                           "Accsure",
-  //                                           "Aerialair",
-  //                                           "Airpay",
-  //                                           "Airpix"
-  //                                       ]
-  //                                   }
-  //=======
-
                  /*displayText={                                
-                               "type": "image",
+                               "type": "multipleVariables",
                                "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
                                "data": {
-                                    "multipleFields":{
-                                        "company":"Aegify",
+                                    "multipleFields":[
+                                        {
+                                            "key":"company",
+                                            "value":"Aegify",
+                                            "type":"Description"
+                                        },
+                                        {
+                                            "key":"overview",
+                                            "value":"Cloud base security risk and compliance assurance solution",
+                                            "type":"Description"
+                                        },
+                                        {
+                                            "key":"year",
+                                            "value":"2007",
+                                            "type":"Description"
+                                        },
+                                        {
+                                            "key":"website",
+                                            "value":"http://www.aegify.com",
+                                            "type":"link"
+                                        }
+                                        
+
+                                        /*"company":"Aegify",
                                         "overview":"Cloud base security risk and compliance assurance solution",
                                         "year":"2007",
-                                        "website":"http://www.aegify.com"
-                                    },
+                                        "website":"http://www.aegify.com"*/
+                                    ],
                                     "image":"",
                                     "text":"Hello world!",
                                     "link":"http://www.google.com",
