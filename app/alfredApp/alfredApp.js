@@ -80,7 +80,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             var history = {};
             history.user = 'Rosey@Fintech';
             history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-            history.text =  '<div class="text text-l">' + '<p>' + 'Hi Rosey here. How can I help you!' + '</p>' + '</div>';
+            history.text =  'Hi Rosey here. How can I help you!';
             history.ts =  vm.formatAMPM(new Date());
             vm.conversationHistory.push(history);
         }
