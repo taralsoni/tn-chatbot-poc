@@ -9,7 +9,8 @@ angular.module('TN_App', [
   'TN_App.chatbot',
   'TN_App.alfredApp',
   'angularFileUpload',
-  'TN_App.version'
+  'TN_App.version',
+  'ng-fusioncharts'
 ]).
 config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/alfredApp');
