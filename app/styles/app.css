@@ -201,11 +201,6 @@ ul {
     padding-top: 17%;
 }
 
-.div-border-left{
-    border-left: 3px solid #3c8dbc; 
-    padding-left: 7px;
-}
-
 
 input:focus{
     outline: none;

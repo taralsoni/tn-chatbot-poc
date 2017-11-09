@@ -2130,7 +2130,7 @@ a:focus {
  * Component: Info Box
  * -------------------
  */
-.info-box {
+/*.info-box {
   display: block;
   min-height: 90px;
   background: #fff;
@@ -2174,7 +2174,7 @@ a:focus {
 .info-box-content {
   padding: 5px 10px;
   margin-left: 90px;
-}
+}*/
 .info-box-number {
   display: block;
   font-weight: bold;

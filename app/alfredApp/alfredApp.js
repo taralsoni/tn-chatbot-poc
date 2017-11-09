@@ -7,17 +7,17 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             url: '/fintech',
             templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
-        })
+        })/*
         .state('insurance', {
             url: '/insurance',
-            templateUrl: 'alfredApp/insurance.html',
+            templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
         })
         .state('banking', {
             url: '/banking',
-            templateUrl: 'alfredApp/banking.html',
+            templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
-        })
+        })*/
         .state('alfredApp', {
             url: '/alfredApp',
             templateUrl: 'alfredApp/landing-screen.html',
@@ -41,7 +41,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
     })
   
   .service('chatService', function(){
-       var control;
+       var control,botType;
        return{
             getHtmlForList:function(displayString,list){
                 
@@ -80,12 +80,14 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 return control;
             },
             getHtmlForGraph:function(myDataSource){
-                 control = '<div style="width:100%;">' +
+                 /*control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
-                        '<fusioncharts width="600" height="400" type="pie3d" datasource="' + smyDataSource + '"></fusioncharts>' +
+                        '<fusioncharts width="600" height="400" type="pie3d" datasource="' + myDataSource + '"></fusioncharts>' +
                         '</div>'  +
-                        '</div>';
+                        '</div>';*/
+
+                control= '<fusioncharts width="600" height="400" type="pie3d" datasource="' + myDataSource + '"></fusioncharts>' ;       
                 return control;
             },
             getHtmlForLink:function(displayString,link){
@@ -114,6 +116,12 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             },
             getHtmlForMap:function(displayString,list){
                 return;
+            },
+            setBotType:function(botName){
+                botType=botName;
+            },
+            getBotType:function(){
+                return botType;
             }
        } 
     })
@@ -154,10 +162,18 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         
         
         vm.init = function(){
+            vm.botType=chatService.getBotType();
+            vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
             var history = {};
-            history.user = 'Rosey@Fintech';
+            if(vm.botType=='insurance'){
+                history.user = 'Rosey@Insurance';
+            }else if(vm.botType=='fintech'){
+                history.user = 'Rosey@Fintech';
+            }
+
             history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
             history.text =  'Hi Rosey here. How can I help you!';
+            //history.text=chatService.getHtmlForGraph($scope.myDataSource);
             history.ts =  vm.formatAMPM(new Date());
             vm.conversationHistory.push(history);
         }
@@ -176,25 +192,25 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         plottooltext: "Age group : $label Total visit : $datavalue",
         theme: "fint"
         },
-    data: [
-        {
-            label: "Teenage",
-            value: "1250400"
-        },
-        {
-            label: "Adult",
-            value: "1463300"
-        },
-        {
-            label: "Mid-age",
-            value: "1050700"
-        },
-        {
-            label: "Senior",
-            value: "491000"
-        }
-    ]
-}
+        data: [
+            {
+                label: "Teenage",
+                value: "1250400"
+            },
+            {
+                label: "Adult",
+                value: "1463300"
+            },
+            {
+                label: "Mid-age",
+                value: "1050700"
+            },
+            {
+                label: "Senior",
+                value: "491000"
+            }
+        ]
+    }
 
         /*Config ends here*/        
 
@@ -285,7 +301,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 else if(text.type=='graph'){
                     
 //                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
-                    chatService.getHtmlForGraph($scope.myDataSource);
+                    control=chatService.getHtmlForGraph($scope.myDataSource);
                 }
                 
             }
@@ -340,17 +356,24 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
         vm.askApi=function(query){
             var client;
-            if(vm.sessionId==''){
+            
+            if(vm.botType=='insurance'){
+                vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
+            }else if(vm.botType=='fintech'){
+                vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
+            }
+
+            if(vm.sessionId==''){                                
                  client= new ApiAi.ApiAiClient(
                     {
-                        accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"
+                        accessToken: vm.accessToken
                         //sessionId:"83fb2cd8-5a43-5b70-efde-caa70b3a602f"
                     }
                 );
              }else{
                 client= new ApiAi.ApiAiClient(
                     {
-                        accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46",
+                        accessToken: vm.accessToken,
                         sessionId:vm.sessionId
                     }
                 );
@@ -389,7 +412,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                  //stubbed data
                  /*displayText={                                
-                               "type": "description",
+                               "type": "graph",
                                "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
                                "data": {
                                     "multipleFields":[
@@ -417,6 +440,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                     "image":"",
                                     "text":"Hello world!",
                                     "link":"http://www.google.com",
+
                                    "list": [
                                        "1 Martian Way",
                                        "1MarketView",
@@ -482,17 +506,20 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
     }])
 
 
-.controller('landingScreenCtrl', ['$scope','$state', function($scope,$state) {
+.controller('landingScreenCtrl', ['$scope','$state','chatService', function($scope,$state,chatService) {
         var vm = this;
 
         $scope.goToBot=function(botName){
+            
+            chatService.setBotType(botName);
+            $state.transitionTo('fintech');/*
             if(botName=='fintech'){
                 $state.transitionTo('fintech');
             }else if(botName=='insurance'){
                 $state.transitionTo('insurance');
             }else if(botName=='banking'){
                 $state.transitionTo('banking');
-            }
+            }*/
         }
 
     }]);
