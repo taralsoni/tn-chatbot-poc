@@ -39,6 +39,20 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             });
         };
     })
+
+    .directive('compile', ['$compile', function ($compile) {
+  return function(scope, element, attrs) {
+    scope.$watch(
+      function(scope) {
+        return scope.$eval(attrs.compile);
+      },
+      function(value) {
+        element.html(value);
+        $compile(element.contents())(scope);
+      }
+   )};
+  }])
+
   
   .service('chatService', function(){
        var control;
@@ -67,7 +81,6 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                         '</div>';
                         return control;
             },
-            
             getHtmlForJson:function(displayString,dataJsonArray){
                 control = '<div style="width:100%;">' +
                         '<div class="msj-rta macro">' +
@@ -129,12 +142,21 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             },
             getHtmlForMap:function(displayString,list){
                 return;
+            },
+            getHtmlForButtons:function(jsonData){
+                control = jsonData.openingText + '<br> <br>' + '<div class="row">';
+                for(var i=0;i<jsonData.buttonNames.length;i++){
+                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2"> <button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
+                }
+                control = control + '</row>';
+                
+                return control;
             }
        } 
     })
   
 
-    .controller('alfredAppCtrl', ['$scope', '$compile','chatService', function($scope,$compile,chatService) {
+    .controller('alfredAppCtrl', ['$scope', '$compile','chatService','$sce', function($scope,$compile,chatService,$sce) {
         var vm = this;
         
         
@@ -153,6 +175,10 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         vm.config = {
             //"baseUrl": "http://ec2-13-126-130-219.ap-south-1.compute.amazonaws.com:8080/alfresco/service/api/",
             
+        }
+        
+        vm.buttonCallBackFunction = function(){
+            console.log("Button was cliecked");
         }
         
         
@@ -256,16 +282,18 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             var control = "";
             var date = vm.formatAMPM(new Date());
           
+          
+          
             var history = {};
             if (who == "me"){
                 history.user = 'Sheldon Fernandes';
                 history.image = vm.me.avatar;
-                control = '<div class="text text-l">' + '<p>' + text + '</p>' + '</div>';
+                control =  text;
             }
             else{
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-                history.text =  '<div class="text text-l">' + '<p>' + 'This is a text' + '</p>' + '</div>';
+               
                         
             
             
@@ -286,6 +314,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
+                text.type = 'buttons';
                 if(text.type=='listOfCompany'){
                     
                     vm.list=text.data.list;
@@ -330,17 +359,22 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 else if(text.type=='graph'){
                     
 //                    control = '<p ng-bind-html="vm.htmlString"></p>'; 
-                        chatService.getHtmlForGraph($scope.myDataSource);
-                      
-                      
-                      
-                      
+                      chatService.getHtmlForGraph($scope.myDataSource);  
+                }
+                else if(text.type=='buttons'){
+                    var jsonData = {
+                        'openingText' : 'Hey, Showing you monthly results',
+                        'buttonNames' : ['button1','button2','button3','button4','button5'],
+                        'callBackFn' : 'vm.buttonCallBackFunction'     
+                    }
+                    control = chatService.getHtmlForButtons(jsonData);
+                  
                 }
                 
             }
-            history.text = control;
-                history.ts = vm.formatAMPM(new Date());
-                vm.conversationHistory.push(history);
+            history.text = $sce.trustAsHtml(control);
+            history.ts = vm.formatAMPM(new Date());
+            vm.conversationHistory.push(history);
           
 
 //            $("ul").append(control);
@@ -425,95 +459,97 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                  }else{
                     displayText=response.result.fulfillment.displayText;
                  }
+                  
+                 
 
-                 /*displayText={                                
-                               "type": "multipleVariables",
-                               "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
-                               "data": {
-                                    "multipleFields":[
-                                        {
-                                            "key":"company",
-                                            "value":"Aegify",
-                                            "type":"Description"
-                                        },
-                                        {
-                                            "key":"overview",
-                                            "value":"Cloud base security risk and compliance assurance solution",
-                                            "type":"Description"
-                                        },
-                                        {
-                                            "key":"year",
-                                            "value":"2007",
-                                            "type":"Description"
-                                        },
-                                        {
-                                            "key":"website",
-                                            "value":"http://www.aegify.com",
-                                            "type":"link"
-                                        }
-                                        
-
-                                        /*"company":"Aegify",
-                                        "overview":"Cloud base security risk and compliance assurance solution",
-                                        "year":"2007",
-                                        "website":"http://www.aegify.com"*/
-                                    ],
-                                    "image":"",
-                                    "text":"Hello world!",
-                                    "link":"http://www.google.com",
-                                   "list": [
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix",
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix",
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix",
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix",
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix",
-                                       "1 Martian Way",
-                                       "1MarketView",
-                                       "ABFL Direct",
-                                       "Absentia Virtual Reality",
-                                       "Accsure",
-                                       "Aerialair",
-                                       "Airpay",
-                                       "Airpix"
-                                   ]
-                               }
-                            };
-                            displayText=JSON.stringify(displayText);*/
+//                 /*displayText={                                
+//                               "type": "multipleVariables",
+//                               "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
+//                               "data": {
+//                                    "multipleFields":[
+//                                        {
+//                                            "key":"company",
+//                                            "value":"Aegify",
+//                                            "type":"Description"
+//                                        },
+//                                        {
+//                                            "key":"overview",
+//                                            "value":"Cloud base security risk and compliance assurance solution",
+//                                            "type":"Description"
+//                                        },
+//                                        {
+//                                            "key":"year",
+//                                            "value":"2007",
+//                                            "type":"Description"
+//                                        },
+//                                        {
+//                                            "key":"website",
+//                                            "value":"http://www.aegify.com",
+//                                            "type":"link"
+//                                        }
+//                                        
+//
+//                                        /*"company":"Aegify",
+//                                        "overview":"Cloud base security risk and compliance assurance solution",
+//                                        "year":"2007",
+//                                        "website":"http://www.aegify.com"*/
+//                                    ],
+//                                    "image":"",
+//                                    "text":"Hello world!",
+//                                    "link":"http://www.google.com",
+//                                   "list": [
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix",
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix",
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix",
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix",
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix",
+//                                       "1 Martian Way",
+//                                       "1MarketView",
+//                                       "ABFL Direct",
+//                                       "Absentia Virtual Reality",
+//                                       "Accsure",
+//                                       "Aerialair",
+//                                       "Airpay",
+//                                       "Airpix"
+//                                   ]
+//                               }
+//                            };
+                           // displayText=JSON.stringify(displayText);
                  
                  vm.insertChat("you", displayText, 0);
                } catch(error) {
