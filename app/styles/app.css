@@ -74,6 +74,12 @@
     overflow-y: scroll;
 
 }
+
+.div-border-left{
+    border-left: 3px solid #3c8dbc; 
+    padding-left: 7px;
+}
+
 .frame > div:last-of-type{
     position:absolute;bottom:5px;width:100%;display:flex;
 }
