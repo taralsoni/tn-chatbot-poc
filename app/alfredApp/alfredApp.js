@@ -2,12 +2,28 @@
 
 angular.module('TN_App.alfredApp', ['ui.router'])
 
-    .config(['$stateProvider', function($stateProvider) {
-        $stateProvider.state('alfredApp', {
-            url: '/alfredApp',
+    .config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+        $stateProvider.state('investment', {
+            url: '/investment',
             templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
+        })
+        .state('insurance', {
+            url: '/insurance',
+            templateUrl: 'alfredApp/insurance.html',
+            controller: 'alfredAppCtrl as vm'
+        })
+        .state('banking', {
+            url: '/banking',
+            templateUrl: 'alfredApp/banking.html',
+            controller: 'alfredAppCtrl as vm'
+        })
+        .state('alfredApp', {
+            url: '/alfredApp',
+            templateUrl: 'alfredApp/landing-screen.html',
+            controller: 'landingScreenCtrl as vm'
         });
+        //$urlRouterProvider.otherwise('/landing-screen');
     }])
 
     .directive('ngEnter', function() {
@@ -155,17 +171,18 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     control = '<li style="width:100%;">' +
                     '<div class="msj-rta macro">' +
                     '<div class="text text-r">' +
-                    '<p>' + vm.displayString + '</p><br>';
+                    '<h5>' + vm.displayString + '</h5><p class="api-res-data">';
+                    
                     for(var i=0;i<vm.list.length;i++){
-                        control =control + '<p>' + vm.list[i] + '</p>' ;
+                        control =control  + vm.list[i]  + '<br><br>';
                     }
                     control=control+
-                    '<p><small>' + date + '</small></p>'+                    
+                    '</p><p><small>' + date + '</small></p>'+                    
                     '</div>' +
                     '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
                     '</li>';
                     
-                }else if(text.type=='text'){
+                }else if(text.type=='Description'){
                     control = '<li style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
@@ -188,16 +205,37 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     control = '<li style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
-                        '<p>' + vm.displayString + '</p><br>' +
+                        '<p>' + vm.displayString + '</p><br>'+
+                        '<div class="api-res-data">' +
                         '<p> Comapany Name: ' + text.data.multipleFields.company + '</p>' +
                         '<p> Overview: ' + text.data.multipleFields.overview + '</p>' +
                         '<p> year: ' + text.data.multipleFields.year + '</p>' +
-                        '<p> website: <a href="'+text.data.multipleFields.website+'">' + text.data.multipleFields.website + '</p></a>' +
+                        '<p> website: <a href="'+text.data.multipleFields.website+'">' + text.data.multipleFields.website + '</a></p>' +
+                        '</div>'+
                         '<p><small>' + date + '</small></p>' +
                         '</div>' +
                         '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
                         '</li>';
-                }
+                }else if(text.type=="image"){    
+                    //vm.encodedImg = arrayBufferToBase64(displayText.data.image);         
+                    control = '<li style="width:100%;">' +
+                            '<div class="msj-rta macro">' +
+                            '<div class="text text-r">' +
+                            '<p>' + vm.displayString + '</p>' +
+                            '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ text.data.image  + ')"/><p>'+                            
+                            '<img ng-show="' + vm.showImg + '" class="img-preview-size" ng-src="data:image/*;base64,{{'+ vm.encodedImg +'}}"/>'+
+                            '<p><small>' + date + '</small></p>' +
+                            '</div>' +
+                            '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
+                            '</li>';        
+                                         
+                }/*else if(text.type=="pdf"){
+                    var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
+                    var fileURL = URL.createObjectURL(file);
+                    win.location = fileURL;
+                }*/
+
+                
                 else if(text.type=='graph'){
                      control = '<li style="width:100%;">' +
                         '<div class="msj-rta macro">' +
@@ -226,6 +264,11 @@ angular.module('TN_App.alfredApp', ['ui.router'])
 
         }
 
+        vm.showImage=function(){
+            vm.showImg=true;
+            vm.img = arrayBufferToBase64(displayText.data.image); 
+        }
+
         vm.resetChat = function() {
             $("ul").empty();
         }
@@ -247,16 +290,31 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         vm.resetChat();
 
         //-- Print Messages
-        /*vm.welcome={
-            "type":"text",
+        vm.welcome={
+            "type":"Description",
             "data":{
                 "text":"Welcome...!"
             }
         };
-        vm.insertChat("you",vm.welcome, 0);*/
+        vm.insertChat("you",JSON.stringify(vm.welcome), 0);
 
         vm.askApi=function(query){
-            var client = new ApiAi.ApiAiClient({accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"});
+            var client;
+            if(vm.sessionId==''){
+                 client= new ApiAi.ApiAiClient(
+                    {
+                        accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46"
+                        //sessionId:"83fb2cd8-5a43-5b70-efde-caa70b3a602f"
+                    }
+                );
+             }else{
+                client= new ApiAi.ApiAiClient(
+                    {
+                        accessToken: "66f53a3b0e5f45a0b6f6efbafb0f6a46",
+                        sessionId:vm.sessionId
+                    }
+                );
+             }
      
             client.textRequest(query)//"tell me more"//"Give me overview of Aegify")//"Companies in Mumbai")
               .then(function(response) {
@@ -264,6 +322,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                try {
                  result = response.result.fulfillment.speech;
                  displayText=response.result.fulfillment.displayText;
+                 vm.sessionId=response.sessionId;
+
+
 
   //<<<<<<< HEAD
   //
@@ -283,8 +344,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
   //                                       ]
   //                                   }
   //=======
+
                  /*displayText={                                
-                               "type": "multipleVariables",
+                               "type": "image",
                                "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
                                "data": {
                                     "multipleFields":{
@@ -293,6 +355,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                                         "year":"2007",
                                         "website":"http://www.aegify.com"
                                     },
+                                    "image":"",
                                     "text":"Hello world!",
                                     "link":"http://www.google.com",
                                    "list": [
@@ -303,11 +366,51 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                                        "Accsure",
                                        "Aerialair",
                                        "Airpay",
+                                       "Airpix",
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix",
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix",
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix",
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
+                                       "Airpix",
+                                       "1 Martian Way",
+                                       "1MarketView",
+                                       "ABFL Direct",
+                                       "Absentia Virtual Reality",
+                                       "Accsure",
+                                       "Aerialair",
+                                       "Airpay",
                                        "Airpix"
                                    ]
->>>>>>> f9df5a5e7c9bc3dd765d0cbfcf40303da107e936
                                }
-                            };*/
+                            };
+                            displayText=JSON.stringify(displayText);*/
                  
                  vm.insertChat("you", displayText, 0);
                } catch(error) {
@@ -315,4 +418,20 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                }
              })
         }
+    }])
+
+
+.controller('landingScreenCtrl', ['$scope','$state', function($scope,$state) {
+        var vm = this;
+
+        vm.goToBot=function(botName){
+            if(botName=='investment'){
+                $state.transitionTo('investment');
+            }else if(botName=='insurance'){
+                $state.transitionTo('insurance');
+            }else if(botName=='banking'){
+                $state.transitionTo('banking');
+            }
+        }
+
     }]);
