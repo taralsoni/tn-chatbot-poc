@@ -10,6 +10,22 @@ angular.module('TN_App.alfredApp', ['ui.router'])
         });
     }])
 
+    .directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if (event.which === 13) {
+                    scope.$apply(function() {
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    })
+  
+  
+
     .controller('alfredAppCtrl', ['$scope', '$compile', function($scope,$compile) {
         var vm = this;
 
@@ -186,7 +202,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                      control = '<li style="width:100%;">' +
                         '<div class="msj-rta macro">' +
                         '<div class="text text-r">' +
-                        '<fusioncharts width="600" height="400" type="pie3d" datasource={{' + $scope.myDataSource + '}}></fusioncharts>' +
+                        '<fusioncharts width="600" height="400" type="pie3d" datasource="' + $scope.myDataSource + '"></fusioncharts>' +
                         '<p><small>' + date + '</small></p>' +
                         '</div>' +
                         '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:50%;" src="' + vm.you.avatar + '" /></div>' +
@@ -214,19 +230,18 @@ angular.module('TN_App.alfredApp', ['ui.router'])
             $("ul").empty();
         }
 
-        $(".mytext").on("keyup", function(e) {
-            if (e.which == 13) {
-                var text = $(this).val();
+//        $(".mytext").on("keyup", function(e) {
+        vm.sendUserQuery = function(){
+            //if (e.which == 13) {
+                var text = vm.userText;
                 if (text !== "") {
-
                     //call apiservice
                     vm.askApi(text);
-
                     vm.insertChat("me", text);
-                    $(this).val('');
+                    vm.userText = "";
                 }
-            }
-        });
+            //}
+        };
 
         //-- Clear Chat
         vm.resetChat();
@@ -250,24 +265,24 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                  result = response.result.fulfillment.speech;
                  displayText=response.result.fulfillment.displayText;
 
-//<<<<<<< HEAD
-//
-//                 displayText={
-//                                   "type": "graph",
-//                                   "displayString": "Showing list of companies in mumbai: ",
-//                                   "data": {
-//                                       "list": [
-//                                           "1 Martian Way",
-//                                           "1MarketView",
-//                                           "ABFL Direct",
-//                                           "Absentia Virtual Reality",
-//                                           "Accsure",
-//                                           "Aerialair",
-//                                           "Airpay",
-//                                           "Airpix"
-//                                       ]
-//                                   }
-//=======
+  //<<<<<<< HEAD
+  //
+  //                 displayText={
+  //                                   "type": "graph",
+  //                                   "displayString": "Showing list of companies in mumbai: ",
+  //                                   "data": {
+  //                                       "list": [
+  //                                           "1 Martian Way",
+  //                                           "1MarketView",
+  //                                           "ABFL Direct",
+  //                                           "Absentia Virtual Reality",
+  //                                           "Accsure",
+  //                                           "Aerialair",
+  //                                           "Airpay",
+  //                                           "Airpix"
+  //                                       ]
+  //                                   }
+  //=======
                  /*displayText={                                
                                "type": "multipleVariables",
                                "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",

@@ -1,6 +1,8 @@
+<section class="content container-fluid ng-scope">
 <div class="row">
-<div class="col-sm-12 frame">
+<div class="col-sm-12 chat-window">
   <ul style="padding-bottom: 100px;"></ul>
+<!--
   <div>
     <div class="msj-rta macro" style="margin:auto">
       <div class="text text-r" style="background:whitesmoke !important">
@@ -8,8 +10,20 @@
       </div>
     </div>
   </div>
+-->
 </div>
+
   
 <!--<fusioncharts width="600" height="400" type="pie3d" datasource="{{myDataSource}}"></fusioncharts>-->
 
+</div>
+</section>
+
+<div class="box-footer">
+    <div class="input-group">
+        <input type="text" name="message" placeholder="Type Message ..." class="form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
+        <span class="input-group-btn">
+            <button class="btn btn-primary btn-flat" ng-click="vm.sendUserQuery()">Send</button>
+        </span>
+    </div>
 </div>
