@@ -3,8 +3,8 @@
 angular.module('TN_App.alfredApp', ['ui.router'])
 
     .config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
-        $stateProvider.state('investment', {
-            url: '/investment',
+        $stateProvider.state('fintech', {
+            url: '/fintech',
             templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
         })
@@ -147,6 +147,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
             var control = "";
             var date = vm.formatAMPM(new Date());
 
+            
 
             if (who == "me") {
                 if (text.includes("history") || text.includes("version")){
@@ -162,6 +163,7 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                     '</div>' +
                     '</li>';
             } else {
+
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
                 if(text.type=='listOfCompany'){
@@ -321,8 +323,21 @@ angular.module('TN_App.alfredApp', ['ui.router'])
                var result,displayText;
                try {
                  result = response.result.fulfillment.speech;
-                 displayText=response.result.fulfillment.displayText;
+                 //displayText=response.result.fulfillment.displayText;
                  vm.sessionId=response.sessionId;
+
+                 if(response.result.action.indexOf('smalltalk')!==-1){
+                    displayText={
+                        "displayString": response.result.fulfillment.speech,
+                        "data":{
+                            "text":response.result.fulfillment.speech
+                        },
+                        "type":"Description"
+                    }
+                    displayText=JSON.stringify(displayText);
+                 }else{
+                    displayText=response.result.fulfillment.displayText;
+                 }
 
 
 
@@ -424,9 +439,9 @@ angular.module('TN_App.alfredApp', ['ui.router'])
 .controller('landingScreenCtrl', ['$scope','$state', function($scope,$state) {
         var vm = this;
 
-        vm.goToBot=function(botName){
-            if(botName=='investment'){
-                $state.transitionTo('investment');
+        $scope.goToBot=function(botName){
+            if(botName=='fintech'){
+                $state.transitionTo('fintech');
             }else if(botName=='insurance'){
                 $state.transitionTo('insurance');
             }else if(botName=='banking'){
