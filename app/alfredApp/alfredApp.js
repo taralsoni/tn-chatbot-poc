@@ -228,6 +228,22 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
+
+
+            if(vm.botType=='insurance'){
+                vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
+            }else if(vm.botType=='fintech'){
+                vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
+            }
+
+                                          
+            vm.client= new ApiAi.ApiAiClient(
+            {
+                    accessToken: vm.accessToken
+                }
+            );
+             
+
             var history = {};
             if(vm.botType=='insurance'){
                 history.user = 'Rosey@Insurance';
@@ -396,30 +412,8 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         };
 
         vm.askApi=function(query){
-            var client;
-            
-            if(vm.botType=='insurance'){
-                vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
-            }else if(vm.botType=='fintech'){
-                vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
-            }
-
-            if(vm.sessionId==''){                                
-                 client= new ApiAi.ApiAiClient(
-                    {
-                        accessToken: vm.accessToken
-                    }
-                );
-             }else{
-                client= new ApiAi.ApiAiClient(
-                    {
-                        accessToken: vm.accessToken,
-                        sessionId:vm.sessionId
-                    }
-                );
-             }
      
-            client.textRequest(query)
+            vm.client.textRequest(query)
               .then(function(response) {
                var speech,displayText;
                try {
