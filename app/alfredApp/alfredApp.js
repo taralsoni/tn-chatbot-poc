@@ -81,28 +81,29 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                 control=control+'<p> <strong>'+ dataJsonArray[i].key +': </strong>'  + dataJsonArray[i].value + '</p>' ;
                             }else if(dataJsonArray[i].type=='link'){
                                 control=control+'<p>  <strong>' + dataJsonArray[i].key + ': </strong><a href="'+ dataJsonArray[i].value +'">' + dataJsonArray[i].value + '</a></p>';
+                            }else if(dataJsonArray[i].type=='pdf'){
+                                control=control+'<p>  <strong>' + dataJsonArray[i].key + ': </strong><a href="'+ dataJsonArray[i].value +'">' + dataJsonArray[i].value + '</a></p>';
                             }
                         }
                         control=control+'</div>';
                 return control;
             },
-            getHtmlForGraph:function(displayString,graphJson){
-                control= displayString +
-                            '<br>'+
-                            '<div id="chart-container"></div>';
+            getHtmlForGraph:function(displayString,graphJson,chartId,containerId){
+                control= /*displayString +*/ '<br>'+
+                            '<div id="'+ containerId +'"></div>';
                  
                         FusionCharts.ready(function() {
                
                         var revenueChart = new FusionCharts({
-                            id: 'revenue-chart',
+                            id: chartId,//'revenue-chart',
                             type: 'column2d',
-                            renderAt: 'chart-container',
+                            renderAt: containerId,//'chart-container',
                             dataFormat: 'json',
                             dataSource: {
                                   // Chart data goes here
                                     chart: {
-                                        caption: "Age profile of website visitors",
-                                        subcaption: "Last Year",
+                                        caption: displayString,
+                                        subcaption: "",
                                         startingangle: "120",
                                         showlabels: "0",
                                         showlegend: "1",
@@ -110,10 +111,11 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                         slicingdistance: "15",
                                         showpercentvalues: "1",
                                         showpercentintooltip: "0",
-                                        plottooltext: "Age group : $label Total visit : $datavalue",
+                                        plottooltext: "$label : $datavalue", //"Age group : $label Total visit : $datavalue",
                                         theme: "fint"
                                     },
-                                    data: [
+
+                                    data: graphJson/*[
                                         {
                                             label: "Teenage",
                                             value: "1250400"
@@ -130,11 +132,12 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                             label: "Senior",
                                             value: "491000"
                                         }
-                                    ]
+                                    ]*/
                                 }
                             });
                      
                         revenueChart.render();
+                        //revenueChart = FusionCharts(chartId);
                         revenueChart = FusionCharts('revenue-chart');
                     });
                 return control;
@@ -182,9 +185,11 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             }
        } 
     })
+
+
   
 
-    .controller('alfredAppCtrl', ['$scope', '$compile','chatService','$sce', function($scope,$compile,chatService,$sce) {
+    .controller('alfredAppCtrl', ['$scope', '$compile','chatService','$sce','$http', function($scope,$compile,chatService,$sce,http) {
         var vm = this;
         vm.conversationHistory = [];
   
@@ -220,6 +225,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         
         
         vm.init = function(){
+            vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
             var history = {};
@@ -237,7 +243,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
              
         }
 
-        /*Config ends here*/        
+        
 
 
         /*isEmptyVal: check empty val for string, array, object*/
@@ -291,11 +297,15 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 control =  text;
             }
             else{
+
+
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
 
+
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
+
                
                 if(text.type=='list'){
                   vm.list=text.data.list;
@@ -314,16 +324,18 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     //vm.encodedImg = arrayBufferToBase64(displayText.data.image);                           
                     control=chatService.getHtmlForImage(vm.displayString,text.data.image);       
                                          
-                }/*else if(text.type=="pdf"){
-                    var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
+                }else if(text.type=="pdf"){
+                    /*var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
                     var fileURL = URL.createObjectURL(file);
-                    win.location = fileURL;
-                }*/
+                    win.location = fileURL;*/   
+                    //$http.get(text.data.pdfLink);
 
-                
-
+                }
                 else if(text.type=='graph'){ 
-                    control=chatService.getHtmlForGraph(vm.displayString,text.data.graph);
+                    vm.containerId='chart-container-' + vm.chartIndex;
+                    vm.chartId='revenue-chart-' + vm.chartIndex;
+                    control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId);
+                    vm.chartIndex++;
                 }
                 else if(text.type=='buttons'){
                     var jsonData = {
@@ -337,9 +349,21 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             }
             history.text = $sce.trustAsHtml(control);
             history.ts = vm.formatAMPM(new Date());
-            vm.conversationHistory.push(history);
+            //vm.conversationHistory.push(history);
+
+        
+            if ($scope.$$phase) { // most of the time it is "$digest"
+                applyFn(history);
+            } else {
+                $scope.$apply(applyFn(history));
+            }
+              
 
         }
+
+        var applyFn = function (history) {
+            vm.conversationHistory.push(history);
+        };
 
         vm.showImage=function(){
             vm.showImg=true;
@@ -397,47 +421,51 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
      
             client.textRequest(query)
               .then(function(response) {
-               var result,displayText;
+               var speech,displayText;
                try {
-                 result = response.result.fulfillment.speech;
+                 speech = response.result.fulfillment.speech;
                  vm.sessionId=response.sessionId;
 
-                 if(!response.result.fulfillment.hasOwnProperty('displayText') && result=="") {
+                 if(!response.result.fulfillment.hasOwnProperty('displayText') && speech=="") {
                     displayText={
                             "displayString": 'Sorry',
                             "data":{
-                                "text":'Sorry! We could not find anything! Can you try with a different query please...'
+                                "text":'Sorry! We could not find anything. Can you try with a different query please...'
                             },
                             "type":"description"
                         }
                         displayText=JSON.stringify(displayText);
                  }else{
-                     if(response.result.action.indexOf('smalltalk')!==-1){
-                        displayText={
-                            "displayString": response.result.fulfillment.speech,
-                            "data":{
-                                "text":response.result.fulfillment.speech
-                            },
-                            "type":"description"
+
+                        if(!response.result.fulfillment.hasOwnProperty('displayText') && speech!=""){
+                            displayText={
+                                "displayString": response.result.fulfillment.speech,
+                                "data":{
+                                    "text":response.result.fulfillment.speech
+                                },
+                                "type":"description"
+                            }
+                            displayText=JSON.stringify(displayText);
                         }
-                        displayText=JSON.stringify(displayText);
-                     }else{
-                        displayText=response.result.fulfillment.displayText;
-                     }                     
+                        else{
+                            //when displaytext is present
+                            displayText=response.result.fulfillment.displayText;
+                        }                     
                 }   
                 //stubbed graph type
-                displayText={                                
-                   "type": "graph",
-                   "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
+                /*displayText={                                
+                   "type": "pdf",
+                   "displayString": "Age profile of website visitors last year",
                    "data": {
-                        "graph":""
+                        "graph":"",
+                        "pdfLink":"https://www.tutorialspoint.com/operating_system/operating_system_tutorial.pdf"
                     }
                 };
-                displayText=JSON.stringify(displayText);                        
+                displayText=JSON.stringify(displayText); */                       
                 vm.insertChat("you", displayText, 0);
 
                } catch(error) {
-                  result = "";
+                  speech = "";
                }
              })
         }

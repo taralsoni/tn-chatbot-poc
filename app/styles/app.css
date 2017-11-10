@@ -152,7 +152,7 @@ ul {
 .info-box{
     display: block;
     min-height: 90px;
-    background: #fff;
+    background: #ecf0f5;
     /*width: 100%;*/
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     border-radius: 2px;
@@ -195,7 +195,7 @@ ul {
 .main-bg{
     width: auto;
     height: 650px;
-    background-color: #ecf0f5
+    /*background-color: #ecf0f5*/
 }
 
 .info-box-text {
@@ -241,7 +241,7 @@ input:focus{
 
 
 .chat-window{
-    height: 800px;
+    /*height: 800px;*/
     overflow-y: auto;
     overflow-x: hidden;
 }
