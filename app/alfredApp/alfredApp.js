@@ -12,7 +12,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             url: '/insurance',
             templateUrl: 'alfredApp/alfredApp.html',
             controller: 'alfredAppCtrl as vm'
-        })
+        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
         .state('banking', {
             url: '/banking',
             templateUrl: 'alfredApp/alfredApp.html',
@@ -56,6 +56,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
   
   .service('chatService', function(){
        var control,botType;
+       var csScope=this;
        return{
             getHtmlForList:function(displayString,list){
                 
@@ -88,18 +89,22 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                         control=control+'</div>';
                 return control;
             },
-            getHtmlForGraph:function(displayString,graphJson,chartId,containerId){
+            getHtmlForGraph:function(displayString,graphJson,chartId,containerId,graphTableArray){
                 control= /*displayString +*/ '<br>'+
-                            '<div id="'+ containerId +'"></div>';
-                 
-                        FusionCharts.ready(function() {
-               
-                        var revenueChart = new FusionCharts({
-                            id: chartId,//'revenue-chart',
-                            type: 'column2d',
-                            renderAt: containerId,//'chart-container',
-                            dataFormat: 'json',
-                            dataSource: {
+
+                    '<div ng-show="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" id="'+ containerId +'"></div>';
+                                             
+                    if ( FusionCharts(chartId)){
+                         FusionCharts(chartId).dispose();
+                    }
+
+                        FusionCharts.ready(function() {               
+                            var revenueChart = new FusionCharts({
+                                id: chartId,//'revenue-chart',
+                                type: 'column2d',
+                                renderAt: containerId,//'chart-container',
+                                dataFormat: 'json',
+                                dataSource: {
                                   // Chart data goes here
                                     chart: {
                                         caption: displayString,
@@ -115,7 +120,8 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                         theme: "fint"
                                     },
 
-                                    data: graphJson/*[
+                                    data: //graphJson
+                                        [
                                         {
                                             label: "Teenage",
                                             value: "1250400"
@@ -132,15 +138,65 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                             label: "Senior",
                                             value: "491000"
                                         }
-                                    ]*/
+                                    ]
                                 }
                             });
                      
+                        
                         revenueChart.render();
-                        //revenueChart = FusionCharts(chartId);
                         revenueChart = FusionCharts('revenue-chart');
                     });
-                return control;
+                
+                return control+'<br>';
+            },
+            getHtmlForTable:function(displayString,graphJson,chartId,containerId,graphTableArray){
+                
+
+                var graphJson=[
+                                    {
+                                        label: "Teenage",
+                                        value: "1250400"
+                                    },
+                                    {
+                                        label: "Adult",
+                                        value: "1463300"
+                                    },
+                                    {
+                                        label: "Mid-age",
+                                        value: "1050700"
+                                    },
+                                    {
+                                        label: "Senior",
+                                        value: "491000"
+                                    }
+                                ];
+
+                control= 
+                 '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
+                    displayString + '<br>'+
+                    '<table  class="table table-bordered table-striped">'+
+                        '<thead>'+
+                            '<tr>'+
+                              '<th>City</th>'+
+                              '<th>Number of Companies</th>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>';
+
+                    for(var i=0;i<graphJson.length;i++){
+                        control=control+
+                         '<tr>'+
+                              '<td>'+ graphJson[i].label +'</td>'+
+                              '<td>'+ graphJson[i].value +'</td>'+
+                            '</tr>';
+                    }  
+
+                    control=control+
+                            '</tbody>'+
+                            '</table>'+                     
+                            '</div>';
+                
+               return control;
             },
             getHtmlForLink:function(displayString,link){
                 control = '<div style="width:100%;">' +
@@ -178,7 +234,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             getHtmlForButtons:function(jsonData){
                 control = jsonData.openingText + '<br> <br>' + '<div class="row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
-                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2"> <button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
+                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2"> <button type="submit" class="btn btn-block" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
                 }
                 control = control + '</row>';
                 return control;
@@ -256,9 +312,9 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             history.ts =  vm.formatAMPM(new Date());
             vm.conversationHistory.push(history);
 
-             
+            vm.graphTableArray=[];
+           
         }
-
         
 
 
@@ -348,10 +404,42 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                 }
                 else if(text.type=='graph'){ 
+
+
+                    text.data.multipleFields=[
+                                    {
+                                        label: "Teenage",
+                                        value: "1250400"
+                                    },
+                                    {
+                                        label: "Adult",
+                                        value: "1463300"
+                                    },
+                                    {
+                                        label: "Mid-age",
+                                        value: "1050700"
+                                    },
+                                    {
+                                        label: "Senior",
+                                        value: "491000"
+                                    }
+                                ];
+
+                    var jsonData = {
+                        'callBackFn' : 'vm.setIsGraph'     
+                    }
+
+                    vm.graphTableArray[vm.chartIndex]=true;
+
                     vm.containerId='chart-container-' + vm.chartIndex;
-                    vm.chartId='revenue-chart-' + vm.chartIndex;
-                    control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId);
+                    vm.chartId='revenue-chart-' + vm. chartIndex;  
+
+                    control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);                  
+                    control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\'' + text.data.multipleFields  + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+                    control=control+chatService.getHtmlForTable(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
+                    
                     vm.chartIndex++;
+
                 }
                 else if(text.type=='buttons'){
                     var jsonData = {
@@ -365,7 +453,6 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             }
             history.text = $sce.trustAsHtml(control);
             history.ts = vm.formatAMPM(new Date());
-            //vm.conversationHistory.push(history);
 
         
             if ($scope.$$phase) { // most of the time it is "$digest"
@@ -376,6 +463,44 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
               
 
         }
+
+        vm.setIsGraph=function(graphIndex,index,displayString,graphJson,containerId,chartId){
+            vm.graphTableArray[graphIndex]=!vm.graphTableArray[graphIndex];
+
+            var jsonData = {
+                'callBackFn' : 'vm.setIsGraph'     
+            }
+
+            var control;
+            var history = {};
+
+            if(vm.graphTableArray[graphIndex]){                
+                control=chatService.getHtmlForGraph(displayString,graphJson,containerId,chartId,vm.graphTableArray);                
+            }else{              
+                control=chatService.getHtmlForTable(displayString,graphJson,containerId,chartId,vm.graphTableArray);                  
+            }
+
+            control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + graphJson + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+                        
+            history.user = 'Rosey@Fintech' + index;
+            history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
+
+            history.text = $sce.trustAsHtml(control);
+            history.ts = vm.formatAMPM(new Date());
+        
+            if ($scope.$$phase) { // most of the time it is "$digest"
+                applyFnWithIndex(history,index);
+            } else {
+                $scope.$apply(applyFnWithIndex(history,index));
+            }
+                    
+        }
+
+        var applyFnWithIndex = function (history,index) {
+            //var removedElements=vm.conversationHistory.splice(index, 1,history);
+            //if(vm.conversationHistory[index]!='')
+                vm.conversationHistory[index]=history;
+        };
 
         var applyFn = function (history) {
             vm.conversationHistory.push(history);
@@ -447,15 +572,15 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                         }                     
                 }   
                 //stubbed graph type
-                /*displayText={                                
-                   "type": "pdf",
+                displayText={                                
+                   "type": "graph",
                    "displayString": "Age profile of website visitors last year",
                    "data": {
                         "graph":"",
                         "pdfLink":"https://www.tutorialspoint.com/operating_system/operating_system_tutorial.pdf"
                     }
                 };
-                displayText=JSON.stringify(displayText); */                       
+                displayText=JSON.stringify(displayText);                        
                 vm.insertChat("you", displayText, 0);
 
                } catch(error) {

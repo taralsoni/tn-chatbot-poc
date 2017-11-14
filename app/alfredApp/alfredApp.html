@@ -3,7 +3,7 @@
 <div class="col-sm-12 chat-window">
     
     <ol class="timeline">
-      <li data-ng-repeat="history in vm.conversationHistory">
+      <li data-ng-repeat="history in vm.conversationHistory track by $index">
   
           <img class="fa direct-chat-img" src="{{history.image}}" alt="">
                     <div class="timeline-item">
@@ -17,6 +17,7 @@
     </ol>
 </div>
 </div>
+
 </section>
 
 <div class="box-footer">
