@@ -26,7 +26,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
             minutes = minutes < 10 ? '0' + minutes : minutes;
             var strTime = hours + ':' + minutes + ' ' + ampm;
             return strTime;
-      }
+      }   
       
       
       //Function to display user query on screen{
