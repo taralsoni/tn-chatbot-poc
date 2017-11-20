@@ -314,6 +314,10 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     
         }
 
+         vm.goBack=function(){
+            history.back();
+        }
+
         var applyFnWithIndex = function (history,index) {
                 vm.conversationHistory[index]=history;
         };
