@@ -185,10 +185,109 @@ app.service('chatService', function(){
             getHtmlForButtons:function(jsonData){
                 control = jsonData.openingText + '<br> <br>' + '<div class="row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
-                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2"> <button type="submit" class="btn btn-block" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
+                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2" style="margin-bottom: 10px;"> <button type="submit" class="btn btn-block" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
                 }
                 control = control + '</row>';
                 return control;
-            }
+            },
+          
+            getHtmlForGraph2:function(displayString,graphJson,chartId,containerId,varShowGraph){
+                var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }
+
+                control= '<strong>'+displayString + '</strong><br>'+
+
+                    
+                    '<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
+              
+                    //'<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
+                                             
+                    if ( FusionCharts(chartId)){
+                         FusionCharts(chartId).dispose();
+                    }
+
+                        FusionCharts.ready(function() {               
+                            var revenueChart = new FusionCharts({
+                                id: chartId,//'revenue-chart',
+                                type:'column3d' , //column3d',//pie2d
+                                renderAt: containerId,//'chart-container',
+                                dataFormat: 'json',
+                                width: "100%",
+                                height: "100%",
+                                dataSource: {
+                                  // Chart data goes here
+                                    chart: {
+                                        caption: "",
+                                        subcaption: "",
+                                        startingangle: "120",
+                                        showlabels: "0",
+                                        showlegend: "1",
+                                        enablemultislicing: "0",
+                                        slicingdistance: "15",
+                                        showpercentvalues: "1",
+                                        showpercentintooltip: "0",
+                                        plottooltext: "$label : $datavalue", //"Age group : $label Total visit : $datavalue",
+                                        theme: "fint"
+                                    },
+
+                                    data: graphJsonWithoutHeader
+                                        /*[
+                                        {
+                                            label: "Teenage",
+                                            value: "1250400"
+                                        },
+                                        {
+                                            label: "Adult",
+                                            value: "1463300"
+                                        },
+                                        {
+                                            label: "Mid-age",
+                                            value: "1050700"
+                                        },
+                                        {
+                                            label: "Senior",
+                                            value: "491000"
+                                        }
+                                    ]*/
+                                }
+                            });
+                     
+                        
+                        revenueChart.render();
+                        revenueChart = FusionCharts('revenue-chart');
+                    });
+                
+                return control+'<br>';
+            },
+            getHtmlForTable2:function(displayString,graphJson,chartId,containerId,varShowGraph){
+                control= 
+                 '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
+                    '<strong>'+displayString + '</strong><br>'+
+                    '<table  class="table table-bordered table-striped">'+
+                        '<thead>'+
+                            '<tr>'+
+                              '<th>'+graphJson[0].label+'</th>'+
+                              '<th>'+graphJson[0].value+'</th>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>';
+
+                    for(var i=1;i<graphJson.length;i++){
+                        control=control+
+                         '<tr>'+
+                              '<td>'+ graphJson[i].label +'</td>'+
+                              '<td>'+ graphJson[i].value +'</td>'+
+                            '</tr>';
+                    }  
+
+                    control=control+
+                            '</tbody>'+
+                            '</table>'+                     
+                            '</div>';
+                
+               return control;
+            },
        } 
     })

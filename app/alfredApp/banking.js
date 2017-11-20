@@ -38,6 +38,12 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
             history.text =  $sce.trustAsHtml(control);
             history.ts = banking.formatAMPM(new Date());
             banking.conversationHistory.push(history);
+        
+            $timeout(function() {
+              var scroller = document.getElementById("autoscroll");
+              scroller.scrollTop = scroller.scrollHeight;
+            }, 0, false);
+        
       }
       
       
@@ -50,6 +56,11 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
           }            
       };
       
+      
+      banking.setIsGraph = function(graphFlag,index){
+          graphFlag = !graphFlag;
+          banking.conversationHistory[index].showGraph = graphFlag;
+      }
   
   
       banking.init = function(){
@@ -91,6 +102,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
         
         
            //For graph and table
+            var history = {};
             history.image = banking.you.avatar;
             history.user = 'Rosey@Banking';
             //history.text = $sce.trustAsHtml(control);
@@ -103,6 +115,10 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
                 'displayString' : 'Displaying data for Graph',   
                 'data': {
                     'graphData' : [
+                                    {
+                                        'label': "UserGroup",
+                                        'value': "Number"
+                                    },
                                     {
                                         'label': "Teenage",
                                         'value': "1250400"
@@ -123,24 +139,28 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
                     }
               }
 
-              var jsonData = {
+              var fnData = {
                     'callBackFn' : 'banking.setIsGraph'     
               }
 
-//              banking.graphTableArray[banking.chartIndex]=true;
-//              banking.graphJsonArray[banking.chartIndex]=jsonData.data.graphData;
-//
               banking.containerId='chart-container-' + banking.chartIndex;
               banking.chartId='revenue-chart-' + banking.chartIndex;  
 
-              control=chatService.getHtmlForGraph(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,jsonData.graphTableArray);                  
-                    
-              control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + banking.chartIndex + ','  + vm.conversationHistory.length + ',\'' + jsonData.displayString + '\',\''  + jsonData.containerId + '\',\'' + jsonData.chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
-              control=control+chatService.getHtmlForTable(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,jsonData.graphTableArray);
-               
-            
-          
+            /* Html for Graph*/ control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,banking.containerId,banking.chartId,'history.showGraph');    
+             
+             /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
+                  
+              /*html for toggle button */
+              control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+        
+              history.text = $sce.trustAsHtml(control);
+              banking.conversationHistory.push(history);
+        
+              //Scroll to the bottom of the screen
+              $timeout(function() {
+                  var scroller = document.getElementById("autoscroll");
+                  scroller.scrollTop = scroller.scrollHeight;
+              }, 0, false);
       }
-  
       banking.init();
 }]);

@@ -2255,9 +2255,11 @@ a:focus {
   position: relative;
 }
 
+/*
 .timeline > li > .timeline-item:hover {
   background-color: #f2f2f2 !important;
 }
+*/
 .timeline > li > .timeline-item > .time {
   color: #999;
   float: right;
