@@ -255,8 +255,8 @@ input:focus{
     border-top: 1px solid #f4f4f4;
     padding: 10px;
     background-color: #ffffff;
-    position: fixed;
-    bottom : 0.3%;
+    position: sticky;
+    bottom : 0;
 }
 
 .input-group {
@@ -274,9 +274,9 @@ input:focus{
 }
 
 .timeline {
-    position: relative;
+    /*position: relative;
     margin: 0 0 30px 0;
-    padding: 0;
+    padding: 0;*/
     list-style: none;
 }
 

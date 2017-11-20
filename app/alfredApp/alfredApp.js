@@ -90,7 +90,12 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 return control;
             },
             getHtmlForGraph:function(displayString,graphJson,chartId,containerId,graphTableArray){
-                control= /*displayString +*/ '<br>'+
+                var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }
+
+                control= '<strong>'+displayString + '</strong><br>'+
 
                     '<div ng-show="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" id="'+ containerId +'"></div>';
                                              
@@ -101,13 +106,15 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                         FusionCharts.ready(function() {               
                             var revenueChart = new FusionCharts({
                                 id: chartId,//'revenue-chart',
-                                type: 'column3d',
+                                type:'column3d' , //column3d',//pie2d
                                 renderAt: containerId,//'chart-container',
                                 dataFormat: 'json',
+                                width: "100%",
+                                height: "100%",
                                 dataSource: {
                                   // Chart data goes here
                                     chart: {
-                                        caption: displayString,
+                                        caption: "",
                                         subcaption: "",
                                         startingangle: "120",
                                         showlabels: "0",
@@ -120,7 +127,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                                         theme: "fint"
                                     },
 
-                                    data: graphJson
+                                    data: graphJsonWithoutHeader
                                         /*[
                                         {
                                             label: "Teenage",
@@ -173,17 +180,17 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
 
                 control= 
                  '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
-                    displayString + '<br>'+
+                    '<strong>'+displayString + '</strong><br>'+
                     '<table  class="table table-bordered table-striped">'+
                         '<thead>'+
                             '<tr>'+
-                              '<th>City</th>'+
-                              '<th>Number of Companies</th>'+
+                              '<th>'+graphJson[0].label+'</th>'+
+                              '<th>'+graphJson[0].value+'</th>'+
                             '</tr>'+
                         '</thead>'+
                         '<tbody>';
 
-                    for(var i=0;i<graphJson.length;i++){
+                    for(var i=1;i<graphJson.length;i++){
                         control=control+
                          '<tr>'+
                               '<td>'+ graphJson[i].label +'</td>'+
@@ -242,7 +249,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
        } 
     })
 
-    .controller('alfredAppCtrl', ['$scope', '$compile','chatService','$sce','$http', function($scope,$compile,chatService,$sce,http) {
+    .controller('alfredAppCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
         var vm = this;
         vm.conversationHistory = [];
   
@@ -432,7 +439,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     vm.chartId='revenue-chart-' + vm. chartIndex;  
 
                     control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);                  
-                    control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+                    control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
                     control=control+chatService.getHtmlForTable(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
                     
                     vm.chartIndex++;
@@ -458,6 +465,14 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             }
               
 
+             //$location.hash('item');
+             //$anchorScroll('item');
+
+             $timeout(function() {
+              var scroller = document.getElementById("autoscroll");
+              scroller.scrollTop = scroller.scrollHeight;
+            }, 0, false);
+
         }
 
         vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
@@ -478,7 +493,7 @@ angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 control=chatService.getHtmlForTable(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);                  
             }
 
-            control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+            control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
                         
             history.user = 'Rosey@Fintech';
             history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";

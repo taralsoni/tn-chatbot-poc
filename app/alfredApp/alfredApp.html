@@ -2,7 +2,7 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12 col-md-12 chat-window">
     
-    <ol class="timeline">
+    <ol  id="autoscroll" class="timeline">
       <li data-ng-repeat="history in vm.conversationHistory track by $index">
   
           <img class="fa direct-chat-img" src="{{history.image}}" alt="">
