@@ -1,4 +1,4 @@
- app.service('chatService', function(){
+app.service('chatService', function(){
        var control,botType;
        var csScope=this;
        return{
@@ -34,7 +34,12 @@
                 return control;
             },
             getHtmlForGraph:function(displayString,graphJson,chartId,containerId,graphTableArray){
-                control= /*displayString +*/ '<br>'+
+                var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }
+
+                control= '<strong>'+displayString + '</strong><br>'+
 
                     '<div ng-show="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" id="'+ containerId +'"></div>';
                                              
@@ -45,13 +50,15 @@
                         FusionCharts.ready(function() {               
                             var revenueChart = new FusionCharts({
                                 id: chartId,//'revenue-chart',
-                                type: 'column3d',
+                                type:'column3d' , //column3d',//pie2d
                                 renderAt: containerId,//'chart-container',
                                 dataFormat: 'json',
+                                width: "100%",
+                                height: "100%",
                                 dataSource: {
                                   // Chart data goes here
                                     chart: {
-                                        caption: displayString,
+                                        caption: "",
                                         subcaption: "",
                                         startingangle: "120",
                                         showlabels: "0",
@@ -64,7 +71,7 @@
                                         theme: "fint"
                                     },
 
-                                    data: graphJson
+                                    data: graphJsonWithoutHeader
                                         /*[
                                         {
                                             label: "Teenage",
@@ -117,17 +124,17 @@
 
                 control= 
                  '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
-                    displayString + '<br>'+
+                    '<strong>'+displayString + '</strong><br>'+
                     '<table  class="table table-bordered table-striped">'+
                         '<thead>'+
                             '<tr>'+
-                              '<th>City</th>'+
-                              '<th>Number of Companies</th>'+
+                              '<th>'+graphJson[0].label+'</th>'+
+                              '<th>'+graphJson[0].value+'</th>'+
                             '</tr>'+
                         '</thead>'+
                         '<tbody>';
 
-                    for(var i=0;i<graphJson.length;i++){
+                    for(var i=1;i<graphJson.length;i++){
                         control=control+
                          '<tr>'+
                               '<td>'+ graphJson[i].label +'</td>'+
@@ -178,7 +185,7 @@
             getHtmlForButtons:function(jsonData){
                 control = jsonData.openingText + '<br> <br>' + '<div class="row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
-                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2" style="margin-bottom: 10px"> <button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
+                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2"> <button type="submit" class="btn btn-block" ng-click="' + jsonData.callBackFn + '()" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
                 }
                 control = control + '</row>';
                 return control;

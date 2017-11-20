@@ -52,7 +52,9 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
    )};
   }])
 
-.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http', function($scope,$compile,chatService,$sce,http) {
+
+
+.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
         var vm = this;
         vm.conversationHistory = [];
   
@@ -71,7 +73,7 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         }
         
         vm.buttonCallBackFunction = function(){
-            console.log("Button was clicked");
+            console.log("Button was cliecked");
         }
         
         
@@ -242,7 +244,7 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     vm.chartId='revenue-chart-' + vm. chartIndex;  
 
                     control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);                  
-                    control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+                    control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
                     control=control+chatService.getHtmlForTable(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
                     
                     vm.chartIndex++;
@@ -268,6 +270,14 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             }
               
 
+             //$location.hash('item');
+             //$anchorScroll('item');
+
+             $timeout(function() {
+              var scroller = document.getElementById("autoscroll");
+              scroller.scrollTop = scroller.scrollHeight;
+            }, 0, false);
+
         }
 
         vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
@@ -288,7 +298,7 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                 control=chatService.getHtmlForTable(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);                  
             }
 
-            control=control+'<button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;width:15%!important">  Toggle view </button>';
+            control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
                         
             history.user = 'Rosey@Fintech';
             history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
@@ -395,7 +405,7 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
              })
         }
          vm.init();
-    }])
+}])
 
 
 .controller('landingScreenCtrl', ['$scope','$state','chatService', function($scope,$state,chatService) {
