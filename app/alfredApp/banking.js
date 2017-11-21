@@ -1,4 +1,4 @@
-app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http', function($scope,$compile,chatService,$sce,http) {
+app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
   
       var banking = this;
       banking.conversationHistory = [];
