@@ -1,60 +1,4 @@
-'use strict';
-
-var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
-
-    .config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
-        $stateProvider.state('fintech', {
-            url: '/fintech',
-            templateUrl: 'alfredApp/insurance.html',
-            controller: 'insuranceCtrl as vm'
-        })
-        .state('insurance', {
-            url: '/insurance',
-            templateUrl: 'alfredApp/insurance.html',
-            controller: 'insuranceCtrl as vm'
-        })                                                                                                               .state('banking', {
-            url: '/banking',
-            templateUrl: 'alfredApp/banking.html',
-            controller: 'bankingCtrl as banking'
-        })
-        .state('alfredApp', {
-            url: '/alfredApp',
-            templateUrl: 'alfredApp/landing-screen.html',
-            controller: 'landingScreenCtrl as vm'
-        });
-        //$urlRouterProvider.otherwise('/landing-screen');
-    }])
-
-    .directive('ngEnter', function() {
-        return function(scope, element, attrs) {
-            element.bind("keydown keypress", function(event) {
-                if (event.which === 13) {
-                    scope.$apply(function() {
-                        scope.$eval(attrs.ngEnter);
-                    });
-
-                    event.preventDefault();
-                }
-            });
-        };
-    })
-
-  .directive('compile', ['$compile', function ($compile) {
-      return function(scope, element, attrs) {
-      scope.$watch(
-        function(scope) {
-          return scope.$eval(attrs.compile);
-      },
-      function(value) {
-        element.html(value);
-        $compile(element.contents())(scope);
-      }
-   )};
-  }])
-
-
-
-.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
+app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
         var vm = this;
         vm.conversationHistory = [];
   
@@ -90,6 +34,8 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
         
         
         vm.init = function(){
+
+            
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
@@ -314,6 +260,10 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
                     
         }
 
+         vm.goBack=function(){
+            history.back();
+        }
+
         var applyFnWithIndex = function (history,index) {
                 vm.conversationHistory[index]=history;
         };
@@ -405,21 +355,6 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
              })
         }
          vm.init();
-}])
-
-
-.controller('landingScreenCtrl', ['$scope','$state','chatService', function($scope,$state,chatService) {
-        var vm = this;
-
-        $scope.goToBot=function(botName){
-            
-            chatService.setBotType(botName);
-            if(botName=='fintech'){
-                $state.transitionTo('fintech');
-            }else if(botName=='insurance'){
-                $state.transitionTo('insurance');
-            }else if(botName=='banking'){
-                $state.transitionTo('banking');
-            }
-        }
 }]);
+
+
