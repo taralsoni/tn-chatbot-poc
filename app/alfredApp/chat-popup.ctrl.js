@@ -1,8 +1,7 @@
-app.controller('chatPopupCtrl',function() {
+app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
     var vm = this;
 
     vm.init=function(){
-
         vm.showChatIcon=true;
     }
 
@@ -32,4 +31,4 @@ app.controller('chatPopupCtrl',function() {
     }
 
     vm.init();
-});
+}]);
