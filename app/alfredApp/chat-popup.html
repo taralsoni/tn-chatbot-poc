@@ -1,0 +1,17 @@
+<div class="">
+
+<h1> My PwC </h1>
+
+<div class="row">
+    <img class="col-xs-2 col-sm-2" src="alfredApp/images/img_logo.png">
+</div>
+
+<div  title="This is my tooltip" id="chat" ng-show="vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()">Chat</div>
+<div class="chatbox" ng-hide="vm.showChatIcon" id="chatbox">
+
+<span class="chat-text">Chat Bot!</span>
+<div id="close-chat" ng-click="vm.closeChatbox()">&times;</div>
+<div id="minim-chat" ng-click="vm.minimChatbox()"><span class="minim-button">&minus;</span></div>
+<div id="maxi-chat" ng-click="vm.loadChatbox()"><span class="maxi-button">&plus;</span></div>
+</div>
+</div>

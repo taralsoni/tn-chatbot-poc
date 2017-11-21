@@ -12,7 +12,7 @@ angular.module('TN_App', [
   'ng-fusioncharts'
 ]).
 config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/alfredApp');
+  $urlRouterProvider.otherwise('/chatbotApp');
 }]);
 
 
