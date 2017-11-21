@@ -1,17 +1,27 @@
 <div class="">
 
-<h1> My PwC </h1>
+	<!-- <div class="cover" ng-if="!vm.showChatIcon"></div> -->
 
-<div class="row">
-    <img class="col-xs-2 col-sm-2" src="alfredApp/images/img_logo.png">
-</div>
+	<div class="row" style="padding: 10px">
+		<div class="col-xs-1 col-sm-1" ></div>
+	    <img  class="pwc-log-size col-xs-1 col-sm-1" src="alfredApp/images/pwc_logo.png">
+	    <div class="col-xs-1 col-sm-1"  style="margin-top: 10px"><strong>| India</strong></div>
+	</div>
 
-<div  title="This is my tooltip" id="chat" ng-show="vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()">Chat</div>
-<div class="chatbox" ng-hide="vm.showChatIcon" id="chatbox">
+	<nav class="navbar navbar-inverse">
+		<div class="col-xs-1 col-sm-1" ></div>
+		<div class="col-xs-1 col-sm-1 nav-title">Explore</div>
+	</nav>
 
-<span class="chat-text">Chat Bot!</span>
-<div id="close-chat" ng-click="vm.closeChatbox()">&times;</div>
-<div id="minim-chat" ng-click="vm.minimChatbox()"><span class="minim-button">&minus;</span></div>
-<div id="maxi-chat" ng-click="vm.loadChatbox()"><span class="maxi-button">&plus;</span></div>
-</div>
+	<img src="alfredApp/images/pwc_bg.jpg">
+		<div  title="Hey I am Chatbot! Do you need some help??" id="chat" ng-show="vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()">Chat</div>
+
+		<div class="chatbox" ng-hide="vm.showChatIcon" id="chatbox">
+			<span class="chat-text">Chat Bot!</span>
+			<div id="close-chat" ng-click="vm.closeChatbox()">&times;</div>
+			<div id="minim-chat" ng-click="vm.minimChatbox()"><span class="minim-button">&minus;</span></div>
+			<div id="maxi-chat" ng-click="vm.loadChatbox()"><span class="maxi-button">&plus;</span></div>
+			<div ng-include="landing-screen.html"></div>
+		</div>
+	</img>
 </div>
