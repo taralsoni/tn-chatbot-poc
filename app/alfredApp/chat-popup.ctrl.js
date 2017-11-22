@@ -3,6 +3,7 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
 
     vm.init=function(){
         vm.showChatIcon=true;
+        vm.showToolTip=false;
 
         if($window.innerWidth<=520){
             vm.loadChatbox();
@@ -12,8 +13,8 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
     }
 
     
-    var show=function(){
-        
+    vm.toggleToolTip=function(){
+        vm.showToolTip=!vm.showToolTip;
     }
 
     vm.loadChatbox=function(){
