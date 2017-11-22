@@ -3,6 +3,17 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
 
     vm.init=function(){
         vm.showChatIcon=true;
+
+        if($window.innerWidth<=520){
+            vm.loadChatbox();
+            vm.showChatIcon=false;
+        }
+
+    }
+
+    
+    var show=function(){
+        
     }
 
     vm.loadChatbox=function(){

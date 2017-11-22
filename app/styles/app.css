@@ -383,13 +383,13 @@ a {
 #chat,
 #close-chat,
 .chatbox {
-    border: 1px solid #A8A8A8
+    /*border: 1px solid #A8A8A8*/
 }
 
 #chat:after,
 #chat:before {
     position: absolute;
-    border-style: solid;
+    /*border-style: solid;*/
     content: ""
 }
 
@@ -398,9 +398,16 @@ a {
     bottom: 20px;
     right: 20px;
     width: 300px;
-    height: 400px;
+    height: 65vh;
     background: whitesmoke;
     border-radius: 4px;
+}
+
+.full-chatbox {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: whitesmoke;
 }
 
 #close-chat {
@@ -455,12 +462,12 @@ a {
 
 #chat {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 40px;
+    bottom: 50px;
+    right: 65px;
+    width: 0;
     border-radius: 3px;
     font-size: 12px;
-    background: #fff;
+    /*background: #fff;*/
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
@@ -607,4 +614,9 @@ a {
     width: 100%;
     background-color: #ddd;
     opacity: 0.8;
+}
+
+.chat-icon-size{
+    height: 65px;
+    width: 50px;
 }
