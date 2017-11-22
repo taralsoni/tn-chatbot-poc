@@ -9,9 +9,7 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
             vm.loadChatbox();
             vm.showChatIcon=false;
         }
-
     }
-
     
     vm.toggleToolTip=function(){
         vm.showToolTip=!vm.showToolTip;
@@ -19,6 +17,7 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
 
     vm.loadChatbox=function(){
         vm.showChatIcon=false;
+        vm.showToolTip=false;
         var e=document.getElementById("minim-chat");
         e.style.display="block";
         var e=document.getElementById("maxi-chat");
@@ -39,7 +38,7 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
         var e=document.getElementById("maxi-chat");
         e.style.display="block";
         var e=document.getElementById("chatbox");
-        e.style.margin="0 0 -390px 0";
+        e.style.margin="0 0 -63vh 0";
     }
 
     vm.init();
