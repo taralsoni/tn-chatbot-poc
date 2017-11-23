@@ -135,7 +135,7 @@ ul {
 }
 
 .bot-logo-size{
-    height: 45%;
+    height: auto;
     width: 45%;
 }
 
@@ -143,7 +143,7 @@ ul {
     text-align:center;
     font-size: 24px;
     margin-bottom: 3%;
-    margin-top: 30px;
+    margin-top: 50px;
     font-family: cali;
 }
 
@@ -164,21 +164,21 @@ ul {
 
 .info-box-content {
     /*padding: 5px 10px;*/
-    padding-top: 18px;
+    /*padding-top: 18px;*/
     padding-left: 5%;
     margin-left: 90px;
 }
 
 .bg-aqua, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
-    background-color: #00c0ef !important;
+    background-color:  #eb8c00 !important;
 }
 
 .bg-red, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
-    background-color: #dd4b39  !important;
+    background-color:   #dc6900 !important;
 }
 
 .bg-green, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
-    background-color: #00a65a !important;
+    background-color: #e0301e !important;
 }
 
 .info-box-icon {
@@ -867,4 +867,14 @@ a {
   /* remove webkit p margins */
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
+}
+
+.display-table{
+    display:table;
+}
+
+.display-table-cell{
+    display: table-cell !important;
+    vertical-align: middle;
+    font-family: serif;
 }

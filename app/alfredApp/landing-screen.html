@@ -4,11 +4,11 @@
 		<div class="row">
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
-			<div class="col-xs-8 col-sm-8 col-md-8 info-box"  ng-click="ctrl.goToBot('fintech')">
-				<span class="info-box-icon bg-aqua">
-				<img src="alfredApp/images/fintech1.png" class="bot-logo-size"></img>
+			<div class="col-xs-8 col-sm-8 col-md-8 info-box display-table"  ng-click="ctrl.goToBot('fintech')">
+				<span class="info-box-icon bg-aqua display-table">
+					<div class="display-table-cell"><img src="alfredApp/images/fintech.png" class="bot-logo-size"></img></div>
 				</span>			
-				<div class="info-box-content info-box-text">FINTECH</div>
+				<div class="info-box-content info-box-text display-table-cell">FINTECH</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
@@ -17,33 +17,28 @@
 		<div class="row">
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
-			<div class="col-xs-8 col-sm-8 col-md-8 info-box"  ng-click="ctrl.goToBot('insurance')">
-				<span class="info-box-icon bg-red">
-				<img src="alfredApp/images/insurance1.png" class="bot-logo-size"></img>
+			<div class="col-xs-8 col-sm-8 col-md-8 info-box display-table"  ng-click="ctrl.goToBot('fintech')">
+				<span class="info-box-icon bg-red display-table">
+					<div class="display-table-cell"><img src="alfredApp/images/insurance.png" class="bot-logo-size"></img></div>
 				</span>			
-				<div class="info-box-content  info-box-text ">INSURANCE</div>
-				<!-- <button class="info-box-content" ng-click="vm.goToBot('investment')">Investment</button> -->
+				<div class="info-box-content info-box-text display-table-cell">INSURANCE</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
 		</div>	
-		
+
 		<div class="row">
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
-			<!-- <div class="col-sm-4" >
-				<button class="btn-width" ng-click="vm.goToBot('banking')">Banking</button>
-			</div> -->
-			<div class="col-xs-8 col-sm-8 col-md-8 info-box "  ng-click="ctrl.goToBot('banking')">
-				<span class="info-box-icon bg-green">
-				<img src="alfredApp/images/banking1.png" class="bot-logo-size"></img>
+			<div class="col-xs-8 col-sm-8 col-md-8 info-box display-table"  ng-click="ctrl.goToBot('fintech')">
+				<span class="info-box-icon bg-green display-table">
+					<div class="display-table-cell"><img src="alfredApp/images/banking.png" class="bot-logo-size"></img></div>
 				</span>			
-				<div class="info-box-content  info-box-text">BANKING</div>
-				<!-- <button class="info-box-content" ng-click="vm.goToBot('investment')">Investment</button> -->
+				<div class="info-box-content info-box-text display-table-cell">BANKING</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2" >
 			</div>
-		</div>
+		</div>	
 	</div>
 
 	<div ng-if="ctrl.selectedBot=='fintech'">
