@@ -7,7 +7,7 @@
     <div class="col-xs-2 col-sm-2"  style="margin-top: 10px"><strong>| India</strong></div>
 </div>
 
-<div ng-class="{'cover':vm.showChatIcon==false}"  resize ng-if="width > 520">	
+<div ng-class="{'cover':vm.showChatIcon==false}"  resize ng-if="width > 520">
 	<nav class="navbar navbar-inverse">
 		<div class="col-xs-1 col-sm-1" ></div>
 		<div class="col-xs-1 col-sm-1 nav-title">Explore</div>
@@ -16,15 +16,15 @@
 </div>
 
 <div>
-	<div title="Hey I am Chatbot! Do you need some help??" id="chat" resize ng-if="width > 520 && vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()"><img class="chat-icon-size" src="alfredApp/images/chat-icon.png"></div>
+	<div title="Hey I am Morpheus! Do you need some help??" id="chat" resize ng-if="width > 520 && vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()"><img class="chat-icon-size" src="alfredApp/images/chat-icon.png"></div>
 
 	<div  ng-class="{'chatbox':width > 520,'full-chatbox':width <= 520}" ng-hide="vm.showChatIcon" id="chatbox" >
-		<span class="chat-text">Chat Bot!</span>
+		<!-- <span class="chat-text">Chat Bot!</span> -->
 
-		<div resize ng-show="width > 520" id="close-chat" ng-click="vm.closeChatbox()">&times;</div>		
+		<div resize ng-show="width > 520" id="close-chat" ng-click="vm.closeChatbox()">&times;</div>
 		<div resize ng-show="width > 520" id="maxi-chat" ng-click="vm.loadChatbox()"><span class="maxi-button">&plus;</span></div>
 		<div  resize ng-show="width > 520" id="minim-chat" ng-click="vm.minimChatbox()"><span class="minim-button">&minus;</span></div>
 
-		<div ng-include src="'alfredApp/landing-screen.html'"></div>
+		<div ng-include src="'alfredApp/insurance.html'"></div>
 	</div>
 </div>

@@ -77,7 +77,7 @@
 }
 
 .div-border-left{
-    border-left: 3px solid #3c8dbc; 
+    border-left: 3px solid #3c8dbc;
     padding-left: 7px;
 }
 
@@ -619,4 +619,34 @@ a {
 .chat-icon-size{
     height: 65px;
     width: 50px;
+}
+
+.message-css{
+    font-style: italic;
+    font-family: calibri;
+    font-size: 13px;
+    background-color: #d3d3d312;
+    border: 0px;
+    border-radius: 4px;
+    color: #80808099 !important;
+}
+
+
+.message-button{
+    border-radius: 100% !important;
+    width: 35px;
+    height: 35px;
+    border: 0px;
+    background-color: white;
+    box-shadow: 2px 2px 20px 0px #88888814 !important;
+    text-align: left !important;
+}
+
+
+.send-button{
+    color: #ffdf00;
+    font-size: large;
+    width: 35px;
+    margin-left: -3px;
+    margin-top: 2px;
 }

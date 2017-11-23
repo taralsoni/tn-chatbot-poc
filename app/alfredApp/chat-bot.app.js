@@ -12,16 +12,17 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             url: '/insurance',
             templateUrl: 'alfredApp/insurance.html',
             controller: 'insuranceCtrl as vm'
-        })                                                                                                               .state('banking', {
+        })
+        .state('banking', {
             url: '/banking',
             templateUrl: 'alfredApp/banking.html',
             controller: 'bankingCtrl as banking'
         })
-        /*.state('alfredApp', {
+        .state('alfredApp', {
             url: '/alfredApp',
             templateUrl: 'alfredApp/landing-screen.html',
             controller: 'landingScreenCtrl as vm'
-        })*/
+        })
         .state('chatbotApp', {
             url: '/chatbotApp',
             templateUrl: 'alfredApp/chat-popup.html',

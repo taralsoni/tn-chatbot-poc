@@ -29,11 +29,9 @@
 <div class="box-footer">
 
     <div class="input-group">
-        <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
-        <span style="padding-left:15px !important;" class="input-group-btn">
-            <button class="message-button btn icon-only" ng-click="vm.sendUserQuery()">
-                  <i class="fa fa-send-o send-button" class="send-button"></i>
-            </button>
+        <input type="text" name="message" placeholder="Type Message ..." class="form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
+        <span class="input-group-btn">
+            <button class="btn btn-block btn-success" ng-click="vm.sendUserQuery()">Send</button>
         </span>
     </div>
 </div>
