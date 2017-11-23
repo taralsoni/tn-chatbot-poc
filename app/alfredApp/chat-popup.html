@@ -16,7 +16,12 @@
 </div>
 
 <div>
-	<div title="Hey I am Morpheus! Do you need some help??" id="chat" resize ng-if="width > 520 && vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()"><img class="chat-icon-size" src="alfredApp/images/chat-icon.png"></div>
+	<div ng-show="width > 520 && vm.showToolTip" class="talk-bubble tri-right round right-in">
+	  <div class="talktext">
+	  	<p>Hey I am Chatbot! Do you need some help??</p>
+	  </div>
+	</div>
+	<div ng-mouseover="vm.toggleToolTip()" ng-mouseleave="vm.toggleToolTip()" id="chat" resize ng-if="width > 520 && vm.showChatIcon" class="animated-chat tada" ng-click="vm.loadChatbox()"><img class="chat-icon-size" src="alfredApp/images/chat-icon.png"></div>
 
 	<div  ng-class="{'chatbox':width > 520,'full-chatbox':width <= 520}" ng-hide="vm.showChatIcon" id="chatbox" >
 		<!-- <span class="chat-text">Chat Bot!</span> -->
