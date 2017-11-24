@@ -38,7 +38,7 @@ app.controller('chatPopupCtrl',['$window','$scope',function($window,$scope) {
         var e=document.getElementById("maxi-chat");
         e.style.display="block";
         var e=document.getElementById("chatbox");
-        e.style.margin="0 0 -63vh 0";
+        e.style.margin="0 0 -55vh 0";
     }
 
     vm.init();

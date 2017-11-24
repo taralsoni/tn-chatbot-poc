@@ -198,7 +198,7 @@ ul {
 .main-bg{
     width: auto;
     height: 650px;
-    /*background-color: #ecf0f5*/
+    background-color: #fff
 }
 
 .info-box-text {
@@ -372,7 +372,7 @@ a {
 .minim-button,
 .maxi-button,
 .chat-text {
-    font-weight: 700;
+    /*font-weight: 700;*/
     cursor: pointer;
     font-family: Arial, sans-serif;
     text-align: center;
@@ -398,8 +398,8 @@ a {
     bottom: 20px;
     right: 20px;
     width: 300px;
-    height: 65vh;
-    background: whitesmoke;
+    height: 58vh;
+    background: white;
     border-radius: 4px;
 }
 
@@ -407,7 +407,7 @@ a {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background: whitesmoke;
+    background: white;
 }
 
 #close-chat {
@@ -415,10 +415,12 @@ a {
     top: 2px;
     right: 2px;
     font-size: 24px;
-    border: 1px solid #dedede;
+    /*border: 1px solid #dedede;*/
     width: 20px;
     background: #fefefe;
-    z-index: 2
+    z-index: 2;
+    color:#d2d6de;
+
 }
 
 #minim-chat,
@@ -438,9 +440,10 @@ a {
     top: 2px;
     right: 26px;
     font-size: 24px;
-    border: 1px solid #dedede;
+    /*border: 1px solid #dedede;*/
     width: 20px;
-    background: #fefefe
+    background: #fefefe;
+    color:#d2d6de;
 }
 
 .maxi-button {
@@ -448,9 +451,10 @@ a {
     top: 2px;
     right: 26px;
     font-size: 24px;
-    border: 1px solid #dedede;
+    /*border: 1px solid #dedede;*/
     width: 20px;
     background: #fefefe;
+    color:#d2d6de;
 }
 
 .chat-text {
@@ -458,6 +462,9 @@ a {
     top: 5px;
     left: 10px;
     font-size: 16px;
+    font-family: callibri;
+    font-style: italic;
+    color: #d2d6de;
 }
 
 #chat {
@@ -881,8 +888,25 @@ a {
 }
 
 
+
+
 /** Kriti CSS */
 
+.footer-bot{
+    height: 20vh;
+}
+
+.center-text-only{
+    text-align: center;
+}
+
+.footer-row{
+    margin: 0 !important;
+    position: absolute;
+    bottom: -20px;
+}
+
+/* kriti CSS end */
 
 
 /*Neha CSS*/
