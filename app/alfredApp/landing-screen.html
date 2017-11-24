@@ -35,19 +35,19 @@
             </div>
         </div>
         <div class="row footer-row no-boder">
-	        <div class="col-lg-4 col-xs-4 bg-aqua  footer-bot display-table">	 
+	        <div class="col-lg-4 col-xs-4 bg-aqua  footer-bot display-table" ng-click="ctrl.goToBot('insurance')">	 
 	        	<div class="display-table-cell center-text-only">       	
 	        		<img src="alfredApp/images/insurance.png" class="bot-logo-size">
 	        		<p>Insurance</p>
 	        	</div>
 	        </div>
-	        <div class="col-lg-4 col-xs-4 bg-green footer-bot display-table">
+	        <div class="col-lg-4 col-xs-4 bg-green footer-bot display-table" ng-click="ctrl.goToBot('banking')">
 	        	<div class="display-table-cell center-text-only">
 	        		<img src="alfredApp/images/banking.png" class="bot-logo-size">
 	        		<p>Banking</p>
 	        	</div>
 	        </div>
-	        <div class="col-lg-4 col-xs-4 bg-yellow  footer-bot display-table">	
+	        <div class="col-lg-4 col-xs-4 bg-yellow  footer-bot display-table" ng-click="ctrl.goToBot('fintech')">	
 	        	<div class="display-table-cell center-text-only">        	
 	        		<img src="alfredApp/images/fintech.png" class="bot-logo-size">
 	        		<p>Fintech</p>
@@ -55,16 +55,16 @@
 	        </div>
 	     </div>
 	</div>  
-	</div>
+	
 
 	<div ng-if="ctrl.selectedBot=='fintech'">
-		<div ng-include src="'alfredApp/insurance.html'">
+		<div ng-include src="'alfredApp/insurance.html'"></div>
 	</div>
 	<div ng-if="ctrl.selectedBot=='banking'">
-		<div ng-include src="'alfredApp/banking.html'">
+		<div ng-include src="'alfredApp/banking.html'"></div>
 	</div>
 	<div ng-if="ctrl.selectedBot=='insurance'">
-		<div ng-include src="'alfredApp/insurance.html'">
+		<div ng-include src="'alfredApp/insurance.html'"></div>
 	</div>
 
 </div>
