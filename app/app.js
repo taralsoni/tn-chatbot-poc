@@ -12,13 +12,13 @@ angular.module('TN_App', [
   'ng-fusioncharts'
 ]).
 config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/chatbotApp');
+    $urlRouterProvider.otherwise('/chatbotApp');
 }]);
 
 
 
                  //stubbed data
-                 /*displayText={                                
+                 /*displayText={
                                "type": "description",
                                "displayString": "The company Aegify deals with Cloud based security, risk and compliance assurance solution. The company was established in 2007 and is based out of Bangalore. You can vist their website on aegify.com ",
                                "data": {
