@@ -1,53 +1,49 @@
 <div  ng-controller = "insuranceCtrl as vm">
 
-
-
-<div class="scrolling-wrapper">
-
-
-    <div class="card">
-        <div class="row">
-            <div class="col-xs-5 col-sm-5 col-md-5" >
-                <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-            </div>
-            <div class="container col-xs-7 col-sm-7 col-md-7">
-                <h5><b>Cashless Car insurance</b></h5> 
-                <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                <br>
-                <h6>Get more details</h6> 
+    <div class="scrolling-wrapper">
+        <div class="card">
+            <div class="row">
+                <div class="col-xs-5 col-sm-5 col-md-5" >
+                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
+                </div>
+                <div class="container col-xs-7 col-sm-7 col-md-7">
+                    <h5><b>Cashless Car insurance</b></h5> 
+                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
+                    <br>
+                    <h6>Get more details</h6> 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="row">
-            <div class="col-xs-5 col-sm-5 col-md-5" >
-                <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-            </div>
-            <div class="container col-xs-7 col-sm-7 col-md-7">
-                <h5><b>Cashless Car insurance</b></h5> 
-                <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                <br>
-                <h6>Get more details</h6> 
+        <div class="card">
+            <div class="row">
+                <div class="col-xs-5 col-sm-5 col-md-5" >
+                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
+                </div>
+                <div class="container col-xs-7 col-sm-7 col-md-7">
+                    <h5><b>Cashless Car insurance</b></h5> 
+                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
+                    <br>
+                    <h6>Get more details</h6> 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="row">
-            <div class="col-xs-5 col-sm-5 col-md-5" >
-                <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-            </div>
-            <div class="container col-xs-7 col-sm-7 col-md-7">
-                <h5><b>Cashless Car insurance</b></h5> 
-                <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                <br>
-                <h6>Get more details</h6> 
+        <div class="card">
+            <div class="row">
+                <div class="col-xs-5 col-sm-5 col-md-5" >
+                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
+                </div>
+                <div class="container col-xs-7 col-sm-7 col-md-7">
+                    <h5><b>Cashless Car insurance</b></h5> 
+                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
+                    <br>
+                    <h6>Get more details</h6> 
+                </div>
             </div>
         </div>
-    </div>
 
-</div> 
+    </div> 
 
 
 
@@ -56,43 +52,51 @@
 
 
 
-<section class="content container-fluid ng-scope">
+    <section class="content container-fluid ng-scope">
+        <div id="boxBody" class="box-body" style="position:absolute; bottom:40px; top:0px; overflow-y: auto;">
+            <div class="direct-chat-messages">
+                <div data-ng-repeat="history in vm.conversationHistory track by $index">
+                    <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
+                        <div class="direct-chat-info clearfix">
+                            <span class="direct-chat-timestamp pull-right">{{history.ts}}</span>
+                        </div>
+                  <!-- /.direct-chat-info -->
+                        <div>
+                            <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                            <div class="direct-chat-text" compile="history.text"></div>
+                          </div>
+                      </div>
 
-<div class="row">
-<div class="col-xs-12 col-sm-12 col-md-12 chat-window">
+                      <div ng-if="history.userType == 'me'" class="direct-chat-msg right">
+                        <div class="direct-chat-info clearfix">
+                            <span class="direct-chat-timestamp pull-left">{{history.ts}}</span>
+                        </div>
+                <!-- /.direct-chat-info -->
+                      <div>
+                          <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                          <div class="direct-chat-text" compile="history.text"></div>
 
-    <ol  id="autoscroll" class="timeline">
-      <li data-ng-repeat="history in vm.conversationHistory track by $index">
-
-          <img class="fa direct-chat-img" src="{{history.image}}" alt="">
-            <div class="timeline-item">
-
-                <h3 class="timeline-header"><a style="margin-right: 5px;">{{history.user}}</a><i class="fa fa-clock-o"></i> {{history.ts}}</h3>
-                <div class="timeline-body">
-                  <span compile="history.text"></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ol>
-
-    
-
-</div>
-</div>
-
-</section>
+          </div>
+        </div>
+    </section>
 
 
 
-<div class="box-footer">
 
-    <div class="input-group">
-        <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
-        <span style="padding-left:15px !important;" class="input-group-btn">
-            <button class="message-button btn icon-only" ng-click="vm.sendUserQuery()">
-                  <i class="fa fa-send-o send-button" class="send-button"></i>
-            </button>
-        </span>
+
+
+    <div class="box-footer" style="position:absolute; bottom:0px;">
+
+        <div class="input-group">
+            <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
+            <span style="padding-left:15px !important;" class="input-group-btn">
+                <button class="message-button btn icon-only" ng-click="vm.sendUserQuery()">
+                      <i class="fa fa-send-o send-button" class="send-button"></i>
+                </button>
+            </span>
+        </div>
     </div>
-</div>
 </div>
