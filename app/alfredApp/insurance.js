@@ -36,6 +36,30 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.init = function(){
 
+          vm.dataArray = [
+              {
+                  'value': 'Health',
+                  'label' : 'Insurnce',
+                  'type' : 'text'
+              },
+              {
+                  'value': 'Car',
+                  'label' : 'Insurnce',
+                  'type' : 'text'
+              },
+              {
+                  'value': 'Auto',
+                  'label' : 'Insurnce',
+                  'type' : 'text'
+              },
+              {
+                  'value': 'XHIDU',
+                  'label' : 'Insurnce',
+                  'type' : 'text'
+              }
+
+          ]
+
 
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
@@ -114,9 +138,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.insertChat = function(who, text, time = 0) {
             var control = "";
+            var addnData = "";
             var date = vm.formatAMPM(new Date());
-
-
 
             var history = {};
             if (who == "me"){
@@ -138,21 +161,34 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 //kriti's code- new card1 ui requirement
                 //if no rows found
-                /*if(text.msgHdr.success=="True"){
-                    if(text.msgBdy.attachments.length==0){
+                if(text.msgHdr.success=="True"){
+
+
+
+                    // if(text.msgBdy.attachments.length==0){
                         control=chatService.getHtmlForDesc(text.msgBdy.text);
-                    }else{
+                    // }else{
                         for(var i=0;i<text.msgBdy.attachments.length;i++){
                             if(text.msgBdy.attachments[i].type=='cards'){
                                 control=chatService.getHtmlForCard(text.msgBdy);
                             }
-                        }                        
-                    }
-                }else{
-                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
-                }*/
 
-               
+                            /** Neha **/
+                            /** Checking if attcachment type = text **/
+                            if(text.msgBdy.attachments[i].type=='text'){
+                                control=chatService.getHtmlForText(text.msgBdy.attachment[i]);
+
+                            }
+                            /** end **/
+
+
+                        }
+                }
+                else{
+                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
+                }
+
+
                 if(text.type=='list'){
                   vm.list=text.data.list;
                   control=chatService.getHtmlForList(vm.displayString,vm.list);
@@ -226,6 +262,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 }
             }
             history.text = $sce.trustAsHtml(control);
+            history.addnData = $sce.trustAsHtml(addnData);
             history.ts = vm.formatAMPM(new Date());
 
 
@@ -355,8 +392,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         else{
                             //when displaytext is present
                             displayText=response.result.fulfillment.displayText;
-                        }                     
-                }   
+                        }
+                }
                 //stubbed graph type
                 /*displayText={
                    "type": "graph",

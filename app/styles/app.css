@@ -993,5 +993,40 @@ img {
 }
 
 
+.direct-chat-text-no-arrow {
+    font-size: 12px;
+    border-radius: 5px;
+    position: relative;
+    padding: 5px 10px;
+    background: white;
+    border: 0px solid #d2d6de;
+    margin: 5px 0 0 50px;
+    color: #6f6f6f;
+    font-weight: bold;
+}
+
+.text-type-msg-title{
+    color: #828282;
+    font-size: 14px !important;
+}
+
+.checked {
+    color: orange;
+}
+
+.unchecked{
+    color:#a4a4a4;
+}
+
+.text-type-msg-subtitle{
+    color: #a4a4a4;
+    font-size: 8px !important;
+    font-weight: normal;
+}
+
+.text-type-msg-desc{
+    color: #a4a4a4;
+    font-size: 12px !important;
+}
 
 /* Neha CSS end */

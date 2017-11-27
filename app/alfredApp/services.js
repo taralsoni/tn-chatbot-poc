@@ -3,14 +3,14 @@ app.service('chatService', function(){
        var csScope=this;
        return{
             getHtmlForList:function(displayString,list){
-                
+
                   control=displayString + '<br><br>'+
                   '<div class="div-border-left">';
                   for(var i=0;i<list.length;i++){
                         control =control + '<strong>' + list[i]  + '</strong><br>';
                     }
                     control=control+'</div>';
-                return control;    
+                return control;
             },
             getHtmlForDesc:function(description){
                         control=description;
@@ -42,12 +42,12 @@ app.service('chatService', function(){
                 control= '<strong>'+displayString + '</strong><br>'+
 
                     '<div ng-show="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" id="'+ containerId +'"></div>';
-                                             
+
                     if ( FusionCharts(chartId)){
                          FusionCharts(chartId).dispose();
                     }
 
-                        FusionCharts.ready(function() {               
+                        FusionCharts.ready(function() {
                             var revenueChart = new FusionCharts({
                                 id: chartId,//'revenue-chart',
                                 type:'column3d' , //column3d',//pie2d
@@ -92,16 +92,16 @@ app.service('chatService', function(){
                                     ]*/
                                 }
                             });
-                     
-                        
+
+
                         revenueChart.render();
                         revenueChart = FusionCharts('revenue-chart');
                     });
-                
+
                 return control+'<br>';
             },
             getHtmlForTable:function(displayString,graphJson,chartId,containerId,graphTableArray){
-                
+
 
                 /*var graphJson=[
                                     {
@@ -122,7 +122,7 @@ app.service('chatService', function(){
                                     }
                                 ];*/
 
-                control= 
+                control=
                  '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
                     '<strong>'+displayString + '</strong><br>'+
                     '<table  class="table table-bordered table-striped">'+
@@ -140,13 +140,13 @@ app.service('chatService', function(){
                               '<td>'+ graphJson[i].label +'</td>'+
                               '<td>'+ graphJson[i].value +'</td>'+
                             '</tr>';
-                    }  
+                    }
 
                     control=control+
                             '</tbody>'+
-                            '</table>'+                     
+                            '</table>'+
                             '</div>';
-                
+
                return control;
             },
             getHtmlForLink:function(displayString,link){
@@ -164,12 +164,12 @@ app.service('chatService', function(){
                             '<div class="msj-rta macro">' +
                             '<div class="text text-r">' +
                             '<p>' + displayString + '</p>' +
-                            '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ image  + ')"/><p>'+                            
+                            '<p><img class="img-logo-size" src="alfredApp/images/img_logo.png" ng-click="vm.showImage( '+ image  + ')"/><p>'+
                             /*'<img ng-show="' + vm.showImg + '" class="img-preview-size" ng-src="data:image/*;base64,{{'+ vm.encodedImg +'}}"/>'+*/
                             '</div>'  +
-                            '</div>';  
+                            '</div>';
                 return control;
-            }, 
+            },
             getHtmlForPdf:function(displayString,list){
                 return;
             },
@@ -190,7 +190,7 @@ app.service('chatService', function(){
                 control = control + '</row>';
                 return control;
             },
-          
+
             getHtmlForGraph2:function(displayString,graphJson,chartId,containerId,varShowGraph){
                 var graphJsonWithoutHeader=[];
                 for(var i=1;i<graphJson.length;i++){
@@ -199,16 +199,16 @@ app.service('chatService', function(){
 
                 control= '<strong>'+displayString + '</strong><br>'+
 
-                    
+
                     '<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
-              
+
                     //'<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
-                                             
+
                     if ( FusionCharts(chartId)){
                          FusionCharts(chartId).dispose();
                     }
 
-                        FusionCharts.ready(function() {               
+                        FusionCharts.ready(function() {
                             var revenueChart = new FusionCharts({
                                 id: chartId,//'revenue-chart',
                                 type:'column3d' , //column3d',//pie2d
@@ -253,16 +253,16 @@ app.service('chatService', function(){
                                     ]*/
                                 }
                             });
-                     
-                        
+
+
                         revenueChart.render();
                         revenueChart = FusionCharts('revenue-chart');
                     });
-                
+
                 return control+'<br>';
             },
             getHtmlForTable2:function(displayString,graphJson,chartId,containerId,varShowGraph){
-                control= 
+                control=
                  '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
                     '<strong>'+displayString + '</strong><br>'+
                     '<table  class="table table-bordered table-striped">'+
@@ -280,17 +280,17 @@ app.service('chatService', function(){
                               '<td>'+ graphJson[i].label +'</td>'+
                               '<td>'+ graphJson[i].value +'</td>'+
                             '</tr>';
-                    }  
+                    }
 
                     control=control+
                             '</tbody>'+
-                            '</table>'+                     
+                            '</table>'+
                             '</div>';
-                
+
                return control;
             },
             getHtmlForCard:function(msgBdy){
-                control=msgBdy.text+'<br>'+msgBdy.attachments.title + '<br><br>'+msgBdy.attachments.subTitle ;
+                control=msgBdy.text+'<br>'+ msgBdy.attachments.title + '<br><br>'+ msgBdy.attachments.subTitle ;
                 /*'<div class="scrolling-wrapper">'+
                     '<div class="card">'+
                         '<div class="row">'+
@@ -306,13 +306,16 @@ app.service('chatService', function(){
                         '</div>'+
                     '</div>';
                 */
-                  
+
                   /*'<div class="div-border-left">';
                   for(var i=0;i<list.length;i++){
                         control =control + '<strong>' + list[i]  + '</strong><br>';
                     }
                     control=control+'</div>';*/
-                return control;    
+                return control;
             },
-       } 
+            getHtmlForText:function(data){
+
+            }
+       }
     })
