@@ -136,17 +136,23 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 vm.displayString=text.displayString;
 
 
-
                 //kriti's code- new card1 ui requirement
                 //if no rows found
-                /*if(text.msgHdr.rsn!=""){
-                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
+                /*if(text.msgHdr.success=="True"){
+                    if(text.msgBdy.attachments.length==0){
+                        control=chatService.getHtmlForDesc(text.msgBdy.text);
+                    }else{
+                        for(var i=0;i<text.msgBdy.attachments.length;i++){
+                            if(text.msgBdy.attachments[i].type=='cards'){
+                                control=chatService.getHtmlForCard(text.msgBdy);
+                            }
+                        }                        
+                    }
                 }else{
-                    control=chatService.getHtmlForCard
+                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
                 }*/
 
                
-
                 if(text.type=='list'){
                   vm.list=text.data.list;
                   control=chatService.getHtmlForList(vm.displayString,vm.list);
