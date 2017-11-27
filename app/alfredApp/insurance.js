@@ -132,6 +132,15 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
 
+
+                //kriti's code- new card1 ui requirement
+                //if no rows found
+                /*if(text.msgHdr.rsn!=""){
+                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
+                }else{
+                    control=chatService.getHtmlForCard
+                }*/
+
                
                 if(text.type=='list'){
                   vm.list=text.data.list;
@@ -335,6 +344,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         else{
                             //when displaytext is present
                             displayText=response.result.fulfillment.displayText;
+
+
                         }                     
                 }   
                 //stubbed graph type
