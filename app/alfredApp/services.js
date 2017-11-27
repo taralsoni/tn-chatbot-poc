@@ -290,10 +290,18 @@ app.service('chatService', function(){
                return control;
             },
             getHtmlForCard:function(msgBdy){
-                control=msgBdy.text+'<br>'+msgBdy.attachments.title + '<br><br>'+msgBdy.attachments.subTitle ;
-                /*'<div class="scrolling-wrapper">'+
-                    '<div class="card">'+
-                        '<div class="row">'+
+                var card;
+                control='<div class="scrolling-wrapper">'+
+                for(var i=0;i<msgBdy.attachments.data.length;i++){
+                        card=msgBdy.attachments.data[i];
+                        control=control+ '<div class="card">'+
+                                        '<div class="row">'+
+                        card.title + '<br><br>'+card.subTitle +
+
+                    }/*
+                
+                
+                   
                             '<div class="col-xs-5 col-sm-5 col-md-5" >'+
                                 '<img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">'+
                             '</div>'+
@@ -304,14 +312,10 @@ app.service('chatService', function(){
                                 '<h6>Get more details</h6> '+
                             '</div>'+
                         '</div>'+
-                    '</div>';
-                */
+                    '</div>';*/
+                
                   
-                  /*'<div class="div-border-left">';
-                  for(var i=0;i<list.length;i++){
-                        control =control + '<strong>' + list[i]  + '</strong><br>';
-                    }
-                    control=control+'</div>';*/
+                  
                 return control;    
             },
        } 
