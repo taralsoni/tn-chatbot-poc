@@ -930,6 +930,7 @@ img {
 .container {
     padding: 2px 16px;
     color: white;
+    white-space: normal;
 }
 
 
@@ -948,8 +949,10 @@ img {
   /*overflow-y: hidden;*/
   white-space: nowrap;
 
+
   .card {
     display: inline-block;
+    white-space: normal;
   }
 }
 
@@ -959,6 +962,14 @@ img {
 
 .padding-0{
     padding:0 !important;
+}
+
+.left {
+    float: left;
+}
+
+.left div {
+    float: left;
 }
 
 /* kriti CSS end */

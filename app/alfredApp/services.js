@@ -291,24 +291,24 @@ app.service('chatService', function(){
             },
             getHtmlForCard:function(attachment){
                 var card;
-                control='<div class="scrolling-wrapper" style="height:15vh;width:30vw">';
+                control='<div class="scrolling-wrapper" style="height:20vh;">';
 
                 for(var i=0;i<attachment.data.length;i++){
                     card=attachment.data[i];
                     control=control+
                         '<div class="card"  style="margin:0;">'+
-                            '<div class="row">'+
+                            '<div class="row" style="white-space:normal">'+
                                 '<div class="col-xs-1 col-sm-5 col-md-5" >'+
-                                    '<img src="'+ card.image + '" alt="Avatar" style="width:10vw; height: 18vh;">'+
+                                    '<img src="'+ card.image + '" alt="Avatar" style="width:10vw; height: 20vh;">'+
                                 '</div>'+
-                                '<div class="container col-xs-4 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+
+                                '<div class="container col-xs-10 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+
                                  
                                     '<h5><b>' + card.title +'</b></h5> '+
                                     '<h6>'+ card.description +'</h6>'+
                                     '<br>'+
                                     '<h6>'+ card.postText +'</h6> '+
                                 '</div>'+
-                                '<div class=" col-xs-7 col-sm-7 col-md-7"></div>'+
+                                /*'<div class=" col-xs-7 col-sm-7 col-md-7"></div>'+*/
                             '</div>'+
                         '</div>';
                 }
