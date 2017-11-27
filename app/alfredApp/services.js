@@ -289,29 +289,30 @@ app.service('chatService', function(){
 
                return control;
             },
-            getHtmlForCard:function(msgBdy){
-                control=msgBdy.text+'<br>'+ msgBdy.attachments.title + '<br><br>'+ msgBdy.attachments.subTitle ;
-                /*'<div class="scrolling-wrapper">'+
-                    '<div class="card">'+
-                        '<div class="row">'+
-                            '<div class="col-xs-5 col-sm-5 col-md-5" >'+
-                                '<img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">'+
-                            '</div>'+
-                            '<div class="container col-xs-7 col-sm-7 col-md-7">'+
-                                '<h5><b>Cashless Car insurance</b></h5> '+
-                                '<h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>'+
-                                '<br>'+
-                                '<h6>Get more details</h6> '+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-                */
+            getHtmlForCard:function(attachment){
+                var card;
+                control='<div class="scrolling-wrapper" style="height:15vh;width:30vw">';
 
-                  /*'<div class="div-border-left">';
-                  for(var i=0;i<list.length;i++){
-                        control =control + '<strong>' + list[i]  + '</strong><br>';
-                    }
-                    control=control+'</div>';*/
+                for(var i=0;i<attachment.data.length;i++){
+                    card=attachment.data[i];
+                    control=control+
+                        '<div class="card"  style="margin:0;">'+
+                            '<div class="row">'+
+                                '<div class="col-xs-1 col-sm-5 col-md-5" >'+
+                                    '<img src="'+ card.image + '" alt="Avatar" style="width:10vw; height: 18vh;">'+
+                                '</div>'+
+                                '<div class="container col-xs-4 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+
+
+                                    '<h5><b>' + card.title +'</b></h5> '+
+                                    '<h6>'+ card.description +'</h6>'+
+                                    '<br>'+
+                                    '<h6>'+ card.postText +'</h6> '+
+                                '</div>'+
+                                '<div class=" col-xs-7 col-sm-7 col-md-7"></div>'+
+                            '</div>'+
+                        '</div>';
+                }
+                control=control+'</div>';
                 return control;
             },
             getHtmlForText:function(data){

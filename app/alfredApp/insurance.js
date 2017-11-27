@@ -89,6 +89,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.text =  'Hi! I am Morpheus. I can help you with anything related to insurance ';
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
+            history.addnData="";
             vm.conversationHistory.push(history);
 
             vm.graphTableArray=[];
@@ -163,14 +164,14 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 //if no rows found
                 if(text.msgHdr.success=="True"){
 
-
+                      history.addnData = "";
 
                     // if(text.msgBdy.attachments.length==0){
                         control=chatService.getHtmlForDesc(text.msgBdy.text);
                     // }else{
                         for(var i=0;i<text.msgBdy.attachments.length;i++){
                             if(text.msgBdy.attachments[i].type=='cards'){
-                                control=chatService.getHtmlForCard(text.msgBdy);
+                                history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                             }
 
                             /** Neha **/

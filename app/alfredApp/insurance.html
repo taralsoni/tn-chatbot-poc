@@ -1,5 +1,6 @@
 <div  ng-controller = "insuranceCtrl as vm">
 
+
     <!-- <div class="scrolling-wrapper">
         <div class="card">
             <div class="row">
@@ -64,6 +65,7 @@
                         <div>
                             <img class="direct-chat-img" src={{history.image}} alt="message user image">
                             <div class="direct-chat-text" compile="history.text"></div>
+                            <div class="direct-chat-text padding-0" compile="history.addnData" ng-if="history.addnData!=''"></div>
                           </div>
                       </div>
 
@@ -117,10 +119,6 @@
                 </div>
           </div>
         </div>
-
-
-
-
 
 
 
