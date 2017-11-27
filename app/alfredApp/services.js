@@ -301,7 +301,8 @@ app.service('chatService', function(){
                                 '<div class="col-xs-1 col-sm-5 col-md-5" >'+
                                     '<img src="'+ card.image + '" alt="Avatar" style="width:10vw; height: 18vh;">'+
                                 '</div>'+
-                                '<div class="container col-xs-4 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+                                 
+                                '<div class="container col-xs-4 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+
+                                 
                                     '<h5><b>' + card.title +'</b></h5> '+
                                     '<h6>'+ card.description +'</h6>'+
                                     '<br>'+
