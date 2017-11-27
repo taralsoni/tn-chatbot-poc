@@ -945,7 +945,7 @@ img {
 
 .scrolling-wrapper {
   overflow-x: scroll;
-  overflow-y: hidden;
+  /*overflow-y: hidden;*/
   white-space: nowrap;
 
   .card {
@@ -955,6 +955,10 @@ img {
 
 .scrolling-wrapper::webkit-scrollbar{
     display: none;
+}
+
+.padding-0{
+    padding:0 !important;
 }
 
 /* kriti CSS end */

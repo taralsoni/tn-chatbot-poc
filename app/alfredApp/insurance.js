@@ -65,6 +65,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.text =  'Hi! I am Morpheus. I can help you with anything related to insurance ';
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
+            history.addnData="";
             vm.conversationHistory.push(history);
 
             vm.graphTableArray=[];
@@ -138,19 +139,20 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 //kriti's code- new card1 ui requirement
                 //if no rows found
-                /*if(text.msgHdr.success=="True"){
-                    if(text.msgBdy.attachments.length==0){
-                        control=chatService.getHtmlForDesc(text.msgBdy.text);
-                    }else{
-                        for(var i=0;i<text.msgBdy.attachments.length;i++){
-                            if(text.msgBdy.attachments[i].type=='cards'){
-                                control=chatService.getHtmlForCard(text.msgBdy);
-                            }
-                        }                        
-                    }
+                if(text.msgHdr.success=="true"){
+                    control=chatService.getHtmlForDesc(text.msgBdy.text);
+                    history.addnData="";
+
+                    
+                    for(var i=0;i<text.msgBdy.attachments.length;i++){
+                        if(text.msgBdy.attachments[i].type=='cards'){
+                            history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
+                        }
+                    }                        
+                    
                 }else{
                     control=chatService.getHtmlForDesc(text.msgHdr.rsn);
-                }*/
+                }
 
                
                 if(text.type=='list'){

@@ -1,5 +1,6 @@
 <div  ng-controller = "insuranceCtrl as vm">
 
+
     <!-- <div class="scrolling-wrapper">
         <div class="card">
             <div class="row">
@@ -52,7 +53,6 @@
 
 
 
-    <section class="content container-fluid ng-scope">
         <div id="boxBody" class="box-body" style="position:absolute; bottom:40px; top:0px; overflow-y: auto;">
             <div class="direct-chat-messages">
                 <div data-ng-repeat="history in vm.conversationHistory track by $index">
@@ -64,6 +64,7 @@
                         <div>
                             <img class="direct-chat-img" src={{history.image}} alt="message user image">
                             <div class="direct-chat-text" compile="history.text"></div>
+                            <div class="direct-chat-text padding-0" compile="history.addnData" ng-if="history.addnData!=''"></div>
                           </div>
                       </div>
 
@@ -81,7 +82,7 @@
                 </div>
           </div>
         </div>
-    </section>
+    
 
 
 
