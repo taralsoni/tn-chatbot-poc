@@ -964,14 +964,18 @@ img {
     padding:0 !important;
 }
 
-.left {
-    float: left;
+.attachment-title-font{
+    font-size: 15px;
 }
 
-.left div {
-    float: left;
+.font-color{
+    color:#dc6900;
 }
 
+
+.black-font{
+    color:black;
+}
 /* kriti CSS end */
 
 

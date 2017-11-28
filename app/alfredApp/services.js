@@ -315,5 +315,57 @@ app.service('chatService', function(){
                 control=control+'</div>';
                 return control;    
             },
+            getHtmlForDblColCard:function(attachment){
+                control='<div class="row" style="padding:5px 10px">'+
+                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                '<div class="attachment-title-font">'+ attachment.leftTitle + '</div>'+
+                                '<div>'+ attachment.leftSubTitle +'</div>';
+
+                                    for(var i=0;i<attachment.leftData.length;i++){                                        
+                                        control=control+'<div>' + attachment.leftData[i] + '</div>';
+                                    }  
+
+            control=control+'</div>'+
+                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
+                                '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callNextIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
+
+                                    for(var i=0;i<attachment.rightData.length;i++){
+                                        control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
+                                    }   
+
+            control=control+'</div>'+
+                        '</div>'+
+                        '<hr>';
+
+            return control;                
+
+            },
+            getHtmlForKeyValueCard:function(attachment){
+
+                control='<div style="padding:5px 10px" class="attachment-title-font black-font">'+attachment.title +  '</div>'
+
+                        for(var i=0;i<attachment.data.length;i++){                                        
+                            control=control+
+                            '<div style="padding:0 10px" class="attachment-title-font">' + attachment.data[i].item + '</div>';
+                                                    
+                             for(var j=0;j<attachment.data[i].details.length;j++){ 
+                                control=control+
+                                '<div style="padding:0 10px" class="row">'+
+                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                        '<div>'+ attachment.data[i].details[j].label + '</div>'+
+                                    '</div>'+
+                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                        '<div style="float:right">'+ attachment.data[i].details[j].value + '</div>'+
+                                    '</div>'+
+                                '</div>';  //row ends here                          
+                            } 
+
+                            control=control+'<br>';  
+                        }       
+                        control=control+'<hr>';
+
+                return control;
+            }
        } 
     })

@@ -132,28 +132,27 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
 
-
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
 
-
                 //kriti's code- new card1 ui requirement
                 //if no rows found
-                if(text.msgHdr.success=="true"){
+                if(text.msgHdr.success=="true"){                    
                     control=chatService.getHtmlForDesc(text.msgBdy.text);
                     history.addnData="";
-
                     
                     for(var i=0;i<text.msgBdy.attachments.length;i++){
                         if(text.msgBdy.attachments[i].type=='cards'){
                             history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
-                        }
-                    }                        
-                    
+                        }else if(text.msgBdy.attachments[i].type=='doubleColumnText'){
+                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(text.msgBdy.attachments[i]);
+                        }else if(text.msgBdy.attachments[i].type=='itemList'){
+                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(text.msgBdy.attachments[i]);
+                        }                        
+                    }                                            
                 }else{
                     control=chatService.getHtmlForDesc(text.msgHdr.rsn);
                 }
-
                
                 if(text.type=='list'){
                   vm.list=text.data.list;
@@ -311,6 +310,13 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     vm.insertChat("me", text);
                     vm.userText = "";
                 }
+        };
+
+        vm.callNextIntent = function(text){
+            //call apiservice
+            vm.askApi(text);
+            vm.insertChat("me", text);
+            vm.userText = "";
         };
 
         //-- Clear Chat
