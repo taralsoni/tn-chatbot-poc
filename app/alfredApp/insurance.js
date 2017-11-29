@@ -33,14 +33,11 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             return strTime;
         }
 
-
         vm.init = function(){
-
 
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
-
 
             if(vm.botType=='insurance'){
                 vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
@@ -48,11 +45,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
             }
 
-
             vm.client= new ApiAi.ApiAiClient({
                 accessToken: vm.accessToken
             });
-
 
             var history = {};
             if(vm.botType=='insurance'){
@@ -66,10 +61,14 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
             history.addnData="";
+            //for map
+            history.isMap=false;
+            history.markerTitle="";
+            history.markerDesc="";
+            history.latitude="";
+            history.longitude="";
+        
             vm.conversationHistory.push(history);
-
-            vm.graphTableArray=[];
-             vm.graphJsonArray=[];
 
         }
 
@@ -132,6 +131,13 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
 
+                history.addnData="";
+                history.isMap=false;
+                history.markerTitle=""
+                history.markerDesc=""
+                history.latitude="";
+                history.longitude="";
+
                 text=JSON.parse(text);
                 vm.displayString=text.displayString;
 
@@ -139,15 +145,35 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 //if no rows found
                 if(text.msgHdr.success=="true"){                    
                     control=chatService.getHtmlForDesc(text.msgBdy.text);
-                    history.addnData="";
-                    
+                     var attachment="";              
                     for(var i=0;i<text.msgBdy.attachments.length;i++){
-                        if(text.msgBdy.attachments[i].type=='cards'){
-                            history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
-                        }else if(text.msgBdy.attachments[i].type=='doubleColumnText'){
-                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(text.msgBdy.attachments[i]);
-                        }else if(text.msgBdy.attachments[i].type=='itemList'){
-                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(text.msgBdy.attachments[i]);
+                        attachment=text.msgBdy.attachments[i];
+                        if(attachment.type=='cards'){
+                            history.addnData=chatService.getHtmlForCard(attachment);
+                        }else if(attachment.type=='doubleColumnText'){
+                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
+                        }else if(attachment.type=='itemList'){
+                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
+                        } 
+                        else if(attachment.type=='graph'){
+                            var fnData = {
+                                'callBackFn' : 'vm.setIsGraph'
+                            }
+
+                            vm.containerId='chart-container-' + vm.chartIndex;
+                            vm.chartId='revenue-chart-' + vm. chartIndex;
+
+                            history.showGraph = true;
+                            history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');                 
+                            history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');                                
+                            history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                        }else if(attachment.type=='map'){
+                            
+                            history.isMap=true;
+                            history.markerTitle="Shivaji Park Dadar, Mumbai"
+                            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
+                            history.latitude="19.0268";
+                            history.longitude="72.8389";
                         }                        
                     }                                            
                 }else{
@@ -208,7 +234,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     vm.graphJsonArray[vm.chartIndex]=text.data.multipleFields;
 
                     vm.containerId='chart-container-' + vm.chartIndex;
-                    vm.chartId='revenue-chart-' + vm. chartIndex;
+                    vm.chartId='revenue-chart-' + vm.chartIndex;
 
                     control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
                     control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
@@ -247,7 +273,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         }
 
-        vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
+        vm.setIsGraph = function(graphFlag,index){
+          graphFlag = !graphFlag;
+          banking.conversationHistory[index].showGraph = graphFlag;
+        }
+
+        /*vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
 
 
             vm.graphTableArray[graphIndex]=!vm.graphTableArray[graphIndex];
@@ -279,7 +310,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 $scope.$apply(applyFnWithIndex(history,index));
             }
 
-        }
+        }*/
 
          vm.goBack=function(){
             history.back();

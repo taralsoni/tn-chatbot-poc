@@ -289,6 +289,81 @@ app.service('chatService', function(){
                 
                return control;
             },
+            getHtmlForGraph3:function(attachment,chartId,containerId,varShowGraph){
+                /*var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }*/
+                    
+                control='<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
+                                         
+                if ( FusionCharts(chartId)){
+                     FusionCharts(chartId).dispose();
+                }
+
+                FusionCharts.ready(function() {               
+                    var revenueChart = new FusionCharts({
+                        id: chartId,//'revenue-chart',
+                        type:'column3d' , //column3d',//pie2d
+                        renderAt: containerId,//'chart-container',
+                        dataFormat: 'json',
+                        width: "100%",
+                        height: "100%",
+                        dataSource: {
+                          // Chart data goes here
+                            chart: {
+                                caption: attachment.title,
+                                subcaption: "",
+                                startingangle: "120",
+                                showlabels: "0",
+                                showlegend: "1",
+                                enablemultislicing: "0",
+                                slicingdistance: "15",
+                                showpercentvalues: "1",
+                                showpercentintooltip: "0",
+                                plottooltext: "$label : $datavalue", //"Age group : $label Total visit : $datavalue",
+                                theme: "fint"
+                            },
+
+                            data: attachment.data
+                        }
+                    });
+                 
+                    
+                    revenueChart.render();
+                    revenueChart = FusionCharts('revenue-chart');
+                });
+                
+                return control+'<br>';
+            },
+            getHtmlForTable3:function(attachment,chartId,containerId,varShowGraph){
+                control= 
+                 '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
+                    '<strong>'+attachment.title + '</strong><br>'+
+                    '<table  class="table table-bordered table-striped">'+
+                        '<thead>'+
+                            '<tr>'+
+                              '<th>'+attachment.labelHeader+'</th>'+
+                              '<th>'+attachment.valueHeader+'</th>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>';
+
+                    for(var i=1;i<attachment.data.length;i++){
+                        control=control+
+                         '<tr>'+
+                              '<td>'+ attachment.data[i].label +'</td>'+
+                              '<td>'+ attachment.data[i].value +'</td>'+
+                            '</tr>';
+                    }  
+
+                    control=control+
+                            '</tbody>'+
+                            '</table>'+                     
+                            '</div>';
+                
+               return control;
+            },
             getHtmlForCard:function(attachment){
                 var card;
                 control='<div class="scrolling-wrapper" style="height:20vh;">';

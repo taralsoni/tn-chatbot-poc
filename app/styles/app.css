@@ -976,6 +976,11 @@ img {
 .black-font{
     color:black;
 }
+
+#gmaps {
+    width: 75%;
+    height: 200px;
+}
 /* kriti CSS end */
 
 
