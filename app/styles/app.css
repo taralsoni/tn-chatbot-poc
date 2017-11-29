@@ -1004,9 +1004,14 @@ img {
     padding: 5px 10px;
     background: white;
     border: 0px solid #d2d6de;
-    margin: 5px 0 0 50px;
+    /*margin: 5px 0 0 50px;*/
     color: #6f6f6f;
     font-weight: bold;
+    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 .text-type-msg-title{
@@ -1032,5 +1037,59 @@ img {
     color: #a4a4a4;
     font-size: 12px !important;
 }
+
+.label-icon{
+    border-radius: 0%;
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.text-type-msg-desc-10{
+    color: #a4a4a4;
+    font-size: 9px !important;
+}
+
+.btn-chat{
+    border-radius: 0px !important;
+    width: 100%;
+    background-color: white !important;
+    border-color: white !important;
+    color: #a0a0a0;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: calibri;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.btn-chat:hover,
+.btn-chat:active,
+.btn-chat.hover {
+    background-color: #ffa500 !important;
+    color: white;
+    border-color: #ffa500 !important;
+}
+
+.border-btn-left-5{
+    border-bottom-left-radius: 5px !important;
+      border-bottom-right-radius: 0px !important;
+}
+
+.border-btn-right-5{
+    border-bottom-right-radius: 5px !important;
+    border-bottom-left-radius: 0px !important;
+}
+
+.padding-left-0{
+    padding-left : 1px !important;
+}
+
+.padding-right-0{
+      padding-right : 1px !important;
+}
+
+
 
 /* Neha CSS end */

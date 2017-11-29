@@ -315,8 +315,125 @@ app.service('chatService', function(){
                 control=control+'</div>';
                 return control;
             },
+            /** Neha **/
+            /** Genereate HTML for a text **/
             getHtmlForText:function(data){
+                control =  '<div class="direct-chat-msg" style="margin-bottom:2px !important;">';
+                control = control + '<div>';
+                // control = control + '<img class="direct-chat-img" src={{history.image}} alt="message user image">';
+                control = control + '<div class="direct-chat-text-no-arrow">';
+
+                if(data.title != '')
+                  control = control + '<div class="text-type-msg-title">' + data.title  + '</div>';
+
+                if(data.subTitleType == 'stars'){
+                    control = control + '<div class="text-type-msg-subtitle">';
+
+                    var no = parseInt(data.subTitle);
+                    for(var i=0;i<no;i++){
+                        control = control +  '<span class="fa fa-star checked"></span>';
+                    }
+                    for (var i=no;i<5;i++){
+                        control = control +  '<span class="fa fa-star unchecked"></span>';
+                    }
+                    control = control + '</div> <br>';
+                }
+                else if(data.subTitleType == 'text'){
+                    control = control + '<div class="text-type-msg-subtitle">' + data.subTitle;
+                    control = control + '</div> <br>';
+                }
+                 if(data.data.length != 0){
+                     control = control + '<div class = "row">';
+                     for (var i =0; i<data.data.length; i++){
+                         control = control + '<div class="text-type-msg-desc">';
+
+                        if(data.data[i].short == 'true'){
+                            control = control + '<div class="col-xs-6 col-sm-6" style="padding-right : 2px !important; padding-top: 15px !important; ">';
+                            if(data.data[i].type == 'pdf'){
+                                  control = control + '<span><a  target="_blank" href=' + data.data[i].link + '><img class="label-icon" src="alfredApp/images/doc.png" alt="message user image"></a></span>';
+                            }
+                            else if(data.data[i].type == 'video'){
+                                control = control + '<span><a  target="_blank" href=' + data.data[i].link + '><img class="label-icon" src="alfredApp/images/movieIcon.png" alt="message user image"></a></span>';
+                            }
+
+                            if(data.data[i].label != ''){
+                                if(data.data[i].type == 'text')
+                                    control = control + '<div>' + data.data[i].label  + ':</div>';
+                                else
+                                    control = control + '<div class="text-type-msg-desc-10" >' + data.data[i].label  + ':</div>';
+                            }
+                            if(data.data[i].value != ''){
+                              if(data.data[i].type == 'text')
+                                  control = control + '<div>' + data.data[i].value   + '</div>';
+                              else
+                                  control = control + '<div class="text-type-msg-desc-10" >' + data.data[i].value  + '</div>';
+                            }
+                            control = control + '</div>';
+                        }
+                        else{
+                            control = control + '<div class="col-xs-12">';
+                            if(data.data[i].type == 'pdf'){
+                                  control = control + '<span><a  target="_blank" href=' + data.data[i].link + '><img class="label-icon" src="alfredApp/images/doc.png" alt="message user image"></a></span>';
+                            }
+                            if(data.data[i].type == 'video'){
+                                control = control + '<span><a  target="_blank" href=' + data.data[i].link + '><img class="label-icon" src="alfredApp/images/movieIcon.png" alt="message user image"></a></span>';
+                            }
+                            if(data.data[i].label != ''){
+                                if(data.data[i].type == 'text')
+                                    control = control + '<div>' + data.data[i].label  + ':</div>';
+                                else
+                                    control = control + '<div class="text-type-msg-desc-10" >' + data.data[i].label  + ':</div>';
+                            }
+                            if(data.data[i].value != ''){
+                                if(data.data[i].type == 'text')
+                                    control = control + '<div>' + data.data[i].value   + '</div>';
+                              else
+                                    control = control + '<div class="text-type-msg-desc-10" >' + data.data[i].value  + '</div>';
+                            }
+                            control = control + '</div>';
+                        }
+                         control = control + '</div>';
+                     }
+                     control = control + '</div>';
+                }
+                control = control + '</div>';
+                control = control + '</div>';
+                control = control + '</div>';
+                return control;
+            },
+            getHtmlForButtons5:function(data){
+                //We could have multiple button types, checkbox, radio etc
+                if(data.type == "buttons"){
+                    if(data.data.length == 2 && (data.title == '' && data.text == '')){
+                        control = '<div class="row">';
+
+                        for(var i = 0; i<data.data.length ;i++ ){
+                            if(i==0){
+                                control = control +'<div class="col-xs-6 col-sm-6 padding-right-0">';
+                                control = control + '<div class="btn btn-chat border-btn-left-5" ng-click="vm.callIntent(\'' + data.data[i].callBackFn + '\')">';
+                                control = control + data.data[i].text;
+                                control = control + '</div>';
+                                control = control + '</div>';
+                            }
+                            if(i==1){
+                              control = control +'<div class="col-xs-6 col-sm-6 padding-left-0">';
+                              control = control + '<div class="btn btn-chat border-btn-right-5" ng-click="vm.callIntent(\'' + data.data[i].callBackFn + '\')">';
+                              control = control + data.data[i].text;
+                              control = control + '</div>';
+                              control = control + '</div>';
+                            }
+                        }
+                        control = control + '</div>';
+                    }
+
+                }
+
+                return control;
 
             }
+
+
+
+            /** Neha end **/
        }
     })

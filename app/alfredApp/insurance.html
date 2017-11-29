@@ -1,115 +1,25 @@
 <div  ng-controller = "insuranceCtrl as vm">
-
-
-    <!-- <div class="scrolling-wrapper">
-        <div class="card">
-            <div class="row">
-                <div class="col-xs-5 col-sm-5 col-md-5" >
-                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-                </div>
-                <div class="container col-xs-7 col-sm-7 col-md-7">
-                    <h5><b>Cashless Car insurance</b></h5>
-                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                    <br>
-                    <h6>Get more details</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="row">
-                <div class="col-xs-5 col-sm-5 col-md-5" >
-                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-                </div>
-                <div class="container col-xs-7 col-sm-7 col-md-7">
-                    <h5><b>Cashless Car insurance</b></h5>
-                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                    <br>
-                    <h6>Get more details</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="row">
-                <div class="col-xs-5 col-sm-5 col-md-5" >
-                    <img src="alfredApp/images/car_insurance.jpg" alt="Avatar" style="width:100%; height: 25vh;">
-                </div>
-                <div class="container col-xs-7 col-sm-7 col-md-7">
-                    <h5><b>Cashless Car insurance</b></h5>
-                    <h6>Zero liability, Breakdown assistance, Cashless, 3rd Party Coverage</h6>
-                    <br>
-                    <h6>Get more details</h6>
-                </div>
-            </div>
-        </div>
-
-    </div>  -->
-
-
-
-
- <!-- scrollview end -->
-
-
-
-
         <div id="boxBody" class="box-body" style="position:absolute; bottom:40px; top:0px; overflow-y: auto;">
             <div class="direct-chat-messages">
                 <div data-ng-repeat="history in vm.conversationHistory track by $index">
-                    <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
+                    <div ng-if="history.userType == 'bot'" >
                         <div class="direct-chat-info clearfix">
                             <span class="direct-chat-timestamp pull-right">{{history.ts}}</span>
                         </div>
-                  <!-- /.direct-chat-info -->
-                        <div>
+
+                        <div class="direct-chat-msg">
                             <img class="direct-chat-img" src={{history.image}} alt="message user image">
                             <div class="direct-chat-text" compile="history.text"></div>
-                            <div class="direct-chat-text padding-0" compile="history.addnData" ng-if="history.addnData!=''"></div>
-                          </div>
+                        </div>
+                        <div style="margin-left:50px !important" class="direct-chat-msg" compile="history.addnData" ng-if="history.addnData!=''"></div>
                       </div>
 
-                      <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
-
-                          <div>
-                              <img class="direct-chat-img" src={{history.image}} alt="message user image">
-                              <div class="direct-chat-text-no-arrow">
-                                  <div class="text-type-msg-title"> Cashless Card Insurance </div>
-
-                                  <div class="text-type-msg-subtitle">
-                                      <span class="fa fa-star checked"></span>
-                                      <span class="fa fa-star checked"></span>
-                                      <span class="fa fa-star checked"></span>
-                                      <span class="fa fa-star unchecked"></span>
-                                      <span class="fa fa-star unchecked"></span>
-                                  </div>
-                                  <div class="text-type-msg-subtitle">
-                                      This is a subtitle
-                                  </div>
-                                  <br>
-                                  <div class="text-type-msg-desc" ng-repeat="val in vm.dataArray">
-                                      <div class="row">
-                                        <div ng-if="val.short == true" class="col-xs-6 col-sm-6">
-                                            <span ng-if="val.type == video"></span>
-                                            <span ng-if="val.type == pdf"></span>
-                                            <span ng-if="val.label != ''" >{{val.label}}  :</span>
-                                            <span ng-if="val.value != ''">{{val.value}}</span>
-                                        </div>
-                                        <div ng-if="val.short == false" class="col-xs-12">
-                                            <span ng-if="val.label != ''" >{{val.label}}  :</span>
-                                            <span ng-if="val.value != ''">{{val.value}}</span>
-                                        </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
 
                       <div ng-if="history.userType == 'me'" class="direct-chat-msg right">
                         <div class="direct-chat-info clearfix">
                             <span class="direct-chat-timestamp pull-left">{{history.ts}}</span>
                         </div>
-                <!-- /.direct-chat-info -->
+
                         <div>
                           <img class="direct-chat-img" src={{history.image}} alt="message user image">
                           <div class="direct-chat-text" compile="history.text"></div>

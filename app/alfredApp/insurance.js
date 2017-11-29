@@ -33,33 +33,13 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             return strTime;
         }
 
+        vm.callIntent = function(text){
+            vm.askApi(text);
+            vm.insertChat("me", text);
+            vm.userText = "";
+        }
 
         vm.init = function(){
-
-          vm.dataArray = [
-              {
-                  'value': 'Health',
-                  'label' : 'Insurnce',
-                  'type' : 'text'
-              },
-              {
-                  'value': 'Car',
-                  'label' : 'Insurnce',
-                  'type' : 'text'
-              },
-              {
-                  'value': 'Auto',
-                  'label' : 'Insurnce',
-                  'type' : 'text'
-              },
-              {
-                  'value': 'XHIDU',
-                  'label' : 'Insurnce',
-                  'type' : 'text'
-              }
-
-          ]
-
 
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
@@ -162,7 +142,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 //kriti's code- new card1 ui requirement
                 //if no rows found
-                if(text.msgHdr.success=="True"){
+                if(text.msgHdr.success=="true"){
 
                       history.addnData = "";
 
@@ -177,9 +157,15 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             /** Neha **/
                             /** Checking if attcachment type = text **/
                             if(text.msgBdy.attachments[i].type=='text'){
-                                control=chatService.getHtmlForText(text.msgBdy.attachment[i]);
-
+                                history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
                             }
+
+                            if(text.msgBdy.attachments[i].type=='buttons'){
+                                history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
+                            }
+
+
+
                             /** end **/
 
 
@@ -263,7 +249,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 }
             }
             history.text = $sce.trustAsHtml(control);
-            history.addnData = $sce.trustAsHtml(addnData);
+            history.addnData = $sce.trustAsHtml(history.addnData  );
             history.ts = vm.formatAMPM(new Date());
 
 
@@ -353,13 +339,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
         vm.resetChat();
 
         //-- Print Messages
-        vm.welcome={
-            "type":"description",
-            "data":{
-                "text":"Welcome...!"
-            }
-        };
-
         vm.askApi=function(query){
 
             vm.client.textRequest(query)
@@ -370,25 +349,39 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                  vm.sessionId=response.sessionId;
 
                  if(!response.result.fulfillment.hasOwnProperty('displayText') && speech=="") {
-                    displayText={
-                            "displayString": 'Sorry',
-                            "data":{
-                                "text":'Sorry! We could not find anything. Can you try with a different query please...'
-                            },
-                            "type":"description"
-                        }
-                        displayText=JSON.stringify(displayText);
+                    var data={
+                       "msgHdr" : {
+                           "success" : 'true',
+                           "error" : 'false',
+                           "cd" : "",
+                           "rsn" : ""
+                       },
+                       "msgBdy" : {
+                           "userId" : "",
+                           "userImage" : "",
+                           "text" : "Sorry, we could not find anything for your search. Please can try a different query",
+                           "attachments" : []
+                       }
+                   }
+                   displayText=JSON.stringify(displayText);
                  }else{
 
                         if(!response.result.fulfillment.hasOwnProperty('displayText') && speech!=""){
-                            displayText={
-                                "displayString": response.result.fulfillment.speech,
-                                "data":{
-                                    "text":response.result.fulfillment.speech
+                            var data={
+                                "msgHdr" : {
+                                    "success" : 'true',
+                                    "error" : 'false',
+                                    "cd" : "",
+                                    "rsn" : ""
                                 },
-                                "type":"description"
+                                "msgBdy" : {
+                                    "userId" : "",
+                                    "userImage" : "",
+                                    "text" : response.result.fulfillment.speech,
+                                    "attachments" : []
+                                }
                             }
-                            displayText=JSON.stringify(displayText);
+                            displayText=JSON.stringify(data);
                         }
                         else{
                             //when displaytext is present
@@ -412,5 +405,5 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                }
              })
         }
-         vm.init();
+        vm.init();
 }]);
