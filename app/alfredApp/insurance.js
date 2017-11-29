@@ -73,6 +73,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.markerDesc="";
             history.latitude="";
             history.longitude="";
+
+            history.isMap=true;
+            history.markerTitle="Shivaji Park Dadar, Mumbai"
+            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
+            history.latitude="19.0268";
+            history.longitude="72.8389";
         
             vm.conversationHistory.push(history);
 
@@ -195,9 +201,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                                 history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
                             }
 
-                            else if(text.msgBdy.attachments[i].type=='buttons'){
+                            /*else if(text.msgBdy.attachments[i].type=='buttons'){
                                 history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
-                            }
+                            }*/
                             /** end **/
 
 
