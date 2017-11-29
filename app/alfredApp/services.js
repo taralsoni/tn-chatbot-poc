@@ -400,20 +400,20 @@ app.service('chatService', function(){
                                         control=control+'<div>' + attachment.leftData[i] + '</div>';
                                     }  
 
-            control=control+'</div>'+
-                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
-                                '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callNextIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
+                control=control+'</div>'+
+                                '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                    '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
+                                    '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
 
-                                    for(var i=0;i<attachment.rightData.length;i++){
-                                        control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
-                                    }   
+                                        for(var i=0;i<attachment.rightData.length;i++){
+                                            control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
+                                        }   
 
-            control=control+'</div>'+
-                        '</div>'+
-                        '<hr>';
+                control=control+'</div>'+
+                            '</div>'+
+                            '<hr>';
 
-            return control;                
+                return control;                
 
             },
             getHtmlForKeyValueCard:function(attachment){
