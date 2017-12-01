@@ -41,6 +41,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.init = function(){
 
+
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
@@ -134,6 +135,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             var control = "";
             var addnData = "";
             var date = vm.formatAMPM(new Date());
+            vm.showBotMsg=true;
 
             var history = {};
             if (who == "me"){
@@ -171,6 +173,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                     /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
                     if(text.msgBdy.text=='Send me your location'){
+                        vm.showBotMsg=false;
                         var options = {
                             enableHighAccuracy: true
                         };
