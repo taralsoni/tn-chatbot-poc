@@ -333,7 +333,11 @@ app.service('chatService', function(){
                 return control;
             },
             getHtmlForDblColCard:function(attachment){
-                control='<div class="row" style="padding:5px 10px">'+
+              control =  '<div class="direct-chat-msg" style="margin-left:50px; margin-bottom:2px !important;">';
+              control = control + '<div>';
+              control = control + '<div class="direct-chat-text-no-arrow">';
+
+                control=control + '<div class="row" style="padding:5px 10px">'+
                             '<div class="col-xs-6 col-md-6 col-sm-6">'+
                                 '<div class="attachment-title-font">'+ attachment.leftTitle + '</div>'+
                                 '<div>'+ attachment.leftSubTitle +'</div>';
@@ -352,15 +356,18 @@ app.service('chatService', function(){
                                         }
 
                 control=control+'</div>'+
-                            '</div>'+
-                            '<hr>';
-
+                            '</div>'
+                            ;
+                control=control+'</div>'+'</div>'+'</div>';
                 return control;
 
             },
             getHtmlForKeyValueCard:function(attachment){
+              control =  '<div class="direct-chat-msg" style="margin-left:50px; margin-bottom:2px !important;">';
+              control = control + '<div>';
+              control = control + '<div class="direct-chat-text-no-arrow">';
 
-                control='<div style="padding:5px 10px" class="attachment-title-font black-font">'+attachment.title +  '</div>'
+                control = control + '<div style="padding:5px 10px" class="attachment-title-font black-font">'+attachment.title +  '</div>'
 
                         for(var i=0;i<attachment.data.length;i++){
                             control=control+
@@ -380,7 +387,8 @@ app.service('chatService', function(){
 
                             control=control+'<br>';
                         }
-                        control=control+'<hr>';
+                        control=control;
+                        control=control+'</div>'+'</div>'+'</div>';
 
                 return control;
             },
@@ -390,10 +398,10 @@ app.service('chatService', function(){
             /** Neha **/
             /** Genereate HTML for a text **/
             getHtmlForText:function(data){
-                // control =  '<div class="direct-chat-msg" style="margin-bottom:2px !important;">';
-                // control = control + '<div>';
-                // // control = control + '<img class="direct-chat-img" src={{history.image}} alt="message user image">';
-                // control = control + '<div class="direct-chat-text-no-arrow">';
+                control =  '<div class="direct-chat-msg" style="margin-left:50px; margin-bottom:2px !important;">';
+                control = control + '<div>';
+                //control = control + '<img class="direct-chat-img" src={{history.image}} alt="message user image">';
+                control = control + '<div class="direct-chat-text-no-arrow">';
 
                 if(data.title != '')
                   control = control + '<div class="text-type-msg-title">' + data.title  + '</div>';
@@ -468,16 +476,16 @@ app.service('chatService', function(){
                      }
                      control = control + '</div>';
                 }
-                // control = control + '</div>';
-                // control = control + '</div>';
-                // control = control + '</div>';
+                control = control + '</div>';
+                control = control + '</div>';
+                control = control + '</div>';
                 return control;
             },
             getHtmlForButtons5:function(data){
                 //We could have multiple button types, checkbox, radio etc
                 if(data.type == "buttons"){
                     if(data.data.length == 2 && (data.title == '' && data.text == '')){
-                        control = '<div class="row">';
+                        control = '<div class="row" style="margin-left:35px">';
 
                         for(var i = 0; i<data.data.length ;i++ ){
                             if(i==0){

@@ -14,9 +14,10 @@
                       <div   class="direct-chat-text" compile="history.text"></div>
                   </div>
 
-                  <div style="margin-left:50px !important" class="direct-chat-msg"  ng-if="history.addnData!=''">
+                  <div  ng-if="history.addnData!=''" compile="history.addnData"> </div>
+                 <!-- <div style="margin-left:50px !important" class="direct-chat-msg"  ng-if="history.addnData!=''">
                       <div class="direct-chat-text-no-arrow" compile="history.addnData"></div>
-                  </div>
+                  </div> -->
                   <div ng-if="history.dataType=='map'">
                       <div class="direct-chat-text padding-0" my-map="" lat="{{history.latitude}}" long="{{history.longitude}}" title="{{history.markerTitle}}" desc="{{history.markerDesc}}" marker="{{history.marker}}"></div>
                   </div>
