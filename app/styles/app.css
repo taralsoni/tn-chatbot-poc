@@ -946,15 +946,16 @@ img {
 
 .scrolling-wrapper {
   overflow-x: scroll;
-  /*overflow-y: hidden;*/
-  white-space: nowrap;
+  overflow-y: hidden;
+  height:120px;
+}
 
 
   .card {
     display: inline-block;
     white-space: normal;
   }
-}
+
 
 .scrolling-wrapper::webkit-scrollbar{
     display: none;
@@ -1105,6 +1106,58 @@ img {
       padding-right : 1px !important;
 }
 
+.card-image{
+  height: 100px !important;
+  width: 100px;
+  object-fit: cover;
+}
 
+.carousel-caption {
+    position: absolute !important;
+    right: 0px !important;
+    bottom: 0px !important;
+    left: 110px !important;
+    z-index: 10 !important;
+    padding-top: 0px !important;
+    padding-bottom:0px !important;
+    color: #fff !important;
+    text-align: center !important;
+    top:0px !important;
+    text-shadow: none !important;
+    /*text-shadow: 0 1px 2px rgba(0,0,0,.6);*/
+}
+
+.card-header{
+    font-size: 14px;
+    font-weight: bold;
+    font-family: calibri;
+    padding-top: 5px;
+    text-align: left;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.card-text{
+  font-size: 10px;
+  font-weight : normal;
+  font-family: calibri;
+  padding-top:3px;
+  text-align: left;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.card-text-bottom{
+    bottom:5px;
+    position:absolute;
+}
+
+.carousel-indicators li {
+      border:0px!important;
+  }
+.carousel-indicators  .active {
+
+    background-color: transparent !important  ;
+  }
 
 /* Neha CSS end */

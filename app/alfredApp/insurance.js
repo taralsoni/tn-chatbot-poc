@@ -154,9 +154,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                                 history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                             }
 
-                            else if(attachment.type=='doubleColumnText'){
+                            else if(text.msgBdy.attachments.type=='doubleColumnText'){
                                 history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
-                            }else if(attachment.type=='itemList'){
+                            }else if(text.msgBdy.attachments.type=='itemList'){
                                 history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
                             }
 
@@ -169,6 +169,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             else if(text.msgBdy.attachments[i].type=='buttons'){
                                 history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
                             }
+
                             /** end **/
 
 

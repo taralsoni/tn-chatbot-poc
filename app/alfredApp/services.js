@@ -291,28 +291,24 @@ app.service('chatService', function(){
             },
             getHtmlForCard:function(attachment){
                 var card;
-                control='<div class="scrolling-wrapper" style="height:20vh;">';
-
+                control = '<div  style="height:100px !important;">';
+                control = control + '<div>';
+                control = control + '<carousel interval="3000">';
                 for(var i=0;i<attachment.data.length;i++){
                     card=attachment.data[i];
-                    control=control+
-                        '<div class="card"  style="margin:0;">'+
-                            '<div class="row" style="white-space:normal">'+
-                                '<div class="col-xs-1 col-sm-5 col-md-5" >'+
-                                    '<img src="'+ card.image + '" alt="Avatar" style="width:10vw; height: 20vh;">'+
-                                '</div>'+
-                                '<div class="container col-xs-10 col-sm-7 col-md-7" style="padding-left: 40px !important;">'+
-
-                                    '<h5><b>' + card.title +'</b></h5> '+
-                                    '<h6>'+ card.description +'</h6>'+
-                                    '<br>'+
-                                    '<h6>'+ card.postText +'</h6> '+
-                                '</div>'+
-                                /*'<div class=" col-xs-7 col-sm-7 col-md-7"></div>'+*/
-                            '</div>'+
-                        '</div>';
+                    control = control + ' <slide style="height:100px !important; background-color: #f39c12; border-radius: 5px;">';
+                    control = control + '<img class="card-image"  src="' + card.image +'">';
+                    control = control +
+                                  '<div class="carousel-caption">' +
+                                      '<div class="row card-header">';
+                    control = control + card.title +
+                                  '</div>' +
+                                      '<div class="row card-text">' + card.description +
+                                       '</div>' +
+                                          '<div class="row card-text card-text-bottom">' + card.postText +
+                                          '</div> </div> </slide>';
                 }
-                control=control+'</div>';
+                control = control + '</carousel> </div> </div>';
                 return control;
             },
             /** Neha **/
