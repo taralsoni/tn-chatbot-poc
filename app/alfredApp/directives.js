@@ -89,13 +89,16 @@ app.directive('myMap', function() {
         
         // show the map and place some markers
         initMap();
+
+        //console.log(JSON.parse(attrs.marker));
+        var markersData=JSON.parse(attrs.marker);
         
-        /*setMarker(map, new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
-        setMarker(map, new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
-        setMarker(map, new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');*/
-        setMarker(map, new google.maps.LatLng(attrs.lat,attrs.long), attrs.title, attrs.desc);
+        for(var i=0;i<markersData.length;i++){
+          setMarker(map, new google.maps.LatLng(markersData[i].latitude,markersData[i].longitude), markersData[i].name, markersData[i].vicinity);
+        }
+        //setMarker(map, new google.maps.LatLng(attrs.lat,attrs.long), attrs.title, attrs.desc);
         
-        console.log(attrs);
+        
     };
     
     return {

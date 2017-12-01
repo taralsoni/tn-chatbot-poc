@@ -74,11 +74,17 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.latitude="";
             history.longitude="";
 
-            history.isMap=true;
-            history.markerTitle="Shivaji Park Dadar, Mumbai"
-            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
-            history.latitude="19.0268";
-            history.longitude="72.8389";
+           var options = {
+                enableHighAccuracy: true
+            };
+
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                //console.log(pos.coords.latitude, pos.coords.longitude);                  
+            }, 
+            function(error) {                    
+                alert('Unable to get location: ' + error.message);
+            }, options);
         
             vm.conversationHistory.push(history);
 
@@ -160,54 +166,84 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     history.markerDesc=""
                     history.latitude="";
                     history.longitude="";
-
                     
-                        control=chatService.getHtmlForDesc(text.msgBdy.text);
-                        var attachment="";
-                        for(var i=0;i<text.msgBdy.attachments.length;i++){
-                            attachment=text.msgBdy.attachments[i];
-                            if(text.msgBdy.attachments[i].type=='cards'){
-                                history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
-                            }
-                            else if(attachment.type=='doubleColumnText'){
-                                history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
-                            }else if(attachment.type=='itemList'){
-                                history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
-                            }
-                            else if(attachment.type=='graph'){
-                                var fnData = {
-                                    'callBackFn' : 'vm.setIsGraph'
-                                }
+                    control=chatService.getHtmlForDesc(text.msgBdy.text);
 
-                                vm.containerId='chart-container-' + vm.chartIndex;
-                                vm.chartId='revenue-chart-' + vm. chartIndex;
+                    /**kriti-if bot asks for location, dont show msg bubble and pass current location*/                    
+                    if(text.msgBdy.text=='Send me your location'){
+                        var options = {
+                            enableHighAccuracy: true
+                        };
 
-                                history.showGraph = true;
-                                history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');                 
-                                history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');                                
-                                history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-                            }else if(attachment.type=='map'){
-                                
-                                history.isMap=true;
-                                history.markerTitle="Shivaji Park Dadar, Mumbai"
-                                history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
-                                history.latitude="19.0268";
-                                history.longitude="72.8389";
-                            } 
+                        navigator.geolocation.getCurrentPosition(function(pos) {
+                            //vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                            console.log(pos.coords.latitude, pos.coords.longitude);  
+                            vm.currentLatitude=pos.coords.latitude;
+                            vm.currentLongitude=pos.coords.longitude;   
+                            vm.askApi('my lat '+ vm.currentLatitude + ' and long is ' + vm.currentLongitude);
+                            //console.log('my lat '+ vm.currentLatitude + ' and long is '+ vm.currentLongitude);            
+                        }, 
+                        function(error) {                    
+                            alert('Unable to get location: ' + error.message);
+                        }, options);
+                        control="";
+                        
+                    }
 
-                            /** Neha **/
-                            /** Checking if attcachment type = text **/
-                            else if(text.msgBdy.attachments[i].type=='text'){
-                                history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
-                            }
-
-                            /*else if(text.msgBdy.attachments[i].type=='buttons'){
-                                history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
-                            }*/
-                            /** end **/
-
-
+                    var attachment="";
+                    for(var i=0;i<text.msgBdy.attachments.length;i++){
+                        attachment=text.msgBdy.attachments[i];
+                        if(text.msgBdy.attachments[i].type=='cards'){
+                            history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                         }
+                        else if(attachment.type=='doubleColumnText'){
+                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
+                        }else if(attachment.type=='itemList'){
+                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
+                        }
+                        else if(attachment.type=='graph'){
+                            var fnData = {
+                                'callBackFn' : 'vm.setIsGraph'
+                            }
+
+                            vm.containerId='chart-container-' + vm.chartIndex;
+                            vm.chartId='revenue-chart-' + vm. chartIndex;
+
+                            history.showGraph = true;
+                            history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');                 
+                            history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');                                
+                            history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                        }else if(attachment.type=='map'){
+                            
+                            history.isMap=true;
+                            /*history.markerTitle="Shivaji Park Dadar, Mumbai"
+                            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
+                            history.latitude="19.0268";
+                            history.longitude="72.8389";*/
+
+                            /*history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;*/
+
+                            history.marker=attachment.data;
+                            history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;
+                        } 
+
+                        /** Neha **/
+                        /** Checking if attcachment type = text **/
+                        else if(text.msgBdy.attachments[i].type=='text'){
+                            history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
+                        }
+
+                        else if(text.msgBdy.attachments[i].type=='buttons'){
+                            history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
+                        }
+                        /** end **/
+                    }
                 }
                 else{
                     control=chatService.getHtmlForDesc(text.msgHdr.rsn);
@@ -286,44 +322,10 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.setIsGraph = function(graphFlag,index){
           graphFlag = !graphFlag;
-          banking.conversationHistory[index].showGraph = graphFlag;
+          vm.conversationHistory[index].showGraph = graphFlag;
         }
 
-        /*vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
-
-
-            vm.graphTableArray[graphIndex]=!vm.graphTableArray[graphIndex];
-
-            var jsonData = {
-                'callBackFn' : 'vm.setIsGraph'
-            }
-
-            var control;
-            var history = {};
-
-            if(vm.graphTableArray[graphIndex]){
-                control=chatService.getHtmlForGraph(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);
-            }else{
-                control=chatService.getHtmlForTable(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);
-            }
-
-            control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-
-            history.user = 'Rosey@Fintech';
-            history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-
-            history.text = $sce.trustAsHtml(control);
-            history.ts = vm.formatAMPM(new Date());
-
-            if ($scope.$$phase) { // most of the time it is "$digest"
-                applyFnWithIndex(history,index);
-            } else {
-                $scope.$apply(applyFnWithIndex(history,index));
-            }
-
-        }*/
-
-         vm.goBack=function(){
+        vm.goBack=function(){
             history.back();
         }
 

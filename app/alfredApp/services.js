@@ -72,24 +72,7 @@ app.service('chatService', function(){
                                     },
 
                                     data: graphJsonWithoutHeader
-                                        /*[
-                                        {
-                                            label: "Teenage",
-                                            value: "1250400"
-                                        },
-                                        {
-                                            label: "Adult",
-                                            value: "1463300"
-                                        },
-                                        {
-                                            label: "Mid-age",
-                                            value: "1050700"
-                                        },
-                                        {
-                                            label: "Senior",
-                                            value: "491000"
-                                        }
-                                    ]*/
+                                       
                                 }
                             });
                      
@@ -100,27 +83,7 @@ app.service('chatService', function(){
                 
                 return control+'<br>';
             },
-            getHtmlForTable:function(displayString,graphJson,chartId,containerId,graphTableArray){
-                
-
-                /*var graphJson=[
-                                    {
-                                        label: "Teenage",
-                                        value: "1250400"
-                                    },
-                                    {
-                                        label: "Adult",
-                                        value: "1463300"
-                                    },
-                                    {
-                                        label: "Mid-age",
-                                        value: "1050700"
-                                    },
-                                    {
-                                        label: "Senior",
-                                        value: "491000"
-                                    }
-                                ];*/
+            getHtmlForTable:function(displayString,graphJson,chartId,containerId,graphTableArray){               
 
                 control= 
                  '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
@@ -233,24 +196,7 @@ app.service('chatService', function(){
                                     },
 
                                     data: graphJsonWithoutHeader
-                                        /*[
-                                        {
-                                            label: "Teenage",
-                                            value: "1250400"
-                                        },
-                                        {
-                                            label: "Adult",
-                                            value: "1463300"
-                                        },
-                                        {
-                                            label: "Mid-age",
-                                            value: "1050700"
-                                        },
-                                        {
-                                            label: "Senior",
-                                            value: "491000"
-                                        }
-                                    ]*/
+                                       
                                 }
                             });
                      
@@ -295,7 +241,7 @@ app.service('chatService', function(){
                     graphJsonWithoutHeader[i-1]=graphJson[i];
                 }*/
                     
-                control='<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
+                control='<div ng-show="' + varShowGraph + '" id="'+ containerId +'" style="height:40vh;padding-top: 5px;"></div>';
                                          
                 if ( FusionCharts(chartId)){
                      FusionCharts(chartId).dispose();
@@ -304,7 +250,7 @@ app.service('chatService', function(){
                 FusionCharts.ready(function() {               
                     var revenueChart = new FusionCharts({
                         id: chartId,//'revenue-chart',
-                        type:'column3d' , //column3d',//pie2d
+                        type:'column2d' , //column3d',//pie2d
                         renderAt: containerId,//'chart-container',
                         dataFormat: 'json',
                         width: "100%",
@@ -338,8 +284,8 @@ app.service('chatService', function(){
             },
             getHtmlForTable3:function(attachment,chartId,containerId,varShowGraph){
                 control= 
-                 '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
-                    '<strong>'+attachment.title + '</strong><br>'+
+                 '<div ng-hide="'+ varShowGraph + '">'+
+                    '<strong>'+attachment.title + '</strong><br><br>'+
                     '<table  class="table table-bordered table-striped">'+
                         '<thead>'+
                             '<tr>'+
