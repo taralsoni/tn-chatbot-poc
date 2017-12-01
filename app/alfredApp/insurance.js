@@ -32,12 +32,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             var strTime = hours + ':' + minutes + ' ' + ampm;
             return strTime;
         }
-
         vm.callIntent = function(text){
             vm.askApi(text);
             vm.insertChat("me", text);
             vm.userText = "";
         }
+
 
         vm.init = function(){
 
@@ -45,18 +45,15 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
 
-
             if(vm.botType=='insurance'){
                 vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
             }
 
-
             vm.client= new ApiAi.ApiAiClient({
                 accessToken: vm.accessToken
             });
-
 
             var history = {};
             if(vm.botType=='insurance'){
@@ -70,10 +67,26 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
             history.addnData="";
-            vm.conversationHistory.push(history);
+            //for map
+            history.dataType='';
+            history.markerTitle="";
+            history.markerDesc="";
+            history.latitude="";
+            history.longitude="";
 
-            vm.graphTableArray=[];
-             vm.graphJsonArray=[];
+           var options = {
+                enableHighAccuracy: true
+            };
+
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                //console.log(pos.coords.latitude, pos.coords.longitude);
+            },
+            function(error) {
+                alert('Unable to get location: ' + error.message);
+            }, options);
+
+            vm.conversationHistory.push(history);
 
         }
 
@@ -142,38 +155,95 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 //kriti's code- new card1 ui requirement
                 //if no rows found
+
                 if(text.msgHdr.success=="true"){
 
-                      history.addnData = "";
+                    history.addnData="";
 
-                    // if(text.msgBdy.attachments.length==0){
-                        control=chatService.getHtmlForDesc(text.msgBdy.text);
-                    // }else{
-                        for(var i=0;i<text.msgBdy.attachments.length;i++){
-                            if(text.msgBdy.attachments[i].type=='cards'){
-                                history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
-                            }
+                    //for map
+                    history.dataType='';
+                    history.markerTitle=""
+                    history.markerDesc=""
+                    history.latitude="";
+                    history.longitude="";
 
-                            else if(text.msgBdy.attachments.type=='doubleColumnText'){
-                                history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
-                            }else if(text.msgBdy.attachments.type=='itemList'){
-                                history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
-                            }
+                    control=chatService.getHtmlForDesc(text.msgBdy.text);
 
-                            /** Neha **/
-                            /** Checking if attcachment type = text **/
-                            else if(text.msgBdy.attachments[i].type=='text'){
-                                history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
-                            }
+                    /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
+                    if(text.msgBdy.text=='Send me your location'){
+                        var options = {
+                            enableHighAccuracy: true
+                        };
 
-                            else if(text.msgBdy.attachments[i].type=='buttons'){
-                                history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
-                            }
+                        navigator.geolocation.getCurrentPosition(function(pos) {
+                            //vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                            console.log(pos.coords.latitude, pos.coords.longitude);
+                            vm.currentLatitude=pos.coords.latitude;
+                            vm.currentLongitude=pos.coords.longitude;
+                            vm.askApi('my lat '+ vm.currentLatitude + ' and long is ' + vm.currentLongitude);
+                            //console.log('my lat '+ vm.currentLatitude + ' and long is '+ vm.currentLongitude);
+                        },
+                        function(error) {
+                            alert('Unable to get location: ' + error.message);
+                        }, options);
+                        control="";
 
-                            /** end **/
+                    }
 
-
+                    var attachment="";
+                    for(var i=0;i<text.msgBdy.attachments.length;i++){
+                        attachment=text.msgBdy.attachments[i];
+                        if(text.msgBdy.attachments[i].type=='cards'){
+                            history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                         }
+                        else if(attachment.type=='doubleColumnText'){
+                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
+                        }else if(attachment.type=='itemList'){
+                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
+                        }
+                        else if(attachment.type=='graph'){
+                            var fnData = {
+                                'callBackFn' : 'vm.setIsGraph'
+                            }
+
+                            vm.containerId='chart-container-' + vm.chartIndex;
+                            vm.chartId='revenue-chart-' + vm. chartIndex;
+
+                            history.showGraph = true;
+                            history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
+                            history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
+                            history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                        }else if(attachment.type=='map'){
+
+                            history.dataType='map';
+                            /*history.markerTitle="Shivaji Park Dadar, Mumbai"
+                            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
+                            history.latitude="19.0268";
+                            history.longitude="72.8389";*/
+
+                            /*history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;*/
+
+                            history.marker=attachment.data;
+                            history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;
+                        }
+
+                        /** Neha **/
+                        /** Checking if attcachment type = text **/
+                        else if(text.msgBdy.attachments[i].type=='text'){
+                            history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
+                        }
+
+                        else if(text.msgBdy.attachments[i].type=='buttons'){
+                            history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
+                        }
+                        /** end **/
+                    }
                 }
                 else{
                     control=chatService.getHtmlForDesc(text.msgHdr.rsn);
@@ -206,26 +276,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 }
                 else if(text.type=='graph'){
 
-
-                    /*text.data.multipleFields=[
-                                    {
-                                        label: "Teenage",
-                                        value: "1250400"
-                                    },
-                                    {
-                                        label: "Adult",
-                                        value: "1463300"
-                                    },
-                                    {
-                                        label: "Mid-age",
-                                        value: "1050700"
-                                    },
-                                    {
-                                        label: "Senior",
-                                        value: "491000"
-                                    }
-                                ];*/
-
                     var jsonData = {
                         'callBackFn' : 'vm.setIsGraph'
                     }
@@ -234,7 +284,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     vm.graphJsonArray[vm.chartIndex]=text.data.multipleFields;
 
                     vm.containerId='chart-container-' + vm.chartIndex;
-                    vm.chartId='revenue-chart-' + vm. chartIndex;
+                    vm.chartId='revenue-chart-' + vm.chartIndex;
 
                     control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
                     control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
@@ -263,10 +313,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 $scope.$apply(applyFn(history));
             }
 
-
-             //$location.hash('item');
-             //$anchorScroll('item');
-
              $timeout(function() {
               var scroller = document.getElementById("boxBody");
               scroller.scrollTop = scroller.scrollHeight;
@@ -274,41 +320,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         }
 
-        vm.setIsGraph=function(graphIndex,index,displayString,containerId,chartId){
-
-
-            vm.graphTableArray[graphIndex]=!vm.graphTableArray[graphIndex];
-
-            var jsonData = {
-                'callBackFn' : 'vm.setIsGraph'
-            }
-
-            var control;
-            var history = {};
-
-            if(vm.graphTableArray[graphIndex]){
-                control=chatService.getHtmlForGraph(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);
-            }else{
-                control=chatService.getHtmlForTable(displayString,vm.graphJsonArray[graphIndex],containerId,chartId,vm.graphTableArray);
-            }
-
-            control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + graphIndex + ',' + index + ',\'' + displayString + '\',\'' + containerId + '\',\'' + chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-
-            history.user = 'Rosey@Fintech';
-            history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-
-            history.text = $sce.trustAsHtml(control);
-            history.ts = vm.formatAMPM(new Date());
-
-            if ($scope.$$phase) { // most of the time it is "$digest"
-                applyFnWithIndex(history,index);
-            } else {
-                $scope.$apply(applyFnWithIndex(history,index));
-            }
-
+        vm.setIsGraph = function(graphFlag,index){
+          graphFlag = !graphFlag;
+          vm.conversationHistory[index].showGraph = graphFlag;
         }
 
-         vm.goBack=function(){
+        vm.goBack=function(){
             history.back();
         }
 
@@ -392,16 +409,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             displayText=response.result.fulfillment.displayText;
                         }
                 }
-                //stubbed graph type
-                /*displayText={
-                   "type": "graph",
-                   "displayString": "Age profile of website visitors last year",
-                   "data": {
-                        "graph":"",
-                        "pdfLink":"https://www.tutorialspoint.com/operating_system/operating_system_tutorial.pdf"
-                    }
-                };
-                displayText=JSON.stringify(displayText); */
                 vm.insertChat("you", displayText, 0);
 
                } catch(error) {

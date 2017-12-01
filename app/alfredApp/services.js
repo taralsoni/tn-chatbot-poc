@@ -72,24 +72,7 @@ app.service('chatService', function(){
                                     },
 
                                     data: graphJsonWithoutHeader
-                                        /*[
-                                        {
-                                            label: "Teenage",
-                                            value: "1250400"
-                                        },
-                                        {
-                                            label: "Adult",
-                                            value: "1463300"
-                                        },
-                                        {
-                                            label: "Mid-age",
-                                            value: "1050700"
-                                        },
-                                        {
-                                            label: "Senior",
-                                            value: "491000"
-                                        }
-                                    ]*/
+
                                 }
                             });
 
@@ -101,26 +84,6 @@ app.service('chatService', function(){
                 return control+'<br>';
             },
             getHtmlForTable:function(displayString,graphJson,chartId,containerId,graphTableArray){
-
-
-                /*var graphJson=[
-                                    {
-                                        label: "Teenage",
-                                        value: "1250400"
-                                    },
-                                    {
-                                        label: "Adult",
-                                        value: "1463300"
-                                    },
-                                    {
-                                        label: "Mid-age",
-                                        value: "1050700"
-                                    },
-                                    {
-                                        label: "Senior",
-                                        value: "491000"
-                                    }
-                                ];*/
 
                 control=
                  '<div ng-hide="'+ graphTableArray[containerId.charAt(containerId.length-1)] + '" class="box-body">'+
@@ -233,24 +196,7 @@ app.service('chatService', function(){
                                     },
 
                                     data: graphJsonWithoutHeader
-                                        /*[
-                                        {
-                                            label: "Teenage",
-                                            value: "1250400"
-                                        },
-                                        {
-                                            label: "Adult",
-                                            value: "1463300"
-                                        },
-                                        {
-                                            label: "Mid-age",
-                                            value: "1050700"
-                                        },
-                                        {
-                                            label: "Senior",
-                                            value: "491000"
-                                        }
-                                    ]*/
+
                                 }
                             });
 
@@ -289,6 +235,81 @@ app.service('chatService', function(){
 
                return control;
             },
+            getHtmlForGraph3:function(attachment,chartId,containerId,varShowGraph){
+                /*var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }*/
+
+                control='<div ng-show="' + varShowGraph + '" id="'+ containerId +'" style="height:40vh;padding-top: 5px;"></div>';
+
+                if ( FusionCharts(chartId)){
+                     FusionCharts(chartId).dispose();
+                }
+
+                FusionCharts.ready(function() {
+                    var revenueChart = new FusionCharts({
+                        id: chartId,//'revenue-chart',
+                        type:'column2d' , //column3d',//pie2d
+                        renderAt: containerId,//'chart-container',
+                        dataFormat: 'json',
+                        width: "100%",
+                        height: "100%",
+                        dataSource: {
+                          // Chart data goes here
+                            chart: {
+                                caption: attachment.title,
+                                subcaption: "",
+                                startingangle: "120",
+                                showlabels: "0",
+                                showlegend: "1",
+                                enablemultislicing: "0",
+                                slicingdistance: "15",
+                                showpercentvalues: "1",
+                                showpercentintooltip: "0",
+                                plottooltext: "$label : $datavalue", //"Age group : $label Total visit : $datavalue",
+                                theme: "fint"
+                            },
+
+                            data: attachment.data
+                        }
+                    });
+
+
+                    revenueChart.render();
+                    revenueChart = FusionCharts('revenue-chart');
+                });
+
+                return control+'<br>';
+            },
+            getHtmlForTable3:function(attachment,chartId,containerId,varShowGraph){
+                control=
+                 '<div ng-hide="'+ varShowGraph + '">'+
+                    '<strong>'+attachment.title + '</strong><br><br>'+
+                    '<table  class="table table-bordered table-striped">'+
+                        '<thead>'+
+                            '<tr>'+
+                              '<th>'+attachment.labelHeader+'</th>'+
+                              '<th>'+attachment.valueHeader+'</th>'+
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>';
+
+                    for(var i=1;i<attachment.data.length;i++){
+                        control=control+
+                         '<tr>'+
+                              '<td>'+ attachment.data[i].label +'</td>'+
+                              '<td>'+ attachment.data[i].value +'</td>'+
+                            '</tr>';
+                    }
+
+                    control=control+
+                            '</tbody>'+
+                            '</table>'+
+                            '</div>';
+
+               return control;
+            },
             getHtmlForCard:function(attachment){
                 var card;
                 control = '<div  style="height:100px !important;">';
@@ -311,13 +332,68 @@ app.service('chatService', function(){
                 control = control + '</carousel> </div> </div>';
                 return control;
             },
+            getHtmlForDblColCard:function(attachment){
+                control='<div class="row" style="padding:5px 10px">'+
+                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                '<div class="attachment-title-font">'+ attachment.leftTitle + '</div>'+
+                                '<div>'+ attachment.leftSubTitle +'</div>';
+
+                                    for(var i=0;i<attachment.leftData.length;i++){
+                                        control=control+'<div>' + attachment.leftData[i] + '</div>';
+                                    }
+
+                control=control+'</div>'+
+                                '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                    '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
+                                    '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
+
+                                        for(var i=0;i<attachment.rightData.length;i++){
+                                            control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
+                                        }
+
+                control=control+'</div>'+
+                            '</div>'+
+                            '<hr>';
+
+                return control;
+
+            },
+            getHtmlForKeyValueCard:function(attachment){
+
+                control='<div style="padding:5px 10px" class="attachment-title-font black-font">'+attachment.title +  '</div>'
+
+                        for(var i=0;i<attachment.data.length;i++){
+                            control=control+
+                            '<div style="padding:0 10px" class="attachment-title-font">' + attachment.data[i].item + '</div>';
+
+                             for(var j=0;j<attachment.data[i].details.length;j++){
+                                control=control+
+                                '<div style="padding:0 10px" class="row">'+
+                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                        '<div>'+ attachment.data[i].details[j].label + '</div>'+
+                                    '</div>'+
+                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
+                                        '<div style="float:right">'+ attachment.data[i].details[j].value + '</div>'+
+                                    '</div>'+
+                                '</div>';  //row ends here
+                            }
+
+                            control=control+'<br>';
+                        }
+                        control=control+'<hr>';
+
+                return control;
+            },
+
+            /** NEhA**/
+            /** Please do not overwritw during merge **/
             /** Neha **/
             /** Genereate HTML for a text **/
             getHtmlForText:function(data){
-                control =  '<div class="direct-chat-msg" style="margin-bottom:2px !important;">';
-                control = control + '<div>';
-                // control = control + '<img class="direct-chat-img" src={{history.image}} alt="message user image">';
-                control = control + '<div class="direct-chat-text-no-arrow">';
+                // control =  '<div class="direct-chat-msg" style="margin-bottom:2px !important;">';
+                // control = control + '<div>';
+                // // control = control + '<img class="direct-chat-img" src={{history.image}} alt="message user image">';
+                // control = control + '<div class="direct-chat-text-no-arrow">';
 
                 if(data.title != '')
                   control = control + '<div class="text-type-msg-title">' + data.title  + '</div>';
@@ -392,9 +468,9 @@ app.service('chatService', function(){
                      }
                      control = control + '</div>';
                 }
-                control = control + '</div>';
-                control = control + '</div>';
-                control = control + '</div>';
+                // control = control + '</div>';
+                // control = control + '</div>';
+                // control = control + '</div>';
                 return control;
             },
             getHtmlForButtons5:function(data){
@@ -427,58 +503,6 @@ app.service('chatService', function(){
                 return control;
 
             },
-              /** Neha end **/
-            getHtmlForDblColCard:function(attachment){
-                control='<div class="row" style="padding:5px 10px">'+
-                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                '<div class="attachment-title-font">'+ attachment.leftTitle + '</div>'+
-                                '<div>'+ attachment.leftSubTitle +'</div>';
-
-                                    for(var i=0;i<attachment.leftData.length;i++){
-                                        control=control+'<div>' + attachment.leftData[i] + '</div>';
-                                    }
-
-            control=control+'</div>'+
-                            '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
-                                '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callNextIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
-
-                                    for(var i=0;i<attachment.rightData.length;i++){
-                                        control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
-                                    }
-
-            control=control+'</div>'+
-                        '</div>'+
-                        '<hr>';
-
-            return control;
-
-            },
-            getHtmlForKeyValueCard:function(attachment){
-
-                control='<div style="padding:5px 10px" class="attachment-title-font black-font">'+attachment.title +  '</div>'
-
-                        for(var i=0;i<attachment.data.length;i++){
-                            control=control+
-                            '<div style="padding:0 10px" class="attachment-title-font">' + attachment.data[i].item + '</div>';
-
-                             for(var j=0;j<attachment.data[i].details.length;j++){
-                                control=control+
-                                '<div style="padding:0 10px" class="row">'+
-                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                        '<div>'+ attachment.data[i].details[j].label + '</div>'+
-                                    '</div>'+
-                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                        '<div style="float:right">'+ attachment.data[i].details[j].value + '</div>'+
-                                    '</div>'+
-                                '</div>';  //row ends here
-                            }
-
-                            control=control+'<br>';
-                        }
-                        control=control+'<hr>';
-
-                return control;
-            }
+            /** Neha end **/
        }
     })
