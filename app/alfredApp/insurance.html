@@ -19,7 +19,7 @@
                       <div class="direct-chat-text-no-arrow" compile="history.addnData"></div>
                   </div> -->
                   <div ng-if="history.dataType=='map'">
-                      <div class="direct-chat-text padding-0" my-map="" marker="{{history.marker}}"></div>
+                      <div class="direct-chat-text padding-0" my-map="" lat="{{history.latitude}}" long="{{history.longitude}}" title="{{history.markerTitle}}" desc="{{history.markerDesc}}" marker="{{history.marker}}"></div>
                   </div>
               </div>
 
