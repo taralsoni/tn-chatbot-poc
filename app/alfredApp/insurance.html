@@ -1,7 +1,7 @@
 <div  ng-controller = "insuranceCtrl as vm">
-        
+
     <div id="boxBody" class="box-body" style="width:100%;position:absolute; bottom:40px; top:0px; overflow-y: auto;">
-    
+
       <div class="direct-chat-messages">
           <div data-ng-repeat="history in vm.conversationHistory track by $index">
               <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
@@ -13,15 +13,15 @@
                       <img class="direct-chat-img" src={{history.image}} alt="message user image">
                       <div   class="direct-chat-text" compile="history.text"></div>
                   </div>
-                  
+
                   <div  ng-if="history.addnData!=''" compile="history.addnData"> </div>
-                  <!-- <div style="margin-left:50px !important" class="direct-chat-msg"  ng-if="history.addnData!=''">
+                 <!-- <div style="margin-left:50px !important" class="direct-chat-msg"  ng-if="history.addnData!=''">
                       <div class="direct-chat-text-no-arrow" compile="history.addnData"></div>
                   </div> -->
-                  <div ng-if="history.isMap">
-                    <div class="direct-chat-text padding-0" my-map="" marker="{{history.marker}}"></div> 
+                  <div ng-if="history.dataType=='map'">
+                      <div class="direct-chat-text padding-0" my-map="" lat="{{history.latitude}}" long="{{history.longitude}}" title="{{history.markerTitle}}" desc="{{history.markerDesc}}" marker="{{history.marker}}"></div>
                   </div>
-              </div>    
+              </div>
 
               <div ng-if="history.userType == 'me'" class="direct-chat-msg right">
                   <div class="direct-chat-info clearfix">
@@ -29,13 +29,14 @@
                   </div>
 
                   <div>
-                    <img class="direct-chat-img" src={{history.image}} alt="message user image">
-                    <div class="direct-chat-text" compile="history.text"></div>
-                  </div>
-              </div>        
+                          <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                          <div class="direct-chat-text" compile="history.text"></div>
+
+                    </div>
+              </div>
           </div>
-    </div>
-  </div>
+      </div>
+</div>
 
   <div class="box-footer" style="position:absolute; bottom:0px;">
       <div class="input-group">

@@ -41,10 +41,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.init = function(){
 
-<<<<<<< HEAD
-            
-=======
->>>>>>> parent of d3fd71d... flag
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
@@ -71,12 +67,24 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
             history.addnData="";
-            //for map            
+            //for map
+            history.dataType='';
             history.markerTitle="";
             history.markerDesc="";
             history.latitude="";
             history.longitude="";
-            history.isMap=false;
+
+           var options = {
+                enableHighAccuracy: true
+            };
+
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                //console.log(pos.coords.latitude, pos.coords.longitude);
+            },
+            function(error) {
+                alert('Unable to get location: ' + error.message);
+            }, options);
 
             vm.conversationHistory.push(history);
 
@@ -126,10 +134,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             var control = "";
             var addnData = "";
             var date = vm.formatAMPM(new Date());
-<<<<<<< HEAD
-            
-=======
->>>>>>> parent of d3fd71d... flag
 
             var history = {};
             if (who == "me"){
@@ -157,28 +161,23 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     history.addnData="";
 
                     //for map
+                    history.dataType='';
                     history.markerTitle=""
                     history.markerDesc=""
                     history.latitude="";
                     history.longitude="";
-                    history.isMap=false;
-
 
                     control=chatService.getHtmlForDesc(text.msgBdy.text);
 
                     /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
-<<<<<<< HEAD
-                    if(text.msgBdy.text=='Send me your location'){                        
-=======
                     if(text.msgBdy.text=='Send me your location'){
->>>>>>> parent of d3fd71d... flag
                         var options = {
                             enableHighAccuracy: true
                         };
 
                         navigator.geolocation.getCurrentPosition(function(pos) {
                             //vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-                            //console.log(pos.coords.latitude, pos.coords.longitude);
+                            console.log(pos.coords.latitude, pos.coords.longitude);
                             vm.currentLatitude=pos.coords.latitude;
                             vm.currentLongitude=pos.coords.longitude;
                             vm.askApi('my lat '+ vm.currentLatitude + ' and long is ' + vm.currentLongitude);
@@ -215,11 +214,24 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
                             history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
                         }else if(attachment.type=='map'){
-                            
-                            history.marker=attachment.data;                            
-                            history.isMap=true;      
 
-                          }
+                            history.dataType='map';
+                            /*history.markerTitle="Shivaji Park Dadar, Mumbai"
+                            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
+                            history.latitude="19.0268";
+                            history.longitude="72.8389";*/
+
+                            /*history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;*/
+
+                            history.marker=attachment.data;
+                            history.markerTitle=attachment.data[0].name;
+                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
+                            history.latitude=attachment.data[0].latitude;
+                            history.longitude=attachment.data[0].longitude;
+                        }
 
                         /** Neha **/
                         /** Checking if attcachment type = text **/
