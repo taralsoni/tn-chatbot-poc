@@ -216,21 +216,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         }else if(attachment.type=='map'){
 
                             history.dataType='map';
-                            /*history.markerTitle="Shivaji Park Dadar, Mumbai"
-                            history.markerDesc="Map of Shivaji Park Dadar, Mumbai"
-                            history.latitude="19.0268";
-                            history.longitude="72.8389";*/
-
-                            /*history.markerTitle=attachment.data[0].name;
-                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
-                            history.latitude=attachment.data[0].latitude;
-                            history.longitude=attachment.data[0].longitude;*/
 
                             history.marker=attachment.data;
-                            history.markerTitle=attachment.data[0].name;
-                            history.markerDesc=attachment.data[0].name+","+attachment.data[0].vicinity;
-                            history.latitude=attachment.data[0].latitude;
-                            history.longitude=attachment.data[0].longitude;
                         }
 
                         /** Neha **/
