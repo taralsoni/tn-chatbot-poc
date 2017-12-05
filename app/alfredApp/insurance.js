@@ -78,13 +78,13 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 enableHighAccuracy: true
             };
 
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-                //console.log(pos.coords.latitude, pos.coords.longitude);
-            },
-            function(error) {
-                alert('Unable to get location: ' + error.message);
-            }, options);
+            // navigator.geolocation.getCurrentPosition(function(pos) {
+            //     vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            //     //console.log(pos.coords.latitude, pos.coords.longitude);
+            // },
+            // function(error) {
+            //     alert('Unable to get location: ' + error.message);
+            // }, options);
 
             vm.conversationHistory.push(history);
 
