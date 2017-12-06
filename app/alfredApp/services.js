@@ -210,7 +210,7 @@ app.service('chatService', function(){
             getHtmlForTable2:function(displayString,graphJson,chartId,containerId,varShowGraph){
                 control=
                  '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
-                    '<strong>'+displayString + '</strong><br>'+
+                    
                     '<table  class="table table-bordered table-striped">'+
                         '<thead>'+
                             '<tr>'+
