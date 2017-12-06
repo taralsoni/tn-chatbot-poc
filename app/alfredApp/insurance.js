@@ -286,7 +286,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         'buttonNames' : ['button1','button2','button3','button4','button5'],
                         'callBackFn' : 'vm.buttonCallBackFunction'
                     }
-                    control = chatService.getHtmlForButtons(jsonData);
+                    control = chatService.getHtmlForButtonsBanking(jsonData);
                 }
             }
             history.text = $sce.trustAsHtml(control);
