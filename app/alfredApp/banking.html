@@ -1,4 +1,4 @@
-
+<!-- 
 <div ng-controller="bankingCtrl as banking">
 <section class="content container-fluid ng-scope">
 <div class="row">
@@ -31,4 +31,53 @@
         </span>
     </div>
 </div>
+</div>
+ -->
+
+ <div ng-controller = "bankingCtrl as banking">
+
+    <div id="boxBody" class="box-body" style="width:100%;position:absolute; bottom:40px; top:0px; overflow-y: auto;">
+
+      <div class="direct-chat-messages">
+          <div data-ng-repeat="history in banking.conversationHistory track by $index">
+              <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
+                  <div class="direct-chat-info clearfix" ng-if="history.text!=''">
+                      <span class="direct-chat-timestamp pull-right">{{history.ts}}</span>
+                  </div>
+
+                  <div class="direct-chat-msg" ng-if="history.text!=''">
+                      <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                      <div class="direct-chat-text" compile="history.text"></div>
+                  </div>
+
+                  <div ng-if="history.addnData!=''" compile="history.addnData"> </div>
+                  <div ng-if="history.dataType=='map'">
+                      <div class="direct-chat-text padding-0" my-map="" marker="{{history.marker}}"></div>
+                  </div>
+              </div>
+
+              <div ng-if="history.userType == 'me'" class="direct-chat-msg right">
+                  <div class="direct-chat-info clearfix">
+                      <span class="direct-chat-timestamp pull-left">{{history.ts}}</span>
+                  </div>
+
+                  <div>
+                    <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                    <div class="direct-chat-text" compile="history.text"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>
+
+  <div class="box-footer" style="position:absolute; bottom:0px;">
+      <div class="input-group">
+          <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="banking.sendUserQuery()" ng-model="banking.userText">
+          <span style="padding-left:15px !important;" class="input-group-btn">
+              <button class="message-button btn icon-only" ng-click="banking.sendUserQuery()">
+                    <i class="fa fa-send-o send-button" class="send-button"></i>
+              </button>
+          </span>
+      </div>
+  </div>
 </div>

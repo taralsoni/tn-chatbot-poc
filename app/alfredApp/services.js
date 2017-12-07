@@ -1,5 +1,5 @@
 app.service('chatService', function(){
-       var control,botType;
+       var control,botType,showLandingScreen;
        var csScope=this;
        return{
             getHtmlForList:function(displayString,list){
@@ -146,11 +146,23 @@ app.service('chatService', function(){
                 return botType;
             },
             getHtmlForButtons:function(jsonData){
-                control = jsonData.openingText + '<br> <br>' + '<div class="row">';
+                /*control = jsonData.openingText + '<br> <br>' + '<div class="row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
                     control = control + '<div class="col-xs-6 col-sm-6 col-md-2" style="margin-bottom: 10px;"> <button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '($event)" value="'+jsonData.buttonNames[i]+'" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
                 }
                 control = control + '</row>';
+                return control;*/
+
+
+                control =jsonData.openingText + '<br> <br>' +
+                 '<div>';
+                control = control + '<div class="scroll-row">';
+                for(var i=0;i<jsonData.buttonNames.length;i++){
+                    
+                    control = control + '<div class="multiple-buttons" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn + '($event)">';//'<button class="multiple-buttons">';
+                    control = control + jsonData.buttonNames[i] + '</div>';
+                }
+                control = control + ' </div> </div>';
                 return control;
             },
 

@@ -20,6 +20,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
             var history = {};
             history.user = 'Sheldon Fernandes';
             history.image = banking.me.avatar;
+            history.userType = "me";
             control = buttonValue;
             history.text =  $sce.trustAsHtml(control);
             history.ts = banking.formatAMPM(new Date());
@@ -48,6 +49,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
     	  var history = {};
             history.user = 'Sheldon Fernandes';
             history.image = banking.me.avatar;
+            history.userType = "me";
             control = banking.userText;
             history.text =  $sce.trustAsHtml(control);
             history.ts = banking.formatAMPM(new Date());
@@ -66,6 +68,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
           var text = banking.userText;
           if (text !== "") {
               banking.insertChat("me", text);
+              history.userType = "me";
               banking.userText = "";
               input = text;
 			  banking.execute(text);
@@ -161,6 +164,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 		            }
 		            var control = chatService.getHtmlForButtons(jsonData); 
 		            history.image = banking.you.avatar;
+		            history.userType = "bot";
 		            history.user = 'Rosey@Banking';
 		            history.text = $sce.trustAsHtml(control);
 		            history.ts = banking.formatAMPM(new Date());
@@ -256,6 +260,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						//For graph and table
 			            var history = {};
 			            history.image = banking.you.avatar;
+			            history.userType = "bot";
 			            history.user = 'Rosey@Banking';
 			            //history.text = $sce.trustAsHtml(control);
 			            history.ts = banking.formatAMPM(new Date());
@@ -294,6 +299,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 					
 					  var history = {};
 			          history.image = banking.you.avatar;
+			          history.userType = "bot";
 			          history.text =  "Unfortunately data is not present for the combination of data";
 			          history.user = 'Rosey@Banking';
 			          history.ts =  banking.formatAMPM(new Date());
@@ -382,6 +388,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 		            }
 		            var control = chatService.getHtmlForButtons(jsonData); 
 		            history.image = banking.you.avatar;
+		            history.userType = "bot";
 		            history.user = 'Rosey@Banking';
 		            history.text = $sce.trustAsHtml(control);
 		            history.ts = banking.formatAMPM(new Date());
@@ -432,6 +439,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	            }
 	            var control = chatService.getHtmlForButtons(jsonData); 
 	            history.image = banking.you.avatar;
+	            history.userType = "bot";
 	            history.user = 'Rosey@Banking';
 	            history.text = $sce.trustAsHtml(control);
 	            history.ts = banking.formatAMPM(new Date());
@@ -442,6 +450,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 				test = data.result.speech;
 				var history = {};
 		          history.image = banking.you.avatar;
+		          history.userType = "bot";
 		          history.text =  test;
 		          history.user = 'Rosey@Banking';
 		          history.ts =  banking.formatAMPM(new Date());
@@ -462,6 +471,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
         
           var history = {};
           history.image = banking.you.avatar;
+          history.userType = "bot";
           history.text =  'Hi Rosey here. How can I help you!';
           history.user = 'Rosey@Banking';
           history.ts =  banking.formatAMPM(new Date());

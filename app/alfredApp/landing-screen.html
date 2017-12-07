@@ -1,5 +1,6 @@
 <div  class="main-bg" ng-controller="landingScreenCtrl as ctrl">
-	<div ng-if="ctrl.selectedBot==undefined">
+
+	<div ng-if="ctrl.selectedBot==undefined || ctrl.selectedBot==''">
 		<div class="box box-widget widget-user">
 			<div>
                 <div class="widget-user-header bg-aqua-active">
@@ -57,15 +58,18 @@
 	     </div>
 	</div>  
 	
-
-	<div ng-if="ctrl.selectedBot=='fintech'">
-		<div ng-include src="'alfredApp/insurance.html'"></div>
-	</div>
-	<div ng-if="ctrl.selectedBot=='banking'">
-		<div ng-include src="'alfredApp/banking.html'"></div>
-	</div>
-	<div ng-if="ctrl.selectedBot=='insurance'">
-		<div ng-include src="'alfredApp/insurance.html'"></div>
+	<div ng-if="ctrl.selectedBot!=undefined && ctrl.selectedBot!=''">
+		<img  resize ng-show="width <= 520"  class="bck-btn margin-top-5" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
+		<img  resize ng-show="width > 520" class="bck-btn margin-top-30" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
+		<div ng-if="ctrl.selectedBot=='fintech'">
+			<div ng-include src="'alfredApp/insurance.html'"></div>
+		</div>
+		<div ng-if="ctrl.selectedBot=='banking'">
+			<div ng-include src="'alfredApp/banking.html'"></div>
+		</div>
+		<div ng-if="ctrl.selectedBot=='insurance'">
+			<div ng-include src="'alfredApp/insurance.html'"></div>
+		</div>
 	</div>
 
 </div>
