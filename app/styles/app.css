@@ -1011,7 +1011,7 @@ img {
 .bck-btn{
     width: 20px;
     cursor: pointer;
-    
+
 }
 
 .margin-top-30{
@@ -1205,7 +1205,7 @@ img {
   }
 
 .select-bot-text {
-    margin: 20px;
+    margin-top: 25px;
     text-align: center;
     font-size: 20px;
     font-family: calibri;
@@ -1216,7 +1216,9 @@ img {
   padding-left: 0px !important;
   padding-right: 0px !important;
     text-align: center;
-	   margin: 20px !important;
+	   /*margin: 20px !important;*/
+     margin-bottom: 10px;
+     margin-top: 10px;
 	    /* border: 2px; */
 	   border-radius: 5px !important;
 	   border-color: #f39c12 !important;
@@ -1236,6 +1238,6 @@ img {
 .landing-row{
     margin-right: 0px !important;
     margin-left: 0px !important;
-    margin-top:15px !important;
+    /*margin-top:15px !important;*/
 }
 /* Neha CSS end */

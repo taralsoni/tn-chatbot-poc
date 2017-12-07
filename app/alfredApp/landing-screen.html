@@ -2,7 +2,7 @@
 
 
 	<div ng-if="ctrl.selectedBot==undefined || ctrl.selectedBot==''">
-		<hr style="margin-top: 30px !important;">
+
 			<div class="select-bot-text"> Select your Bot</div>
 
 			<div class="row landing-row">
@@ -41,8 +41,8 @@
 							</div>
 					</div>
 			</div>
-	</div>  
-	
+	</div>
+
 	<div ng-if="ctrl.selectedBot!=undefined && ctrl.selectedBot!=''">
 		<img  resize ng-show="width <= 520"  class="bck-btn margin-top-5" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
 		<img  resize ng-show="width > 520" class="bck-btn margin-top-30" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
