@@ -1,61 +1,46 @@
 <div  class="main-bg" ng-controller="landingScreenCtrl as ctrl">
 
-	<div ng-if="ctrl.selectedBot==undefined || ctrl.selectedBot==''">
-		<div class="box box-widget widget-user">
-			<div>
-                <div class="widget-user-header bg-aqua-active">
-                    <h3 class="widget-user-username">Sheldon Fernandes</h3>
-                    <h5 class="widget-user-desc">Consultant, PwC</h5>
-                </div>
-                <div class="widget-user-image top-70">
-                    <!-- <img class="img-circle" src="{{ctrl.user_avatar}}" alt="User Avatar"> -->
-                    <img class="img-circle" src="alfredApp/images/avatar.jpg" alt="User Avatar">
-                </div>
-            </div>    
 
-            <div class="box-footer">
-                <div class="row">
-                    <div class="col-sm-4 border-right">
-                        <div class="description-block">
-                            <h5 class="description-header"></h5>
-                            <span class="description-text"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 border-right">
-                        <div class="description-block">
-                            <h5 class="description-header"></h5>
-                            <span class="description-text"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="description-block">
-                            <h5 class="description-header"></h5>
-                            <span class="description-text"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row footer-row no-boder">
-	        <div class="col-lg-4 col-xs-4 bg-aqua  footer-bot display-table" ng-click="ctrl.goToBot('insurance')">	 
-	        	<div class="display-table-cell center-text-only">       	
-	        		<img src="alfredApp/images/insurance.png" class="bot-logo-size">
-	        		<p>Insurance</p>
-	        	</div>
-	        </div>
-	        <div class="col-lg-4 col-xs-4 bg-green footer-bot display-table" ng-click="ctrl.goToBot('banking')">
-	        	<div class="display-table-cell center-text-only">
-	        		<img src="alfredApp/images/banking.png" class="bot-logo-size">
-	        		<p>Banking</p>
-	        	</div>
-	        </div>
-	        <div class="col-lg-4 col-xs-4 bg-yellow  footer-bot display-table" ng-click="ctrl.goToBot('fintech')">	
-	        	<div class="display-table-cell center-text-only">        	
-	        		<img src="alfredApp/images/fintech.png" class="bot-logo-size">
-	        		<p>Fintech</p>
-	        	</div>
-	        </div>
-	     </div>
+	<div ng-if="ctrl.selectedBot==undefined || ctrl.selectedBot==''">
+		<hr style="margin-top: 30px !important;">
+			<div class="select-bot-text"> Select your Bot</div>
+
+			<div class="row landing-row">
+					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+							<div class="btn btn-success landing-button" style="text-align:center;">
+									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
+									<div style="color: #000000cc;padding-top: 5px;	">
+											Banking Customer
+									</div>
+							</div>
+					</div>
+					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('banking')">
+									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
+									<div style="color: #000000cc;padding-top: 5px;	">
+											Banking Internal
+									</div>
+							</div>
+					</div>
+			</div>
+			<div class="row landing-row" style="margin-top:5px !important;">
+					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('insurance')">
+									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
+									<div style="color: #000000cc;padding-top: 5px;	">
+											Insurance Customer
+									</div>
+							</div>
+					</div>
+					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+							<div class="btn btn-success landing-button" style="text-align:center; ">
+									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
+									<div style="color: #000000cc;padding-top: 5px;	">
+											Insurance Internal
+									</div>
+							</div>
+					</div>
+			</div>
 	</div>  
 	
 	<div ng-if="ctrl.selectedBot!=undefined && ctrl.selectedBot!=''">

@@ -412,7 +412,7 @@ a {
 
 #close-chat {
     position: absolute;
-    top: 2px;
+    top: 5px;
     right: 2px;
     font-size: 24px;
     /*border: 1px solid #dedede;*/
@@ -437,7 +437,7 @@ a {
 
 .minim-button {
     position: absolute;
-    top: 2px;
+    top: 5px;
     right: 26px;
     font-size: 24px;
     /*border: 1px solid #dedede;*/
@@ -1204,4 +1204,38 @@ img {
     background-color: transparent !important  ;
   }
 
+.select-bot-text {
+    margin: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-family: calibri;
+    color: #6b6e71;
+}
+
+.landing-button{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+    text-align: center;
+	   margin: 20px !important;
+	    /* border: 2px; */
+	   border-radius: 5px !important;
+	   border-color: #f39c12 !important;
+	       /* width: 150px; */
+	   padding-top: 15% !important;
+	   padding-bottom: 15% !important;
+     background-color: transparent !important;
+     width:80% !important;
+	/* height: 80%; */
+	/* width: 40vw; */
+	/* height: 40vw; */
+	/* height: 50%; */
+	/* width: 50%; */
+	/* height: 150px; */
+}
+
+.landing-row{
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    margin-top:15px !important;
+}
 /* Neha CSS end */
