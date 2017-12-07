@@ -17,9 +17,26 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             //"baseUrl": "http://ec2-13-126-130-219.ap-south-1.compute.amazonaws.com:8080/alfresco/service/api/",
         }
 
-        vm.buttonCallBackFunction = function(){
+        /*vm.buttonCallBackFunction = function(){
             console.log("Button was cliecked");
+        }*/
+
+        vm.buttonCallBackFunction = function(e){
+          var buttonValue = e.target.getAttribute('value');
+            console.log("Button was clicked");
+            var history = {};
+            history.user = 'Sheldon Fernandes';
+            history.image = vm.me.avatar;
+            history.userType = "me";
+            control = buttonValue;
+            history.text =  $sce.trustAsHtml(control);
+            history.ts = vm.formatAMPM(new Date());
+            vm.conversationHistory.push(history);
+            vm.askApi(control);
+            
+          
         }
+      
 
 
         vm.formatAMPM = function(date) {
@@ -202,8 +219,14 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
                         }
                         else if(attachment.type=='graph'){
+                            history.dataType='graph';
                             var fnData = {
                                 'callBackFn' : 'vm.setIsGraph'
+                            }
+                            var jsonData = {
+                                'openingText' : '',
+                                'buttonNames' : ['Print','Email','Option3','Option4'],
+                                'callBackFn' : 'vm.buttonCallBackFunction' 
                             }
 
                             vm.containerId='chart-container-' + vm.chartIndex;
@@ -212,7 +235,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                             history.showGraph = true;
                             history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
                             history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
-                            history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                            history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle view </span></div>';
+                            //history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                            history.addnData=history.addnData+chatService.getHtmlForButtons(jsonData);
                         }else if(attachment.type=='map'){
 
                             history.dataType='map';
@@ -259,25 +284,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     var fileURL = URL.createObjectURL(file);
                     win.location = fileURL;*/
                     //$http.get(text.data.pdfLink);
-
-                }
-                else if(text.type=='graph'){
-
-                    var jsonData = {
-                        'callBackFn' : 'vm.setIsGraph'
-                    }
-
-                    vm.graphTableArray[vm.chartIndex]=true;
-                    vm.graphJsonArray[vm.chartIndex]=text.data.multipleFields;
-
-                    vm.containerId='chart-container-' + vm.chartIndex;
-                    vm.chartId='revenue-chart-' + vm.chartIndex;
-
-                    control=chatService.getHtmlForGraph(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
-                    control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + jsonData.callBackFn + '(' + vm.chartIndex + ','  + vm.conversationHistory.length + ',\'' + vm.displayString + '\',\''  + vm.containerId + '\',\'' + vm.chartId +'\')" style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-                    control=control+chatService.getHtmlForTable(vm.displayString,text.data.multipleFields,vm.containerId,vm.chartId,vm.graphTableArray);
-
-                    vm.chartIndex++;
 
                 }
                 else if(text.type=='buttons'){

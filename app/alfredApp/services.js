@@ -146,15 +146,8 @@ app.service('chatService', function(){
                 return botType;
             },
             getHtmlForButtons:function(jsonData){
-                /*control = jsonData.openingText + '<br> <br>' + '<div class="row">';
-                for(var i=0;i<jsonData.buttonNames.length;i++){
-                    control = control + '<div class="col-xs-6 col-sm-6 col-md-2" style="margin-bottom: 10px;"> <button type="submit" class="btn btn-block btn-success" ng-click="' + jsonData.callBackFn + '($event)" value="'+jsonData.buttonNames[i]+'" style="margin-left: 20px;margin-right: 20px;">' + jsonData.buttonNames[i] + '</button>' + '</div>';
-                }
-                control = control + '</row>';
-                return control;*/
 
-
-                control =jsonData.openingText + '<br> <br>' +
+                control =jsonData.openingText + '<br>' +
                  '<div>';
                 control = control + '<div class="scroll-row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
@@ -247,11 +240,7 @@ app.service('chatService', function(){
 
                return control;
             },
-            getHtmlForGraph3:function(attachment,chartId,containerId,varShowGraph){
-                /*var graphJsonWithoutHeader=[];
-                for(var i=1;i<graphJson.length;i++){
-                    graphJsonWithoutHeader[i-1]=graphJson[i];
-                }*/
+            getHtmlForGraph3:function(attachment,chartId,containerId,varShowGraph){                
 
                 control='<div ng-show="' + varShowGraph + '" id="'+ containerId +'" style="height:40vh;padding-top: 5px;"></div>';
 
@@ -273,7 +262,7 @@ app.service('chatService', function(){
                                 caption: attachment.title,
                                 subcaption: "",
                                 startingangle: "120",
-                                showlabels: "0",
+                                showlabels: "1",
                                 showlegend: "1",
                                 enablemultislicing: "0",
                                 slicingdistance: "15",
@@ -292,6 +281,9 @@ app.service('chatService', function(){
                     revenueChart = FusionCharts('revenue-chart');
                 });
 
+
+
+                
                 return control+'<br>';
             },
             getHtmlForTable3:function(attachment,chartId,containerId,varShowGraph){
