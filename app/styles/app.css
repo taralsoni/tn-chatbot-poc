@@ -1021,6 +1021,14 @@ img {
 .margin-top-5{
     margin-top: 5px;
 }
+
+.toggle-btn{
+    margin-right: 20px;
+    float: right;
+    color: green;
+    font-weight: bold;
+    cursor: pointer;
+}
 /* kriti CSS end */
 
 
