@@ -55,8 +55,13 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             vm.userText = "";
         }
 
-
+        
         vm.init = function(){
+
+            vm.isMobile=chatService.getIsMobile();
+            console.log('isMobile detected',vm.isMobile);
+
+            vm.typing="...";
 
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
@@ -86,10 +91,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             history.addnData="";
             //for map
             history.dataType='';
-            history.markerTitle="";
-            history.markerDesc="";
-            history.latitude="";
-            history.longitude="";
+            history.marker="";
 
            var options = {
                 enableHighAccuracy: true
@@ -165,103 +167,104 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
 
+                if(text==vm.typing){
+                    control=chatService.getHtmlForDesc(text);
+                }else{
 
-                text=JSON.parse(text);
-                vm.displayString=text.displayString;
+                    text=JSON.parse(text);
+                    vm.displayString=text.displayString;
 
 
-                //kriti's code- new card1 ui requirement
-                //if no rows found
+                    //kriti's code- new card1 ui requirement
+                    //if no rows found
 
-                if(text.msgHdr.success=="true"){
+                    if(text.msgHdr.success=="true"){
 
-                    history.addnData="";
+                        history.addnData="";
 
-                    //for map
-                    history.dataType='';
-                    history.markerTitle=""
-                    history.markerDesc=""
-                    history.latitude="";
-                    history.longitude="";
+                        //for map
+                        history.dataType='';
+                        history.marker="";
 
-                    control=chatService.getHtmlForDesc(text.msgBdy.text);
+                        control=chatService.getHtmlForDesc(text.msgBdy.text);
 
-                    /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
-                    if(text.msgBdy.text=='Send me your location'){
-                        var options = {
-                            enableHighAccuracy: true
-                        };
+                        /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
+                        if(text.msgBdy.text=='Send me your location'){
+                            var options = {
+                                enableHighAccuracy: true
+                            };
 
-                        navigator.geolocation.getCurrentPosition(function(pos) {
-                            //vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-                            console.log(pos.coords.latitude, pos.coords.longitude);
-                            vm.currentLatitude=pos.coords.latitude;
-                            vm.currentLongitude=pos.coords.longitude;
-                            vm.askApi('my lat '+ vm.currentLatitude + ' and long is ' + vm.currentLongitude);
-                            //console.log('my lat '+ vm.currentLatitude + ' and long is '+ vm.currentLongitude);
-                        },
-                        function(error) {
-                            alert('Unable to get location: ' + error.message);
-                        }, options);
-                        control="";
+                            navigator.geolocation.getCurrentPosition(function(pos) {
+                                //vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                                console.log(pos.coords.latitude, pos.coords.longitude);
+                                vm.currentLatitude=pos.coords.latitude;
+                                vm.currentLongitude=pos.coords.longitude;
+                                vm.askApi('my lat '+ vm.currentLatitude + ' and long is ' + vm.currentLongitude);
+                                //console.log('my lat '+ vm.currentLatitude + ' and long is '+ vm.currentLongitude);
+                            },
+                            function(error) {
+                                alert('Unable to get location: ' + error.message);
+                            }, options);
+                            control="";
 
-                    }
-
-                    var attachment="";
-                    for(var i=0;i<text.msgBdy.attachments.length;i++){
-                        attachment=text.msgBdy.attachments[i];
-                        if(text.msgBdy.attachments[i].type=='cards'){
-                            history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                         }
-                        else if(attachment.type=='doubleColumnText'){
-                            history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
-                        }else if(attachment.type=='itemList'){
-                            history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
-                        }
-                        else if(attachment.type=='graph'){
-                            history.dataType='graph';
-                            var fnData = {
-                                'callBackFn' : 'vm.setIsGraph'
+
+                        var attachment="";
+                        for(var i=0;i<text.msgBdy.attachments.length;i++){
+                            attachment=text.msgBdy.attachments[i];
+                            if(text.msgBdy.attachments[i].type=='cards'){
+                                history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
                             }
-                            var jsonData = {
-                                'openingText' : '',
-                                'buttonNames' : ['Print','Email','Option3','Option4'],
-                                'callBackFn' : 'vm.buttonCallBackFunction' 
+                            else if(attachment.type=='doubleColumnText'){
+                                history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
+                            }else if(attachment.type=='itemList'){
+                                history.addnData=history.addnData+chatService.getHtmlForKeyValueCard(attachment);
+                            }
+                            else if(attachment.type=='graph'){
+                                history.dataType='graph';
+                                var fnData = {
+                                    'callBackFn' : 'vm.setIsGraph'
+                                }
+                                var jsonData = {
+                                    'openingText' : '',
+                                    'buttonNames' : ['Print','Email','Option3','Option4'],
+                                    'callBackFn' : 'vm.buttonCallBackFunction' 
+                                }
+
+                                vm.containerId='chart-container-' + vm.chartIndex;
+                                vm.chartId='revenue-chart-' + vm. chartIndex;
+
+                                history.showGraph = true;
+                                history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
+                                history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
+                                history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle view </span></div>';
+                                //history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                                history.addnData=history.addnData+chatService.getHtmlForButtons(jsonData);
+                            }else if(attachment.type=='map'){
+
+                                history.dataType='map';
+
+                                history.marker=attachment.data;
                             }
 
-                            vm.containerId='chart-container-' + vm.chartIndex;
-                            vm.chartId='revenue-chart-' + vm. chartIndex;
+                            /** Neha **/
+                            /** Checking if attcachment type = text **/
+                            else if(text.msgBdy.attachments[i].type=='text'){
+                                history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
+                            }
 
-                            history.showGraph = true;
-                            history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
-                            history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
-                            history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle view </span></div>';
-                            //history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-                            history.addnData=history.addnData+chatService.getHtmlForButtons(jsonData);
-                        }else if(attachment.type=='map'){
-
-                            history.dataType='map';
-
-                            history.marker=attachment.data;
+                            else if(text.msgBdy.attachments[i].type=='buttons'){
+                                history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
+                            }
+                            /** end **/
                         }
-
-                        /** Neha **/
-                        /** Checking if attcachment type = text **/
-                        else if(text.msgBdy.attachments[i].type=='text'){
-                            history.addnData=history.addnData + chatService.getHtmlForText(text.msgBdy.attachments[i]);
-                        }
-
-                        else if(text.msgBdy.attachments[i].type=='buttons'){
-                            history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
-                        }
-                        /** end **/
+                    }//if msghdr success false
+                    else{
+                        control=chatService.getHtmlForDesc(text.msgHdr.rsn);
                     }
-                }
-                else{
-                    control=chatService.getHtmlForDesc(text.msgHdr.rsn);
-                }
+                } //else end if is not typing   
 
-
+                /*old json ui
                 if(text.type=='list'){
                   vm.list=text.data.list;
                   control=chatService.getHtmlForList(vm.displayString,vm.list);
@@ -280,9 +283,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     control=chatService.getHtmlForImage(vm.displayString,text.data.image);
 
                 }else if(text.type=="pdf"){
-                    /*var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
+                    var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
                     var fileURL = URL.createObjectURL(file);
-                    win.location = fileURL;*/
+                    win.location = fileURL;
                     //$http.get(text.data.pdfLink);
 
                 }
@@ -293,10 +296,10 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         'callBackFn' : 'vm.buttonCallBackFunction'
                     }
                     control = chatService.getHtmlForButtonsBanking(jsonData);
-                }
+                }*/
             }
             history.text = $sce.trustAsHtml(control);
-            history.addnData = $sce.trustAsHtml(history.addnData  );
+            history.addnData = $sce.trustAsHtml(history.addnData);
             history.ts = vm.formatAMPM(new Date());
 
 
@@ -345,6 +348,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     //call apiservice
                     vm.askApi(text);
                     vm.insertChat("me", text);
+                    vm.insertChat("you",vm.typing);
                     vm.userText = "";
                 }
         };

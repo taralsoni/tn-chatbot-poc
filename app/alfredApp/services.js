@@ -1,5 +1,5 @@
 app.service('chatService', function(){
-       var control,botType,showLandingScreen;
+       var control,botType,isMobile;
        var csScope=this;
        return{
             getHtmlForList:function(displayString,list){
@@ -144,6 +144,12 @@ app.service('chatService', function(){
             },
             getBotType:function(){
                 return botType;
+            },
+            setIsMobile:function(flag){
+                isMobile=flag;
+            },
+            getIsMobile:function(){
+                return isMobile;
             },
             getHtmlForButtons:function(jsonData){
 
@@ -351,12 +357,12 @@ app.service('chatService', function(){
                                     }
 
                 control=control+'</div>'+
-                                '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                    '<div style="float:right"  class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
-                                    '<div style="float:right;cursor: pointer;"  class="black-font" ng-click="vm.callIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
+                                '<div class="col-xs-6 col-md-6 col-sm-6" style="padding-left:20px">'+
+                                    '<div class="attachment-title-font font-color">'+ attachment.rightTitle +'</div>'+
+                                    '<div class="rt-subtitle-btn" ng-click="vm.callIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
 
                                         for(var i=0;i<attachment.rightData.length;i++){
-                                            control=control+'<div style="float:right">' + attachment.rightData[i] + '</div>';
+                                            control=control+'<div>' + attachment.rightData[i] + '</div>';
                                         }
 
                 control=control+'</div>'+
@@ -383,8 +389,8 @@ app.service('chatService', function(){
                                     '<div class="col-xs-6 col-md-6 col-sm-6">'+
                                         '<div>'+ attachment.data[i].details[j].label + '</div>'+
                                     '</div>'+
-                                    '<div class="col-xs-6 col-md-6 col-sm-6">'+
-                                        '<div style="float:right">'+ attachment.data[i].details[j].value + '</div>'+
+                                    '<div class="col-xs-6 col-md-6 col-sm-6" style="padding-left:20px">'+
+                                        '<div>'+ attachment.data[i].details[j].value + '</div>'+
                                     '</div>'+
                                 '</div>';  //row ends here
                             }

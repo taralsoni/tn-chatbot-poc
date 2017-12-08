@@ -967,7 +967,8 @@ img {
 }
 
 .attachment-title-font{
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .font-color{
@@ -1029,6 +1030,44 @@ img {
     font-weight: bold;
     cursor: pointer;
 }
+
+.right-margin-footer{
+    margin-right: 20px;
+}
+
+.alignment{
+    width:100%;
+    position:absolute;
+    bottom:40px;
+    top:0px; 
+    overflow-y: auto;
+}
+
+.alignment-with-padding{
+    width:100%;
+    position:absolute;
+    bottom:0;
+    padding-bottom: 30% !important;
+    top:0px; 
+    overflow-y: auto;
+}
+
+.no-x-scroll{
+    overflow-x: hidden !important;
+    width: 100%;
+}
+
+.rt-subtitle-btn{
+    /*float:right;*/
+    cursor: pointer;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.green-font{
+    color: #4CAF50 !important;
+    font-weight: bold;
+}
 /* kriti CSS end */
 
 
@@ -1037,7 +1076,7 @@ img {
 .message-css{
     font-style: italic;
     font-family: calibri;
-    font-size: 13px;
+    font-size: 16px;
     background-color: #d3d3d312;
     border: 0px;
     border-radius: 4px;
@@ -1066,7 +1105,7 @@ img {
 
 
 .direct-chat-text-no-arrow {
-    font-size: 12px;
+    font-size: 14px;
     border-radius: 5px;
     position: relative;
     padding: 5px 10px;
@@ -1074,7 +1113,7 @@ img {
     border: 0px solid #d2d6de;
     /*margin: 5px 0 0 50px;*/
     color: #6f6f6f;
-    font-weight: bold;
+    /*font-weight: bold;*/
     border-radius: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -1084,7 +1123,7 @@ img {
 
 .text-type-msg-title{
     color: #828282;
-    font-size: 14px !important;
+    font-size: 16px !important;
 }
 
 .checked {
@@ -1097,13 +1136,13 @@ img {
 
 .text-type-msg-subtitle{
     color: #a4a4a4;
-    font-size: 8px !important;
+    font-size: 12px !important;
     font-weight: normal;
 }
 
 .text-type-msg-desc{
     color: #a4a4a4;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .label-icon{
@@ -1116,7 +1155,7 @@ img {
 
 .text-type-msg-desc-10{
     color: #a4a4a4;
-    font-size: 9px !important;
+    font-size: 12px !important;
 }
 
 .btn-chat{
