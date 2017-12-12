@@ -151,7 +151,7 @@ app.service('chatService', function(){
             getIsMobile:function(){
                 return isMobile;
             },
-            getHtmlForButtons:function(jsonData){
+            /*getHtmlForScrollButtons:function(jsonData){
 
                 control =jsonData.openingText + '<br>' +
                  '<div>';
@@ -162,6 +162,18 @@ app.service('chatService', function(){
                     control = control + jsonData.buttonNames[i] + '</div>';
                 }
                 control = control + ' </div> </div>';
+                return control;
+            },*/
+
+            getHtmlForButtons:function(jsonData){
+
+                control ='<div class="vertical-btn-div">';
+                control=control+'<div class="vertical-btn-hdr">'+jsonData.openingText+'</div>';
+                for(var i=0;i<jsonData.buttonNames.length;i++){                    
+                    control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn + '($event)">';//'<button class="multiple-buttons">';
+                    control = control + jsonData.buttonNames[i] + '</div>';
+                }
+                control = control + ' </div>';
                 return control;
             },
 
@@ -320,6 +332,22 @@ app.service('chatService', function(){
 
                return control;
             },
+            getHtmlForScrollCards:function(attachment){
+                var card;
+
+                control = '<div class="scrolling-wrapper">';
+                for(var i=0;i<attachment.data.length;i++){
+                    card=attachment.data[i];
+                    control = control + '<div class="card">'+
+                                            '<img class="card-image"  src="' + card.image +'">'+
+                                            '<div class="card-header">'+ card.title + '</div>' +
+                                            '<div class="card-text">' + card.description +'</div>' +
+                                            '<div class="card-text card-text-bottom" ng-click="vm.callIntent(\'' + card.callBackFn +'\')">' + card.postText +'</div>'+
+                                        '</div>';
+                }
+                control = control + '</div>';
+                return control;
+            },  /*      
             getHtmlForCard:function(attachment){
                 var card;
                 control = '<div  style="height:100px !important;">';
@@ -341,7 +369,7 @@ app.service('chatService', function(){
                 }
                 control = control + '</carousel> </div> </div>';
                 return control;
-            },
+            },*/
             getHtmlForDblColCard:function(attachment){
               control =  '<div class="direct-chat-msg" style="margin-left:50px; margin-bottom:2px !important;">';
               control = control + '<div>';

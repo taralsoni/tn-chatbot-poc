@@ -908,16 +908,20 @@ a {
 }
 
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
     transition: 0.3s;
-    border-radius: 5px; /* 5px rounded corners */
+    border-radius: 5px;  
     margin: 25px;
-    background-color: #eb8c00;
+    border: 1px solid #9e9e9e21;
     display: inline-block;
+    width:180px;
+    margin-left: 10px;
+    color: #FF9800;
+    /*background-image: url('../../app/alfredApp/images/back.png');*/
 }
 
 img {
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px 5px 0 0;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -948,19 +952,16 @@ img {
 .scrolling-wrapper {
   overflow-x: scroll;
   overflow-y: hidden;
-  height:120px;
-}
-
+  white-space: nowrap;
+  padding-left: 30px;
 
   .card {
     display: inline-block;
-    white-space: normal;
+    width: 50%;
   }
-
-
-.scrolling-wrapper::webkit-scrollbar{
-    display: none;
 }
+
+
 
 .padding-0{
     padding:0 !important;
@@ -1000,6 +1001,10 @@ img {
     font-weight: normal;
 }
 
+
+
+
+
 .scroll-row{
     overflow-x: scroll;
 }
@@ -1029,6 +1034,35 @@ img {
     color: green;
     font-weight: bold;
     cursor: pointer;
+    font-size: 12px;
+}
+
+.vertical-btn-div{
+   border-radius: 10px;
+    border: 1px solid #9e9e9e2b;
+    padding: 0px 7px;
+    text-align: center;
+    margin: 10px;
+}
+
+.vertical-btn-hdr{
+    padding: 7px;
+    border-bottom: 1px solid #9e9e9e2b;
+}
+
+.vertical-btns{
+    border-bottom: 1px solid #9e9e9e2b;
+    color: orange;
+    padding: 7px;
+    cursor: pointer;
+}
+
+.vertical-btns:hover,
+.vertical-btns:active,
+.vertical-btns.hover {
+    background-color: #ffa500 !important;
+    color: white;
+    border-color: #ffa500 !important;
 }
 
 .right-margin-footer{
@@ -1199,7 +1233,7 @@ img {
 
 .card-image{
   height: 100px !important;
-  width: 100px;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -1222,34 +1256,47 @@ img {
     font-size: 14px;
     font-weight: bold;
     font-family: calibri;
-    padding-top: 5px;
+    padding: 5px;
     text-align: left;
     margin-left: 0px !important;
     margin-right: 0px !important;
+    white-space: normal;
+    text-align: center;
 }
 
 .card-text{
   font-size: 10px;
   font-weight : normal;
   font-family: calibri;
-  padding-top:3px;
+  padding:3px;
   text-align: left;
   margin-left: 0px !important;
   margin-right: 0px !important;
+  white-space: normal;
+  text-align: center;
+  height: 50px;
 }
 
 .card-text-bottom{
-    bottom:5px;
-    position:absolute;
+    white-space: normal;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    border-top: 1px solid #9e9e9e40;
+    font-size: 12px;
+    height: auto;
+    color:#9E9E9E;
 }
 
-.carousel-indicators li {
-      border:0px!important;
-  }
-.carousel-indicators  .active {
-
-    background-color: transparent !important  ;
-  }
+.card-text-bottom:hover,
+.card-text-bottom:active,
+.card-text-bottom.hover {
+    background-color: #ffa500 !important;
+    color: white;
+    border-color: #ffa500 !important;
+}
 
 .select-bot-text {
     margin-top: 25px;

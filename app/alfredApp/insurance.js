@@ -71,7 +71,10 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
+            }else if(vm.botType=='banking_customer'){
+                vm.accessToken='69b965b353f24a1ea522bc52c506b548';
             }
+
 
             vm.client= new ApiAi.ApiAiClient({
                 accessToken: vm.accessToken
@@ -213,7 +216,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         for(var i=0;i<text.msgBdy.attachments.length;i++){
                             attachment=text.msgBdy.attachments[i];
                             if(text.msgBdy.attachments[i].type=='cards'){
-                                history.addnData=chatService.getHtmlForCard(text.msgBdy.attachments[i]);
+                                history.addnData=chatService.getHtmlForScrollCards(text.msgBdy.attachments[i]);
                             }
                             else if(attachment.type=='doubleColumnText'){
                                 history.addnData=history.addnData+chatService.getHtmlForDblColCard(attachment);
@@ -227,7 +230,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                                 }
                                 var jsonData = {
                                     'openingText' : '',
-                                    'buttonNames' : ['Print','Email','Option3','Option4'],
+                                    'buttonNames' : ['Print','Email','Save as JPEG','Save as PNG'],
                                     'callBackFn' : 'vm.buttonCallBackFunction' 
                                 }
 
@@ -237,8 +240,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                                 history.showGraph = true;
                                 history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
                                 history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
-                                history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle view </span></div>';
-                                //history.addnData=history.addnData+'<div class="row"><button type="submit" class="col-sm-5 col-md-5 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
+                                history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
+
                                 history.addnData=history.addnData+chatService.getHtmlForButtons(jsonData);
                             }else if(attachment.type=='map'){
 
@@ -264,39 +267,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                     }
                 } //else end if is not typing   
 
-                /*old json ui
-                if(text.type=='list'){
-                  vm.list=text.data.list;
-                  control=chatService.getHtmlForList(vm.displayString,vm.list);
-
-                }else if(text.type=='description'){
-                    control=chatService.getHtmlForDesc(text.data.text);
-
-                }else if(text.type=='link'){
-
-                    control=chatService.getHtmlForLink(vm.displayString,text.data.link);
-                }else if(text.type=='longDescription'){
-
-                        control=chatService.getHtmlForJson(vm.displayString,text.data.multipleFields);
-                }else if(text.type=="image"){
-                    //vm.encodedImg = arrayBufferToBase64(displayText.data.image);
-                    control=chatService.getHtmlForImage(vm.displayString,text.data.image);
-
-                }else if(text.type=="pdf"){
-                    var file = new Blob([displayText.data.pdf], {type: 'application/pdf'});
-                    var fileURL = URL.createObjectURL(file);
-                    win.location = fileURL;
-                    //$http.get(text.data.pdfLink);
-
-                }
-                else if(text.type=='buttons'){
-                    var jsonData = {
-                        'openingText' : 'Hey, Showing you monthly results',
-                        'buttonNames' : ['button1','button2','button3','button4','button5'],
-                        'callBackFn' : 'vm.buttonCallBackFunction'
-                    }
-                    control = chatService.getHtmlForButtonsBanking(jsonData);
-                }*/
+                
             }
             history.text = $sce.trustAsHtml(control);
             history.addnData = $sce.trustAsHtml(history.addnData);

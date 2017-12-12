@@ -6,7 +6,7 @@
 			<div class="select-bot-text"> Select your Bot</div>
 
 			<div class="row landing-row">
-					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;" ng-click="ctrl.goToBot('fintech')">
+					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;" ng-click="ctrl.goToBot('banking_customer')">
 							<div class="btn btn-success landing-button" style="text-align:center;">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
 									<div style="color: #000000cc;padding-top: 5px;	">
@@ -33,7 +33,7 @@
 							</div>
 					</div>
 					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-							<div class="btn btn-success landing-button" style="text-align:center; ">
+							<div class="btn btn-success landing-button" style="text-align:center;"  ng-click="ctrl.goToBot('fintech')">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
 									<div style="color: #000000cc;padding-top: 5px;	">
 											Insurance Internal
@@ -46,6 +46,9 @@
 	<div ng-if="ctrl.selectedBot!=undefined && ctrl.selectedBot!=''">
 		<img  resize ng-show="width <= 520"  class="bck-btn margin-top-5" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
 		<img  resize ng-show="width > 520" class="bck-btn margin-top-30" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
+		<div ng-if="ctrl.selectedBot=='banking_customer'">
+			<div ng-include src="'alfredApp/insurance.html'"></div>
+		</div>
 		<div ng-if="ctrl.selectedBot=='fintech'">
 			<div ng-include src="'alfredApp/insurance.html'"></div>
 		</div>

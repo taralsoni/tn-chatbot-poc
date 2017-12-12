@@ -1,46 +1,10 @@
-<!-- 
-<div ng-controller="bankingCtrl as banking">
-<section class="content container-fluid ng-scope">
-<div class="row">
-<div class="col-xs-12 col-sm-12 col-md-12 chat-window">
-
-    <ol id="autoscroll" class="timeline">
-      <li data-ng-repeat="history in banking.conversationHistory track by $index">
-
-          <img class="fa direct-chat-img" src="{{history.image}}" alt="">
-                    <div class="timeline-item">
-
-                        <h3 class="timeline-header"><a style="margin-right: 5px;">{{history.user}}</a><i class="fa fa-clock-o"></i> {{history.ts}}</h3>
-                        <div class="timeline-body">
-                          <span compile="history.text"></span>
-                        </div>
-                    </div>
-        </li>
-    </ol>
-</div>
-</div>
-
-</section>
-
-<div class="box-footer">
-
-    <div class="input-group">
-        <input type="text" name="message" placeholder="Type Message ..." class="form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="banking.sendUserQuery()" ng-model="banking.userText">
-        <span class="input-group-btn">
-            <button class="btn btn-block btn-success" ng-click="banking.sendUserQuery()">Send</button>
-        </span>
-    </div>
-</div>
-</div>
- -->
-
  <div ng-controller = "bankingCtrl as banking">
 
-    <div id="boxBody" class="box-body" style="width:100%;position:absolute; bottom:40px; top:0px; overflow-y: auto;">
+    <div id="boxBody" class="box-body"  ng-class="{'alignment-with-padding':banking.isMobile,'alignment':!banking.isMobile}">
 
-      <div class="direct-chat-messages">
+      <div class="direct-chat-messages no-x-scroll">
           <div data-ng-repeat="history in banking.conversationHistory track by $index">
-              <div ng-if="history.userType == 'bot'" class="direct-chat-msg">
+              <div ng-if="history.userType == 'bot'"  ng-hide="history.text==banking.typing && $index!=banking.conversationHistory.length-1 " class="direct-chat-msg">
                   <div class="direct-chat-info clearfix" ng-if="history.text!=''">
                       <span class="direct-chat-timestamp pull-right">{{history.ts}}</span>
                   </div>
@@ -50,7 +14,7 @@
                       <div class="direct-chat-text" compile="history.text"></div>
                   </div>
 
-                  <div ng-if="history.addnData!=''" compile="history.addnData"> </div>
+                  <div  ng-class="{'direct-chat-text-no-arrow':history.dataType=='graph'}"  ng-if="history.addnData!=''" compile="history.addnData"> </div>
                   <div ng-if="history.dataType=='map'">
                       <div class="direct-chat-text padding-0" my-map="" marker="{{history.marker}}"></div>
                   </div>
@@ -70,7 +34,7 @@
       </div>
 </div>
 
-  <div class="box-footer" style="position:absolute; bottom:0px;">
+  <div class="box-footer" style="position:fixed;" resize ng-class="{'right-margin-footer':width>520}">
       <div class="input-group">
           <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="banking.sendUserQuery()" ng-model="banking.userText">
           <span style="padding-left:15px !important;" class="input-group-btn">
