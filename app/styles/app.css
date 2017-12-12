@@ -917,7 +917,7 @@ a {
     width:180px;
     margin-left: 10px;
     color: #FF9800;
-    /*background-image: url('../../app/alfredApp/images/back.png');*/
+    background: white;
 }
 
 img {
@@ -1101,6 +1101,14 @@ img {
 .green-font{
     color: #4CAF50 !important;
     font-weight: bold;
+}
+
+.attachment-data-array{
+    font-size: 12px;
+}
+
+.attachment-left-subtitle{
+    font-size: 14px;
 }
 /* kriti CSS end */
 

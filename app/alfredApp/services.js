@@ -151,7 +151,7 @@ app.service('chatService', function(){
             getIsMobile:function(){
                 return isMobile;
             },
-            /*getHtmlForScrollButtons:function(jsonData){
+            getHtmlForScrollButtons:function(jsonData){
 
                 control =jsonData.openingText + '<br>' +
                  '<div>';
@@ -163,7 +163,7 @@ app.service('chatService', function(){
                 }
                 control = control + ' </div> </div>';
                 return control;
-            },*/
+            },
 
             getHtmlForButtons:function(jsonData){
 
@@ -208,7 +208,7 @@ app.service('chatService', function(){
                                         caption: "",
                                         subcaption: "",
                                         startingangle: "120",
-                                        showlabels: "0",
+                                        showlabels: "1",
                                         showlegend: "1",
                                         enablemultislicing: "0",
                                         slicingdistance: "15",
@@ -378,10 +378,10 @@ app.service('chatService', function(){
                 control=control + '<div class="row" style="padding:5px 10px">'+
                             '<div class="col-xs-6 col-md-6 col-sm-6">'+
                                 '<div class="attachment-title-font">'+ attachment.leftTitle + '</div>'+
-                                '<div>'+ attachment.leftSubTitle +'</div>';
+                                '<div class="attachment-left-subtitle">'+ attachment.leftSubTitle +'</div>';
 
                                     for(var i=0;i<attachment.leftData.length;i++){
-                                        control=control+'<div>' + attachment.leftData[i] + '</div>';
+                                        control=control+'<div class="attachment-data-array">' + attachment.leftData[i] + '</div>';
                                     }
 
                 control=control+'</div>'+
@@ -390,7 +390,7 @@ app.service('chatService', function(){
                                     '<div class="rt-subtitle-btn" ng-click="vm.callIntent(\'' + attachment.rightSubTitleCallbackFn +'\')">'+ attachment.rightSubTitle +'</div>';
 
                                         for(var i=0;i<attachment.rightData.length;i++){
-                                            control=control+'<div>' + attachment.rightData[i] + '</div>';
+                                            control=control+'<div class="attachment-data-array">' + attachment.rightData[i] + '</div>';
                                         }
 
                 control=control+'</div>'+

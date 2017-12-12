@@ -271,6 +271,12 @@
 				              var fnData = {
 				                    'callBackFn' : 'banking.setIsGraph'     
 				              }
+
+				              var btnData = {
+	                                'openingText' : '',
+	                                'buttonNames' : ['Print','Email','Save as JPEG','Save as PNG'],
+	                                'callBackFn' : 'banking.buttonCallBackFunction' 
+	                            }
 				             
 				             banking.chartIndex=banking.chartIndex+1;
 				              banking.containerId='chart-container-' + banking.chartIndex;
@@ -281,10 +287,19 @@
 				             /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
 				                  
 				              /*html for toggle button */
-				              control=control+'<div class="row"><button type="submit" class="col-sm-3 col-md-3 btn btn-success" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' style="margin-left: 20px;margin-right: 20px;">  Toggle view </button></div>';
-				        
+				              control=control+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
+				        	  control=control+chatService.getHtmlForScrollButtons(btnData);
 				              history.text = $sce.trustAsHtml(control);
-				             // banking.conversationHistory.push(history);			
+				              //banking.conversationHistory.push(history);			
+				              if ($scope.$$phase) { // most of the time it is "$digest"
+						            applyFn(history);
+						      } else {
+						            $scope.$apply(applyFn(history));
+						      }
+							  $timeout(function() {
+						          var scroller = document.getElementById("boxBody");
+						          scroller.scrollTop = scroller.scrollHeight;
+						      }, 0, false);
 							
 						}
 						else{

@@ -83,12 +83,17 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             var history = {};
             if(vm.botType=='insurance'){
                 history.user = 'Rosey@Insurance';
+                history.text =  'Hi! I am Morpheus. I can help you with anything related to Insurance ';
             }else if(vm.botType=='fintech'){
                 history.user = 'Rosey@Fintech';
+                history.text =  'Hi! I am Morpheus. I can help you with anything related to Fintech ';
+            }else if(vm.botType=='banking_customer'){
+                history.user = 'Rosey@CustomerBanking';
+                history.text =  'Hi! I am Morpheus. I can help you with anything related to Customer Banking ';
             }
 
             history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-            history.text =  'Hi! I am Morpheus. I can help you with anything related to insurance ';
+            
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
             history.addnData="";
@@ -241,7 +246,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                                 history.addnData=history.addnData+chatService.getHtmlForGraph3(attachment,vm.containerId,vm.chartId,'history.showGraph');
                                 history.addnData=history.addnData+chatService.getHtmlForTable3(attachment,vm.containerId,vm.chartId,'history.showGraph');
                                 history.addnData=history.addnData+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
-
                                 history.addnData=history.addnData+chatService.getHtmlForButtons(jsonData);
                             }else if(attachment.type=='map'){
 
