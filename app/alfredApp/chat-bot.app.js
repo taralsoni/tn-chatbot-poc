@@ -18,6 +18,11 @@ var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
             templateUrl: 'alfredApp/banking.html',
             controller: 'bankingCtrl as banking'
         })
+        .state('insurance_internal', {
+            url: '/insurance_internal',
+            templateUrl: 'alfredApp/insurance_internal.html',
+            controller: 'insuranceInternalCtrl as insurance'
+        })
         .state('alfredApp', {
             url: '/alfredApp',
             templateUrl: 'alfredApp/landing-screen.html',

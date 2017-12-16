@@ -1,5 +1,4 @@
-app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$sce','$http','$timeout', 
-	                               function($scope,$compile,chatService,$sce,$http,$timeout) {
+app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,$http,$timeout) {	                               	
 		//add controller name	
 		//controllerName as insurance
 			
@@ -95,8 +94,7 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
 	  	}
 
 		
-		insurance.execute= function(text)
-		{
+		insurance.execute= function(text){
 			   	  
 	    	//hit api.ai on the user input
 	  		var accessToken = "1535f11175524f9eb220cd54ed6508b5";
@@ -135,9 +133,10 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
 							var cars = new Array()
 							
 							var formattedData="";
-							for (var k in input)
+							for (var k in input){
 								if (k != "data" && input[k] != "all")
 									formattedData = formattedData + "<br/>" + k + " " + input[k];
+							}
 
 							formattedData = formattedData + "\n"
 									
@@ -192,8 +191,7 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
 							var chartValues = [];
 							chartValues[i]={"value":strhead[1],"label":strhead[0]};
 							i++;
-							for (j in strnum)
-							{
+							for (j in strnum){
 								chartValues[i]={ "value" : strnum[j] , "label" : xLabels[j] };
 								i++;
 							}
@@ -228,13 +226,15 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
 				             
 				             insurance.chartIndex=insurance.chartIndex+1;
 				              insurance.containerId='chart-container-' + insurance.chartIndex;
-				              insurance.chartId='revenue-chart-' + insurance.chartIndex;  
+				              insurance.chartId='revenue-chart-' + insurance.chartIndex; 
 
-				            /* Html for Graph*/ control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,insurance.containerId,insurance.chartId,'history.showGraph');    
+				            // Html for Graph 
+				            control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,insurance.containerId,insurance.chartId,'history.showGraph');    
 				             
-				             /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
+				             // Html for Graph
+				            control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
 				                  
-				              /*html for toggle button */
+				              //html for toggle button 
 				              control=control+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
 				        	  control=control+chatService.getHtmlForScrollButtons(btnData);
 				              history.text = $sce.trustAsHtml(control);
@@ -305,7 +305,7 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
 						}
 					}		
 				
-						if ((data.result.metadata.intentName == "login_issuance") ||
+					if ((data.result.metadata.intentName == "login_issuance") ||
 								(data.result.metadata.intentName == "login_issuance_input")) {
 						var initspeech = JSON.stringify(data.result.speech);
 						var startspeech = initspeech;
@@ -397,11 +397,12 @@ app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$s
     	  
            
         
-              //Scroll to the bottom of the screen
-              $timeout(function() {
-                  var scroller = document.getElementById("boxBody");
-                  scroller.scrollTop = scroller.scrollHeight;
-              }, 0, false);
+          //Scroll to the bottom of the screen
+          $timeout(function() {
+              var scroller = document.getElementById("boxBody");
+              scroller.scrollTop = scroller.scrollHeight;
+          }, 0, false);
       }
-	      insurance.init();
+	   
+	  insurance.init();
 	}]);
