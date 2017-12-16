@@ -1,4 +1,4 @@
-app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', 
+	app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', 
 	                               function($scope,$compile,chatService,$sce,$http,$timeout) {
 			
 		
@@ -97,7 +97,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 		{
 			   	  
 	    	//hit api.ai on the user input
-	  		var accessToken = "4fdb9c28ee9a48ed9e4b1bcf18d16512";
+	  		var accessToken = "0f28eeab45ad41139d8dea2842aa83e9";
 	  		var baseUrl = "https://api.api.ai/v1/";
 	  		$http({
 
@@ -113,16 +113,68 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	  			}),
 	  		}).
 	  		success(function(data, status) {
-	  			var obj = JSON.parse(JSON.stringify(data));	  		
-	  			
-	  			
-	  			
-	  		//done specifies whether the api does not require any further information from the user and can hit the data base to get the required data to showcase to the user
-	  			if (obj.result.speech == "Done!"){
+	  			var obj = JSON.parse(JSON.stringify(data));	  			  		
+	  			//if the output from api.ai is the one below hit the web service and get the duration/time for which data is present
+	  			if ((obj.result.speech == "Please tell the Year you are looking for")||(obj.result.speech == "Please tell the Month you are looking for")) {
+					$http({
+						method: "POST",
+						url: "http://40.71.38.237:8080/Hadoop/apiai/timeFrame",
+						data: JSON.stringify(obj),
+						header:{},
+						"Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
+							
+					}).
+					success(function(input, status){
+						 var timefrs=[];
+						 var tempArr=[];
+						 var tempArr1=[];
+						 var tempArr2=[];
+						 
+						 tempArr = JSON.stringify(input);
+						 
+						tempArr = tempArr.replace(/\"/g, "");
+						tempArr = tempArr.substring(1, tempArr.length - 1);
+						 
+						tempArr = tempArr.split(":");
+						tempArr1 = tempArr.join();
+						tempArr2 = tempArr1.split(",");
+
+						var m=0;
+						var n=0;
+						
+						for (m in tempArr2) {
+							if (m % 2 == 0) {
+								timefrs[n] = tempArr2[m];
+								n++;
+								m++;
+							}
+						}
+						
+						
+						//For buttons
+			            var history = {};
+			            var jsonData = {
+			                'openingText' : "Please tell the Time frame you are looking for you are looking for",
+			                'buttonNames' : timefrs,
+			                'callBackFn' : 'banking.buttonCallBackFunction'    
+			            }
+			            var control = chatService.getHtmlForButtons(jsonData); 
+			            history.image = banking.you.avatar;
+			            history.userType = "bot";
+			            history.user = 'Rosey@Banking';
+			            history.text = $sce.trustAsHtml(control);
+			            history.ts = banking.formatAMPM(new Date());
+			            //banking.conversationHistory.push(history);
+						
+					});
+	//						error(function(data, status) {
+	//							console.log(data);});
+				}
+	  			else if (obj.result.speech == "done"){
 
 					$http({
 						method: "POST",
-						url: "http://40.71.38.237:8080/NewIntents/apiai/data",
+						url: "http://40.71.38.237:8080/Hadoop/apiai/data",
 						data: JSON.stringify(obj),
 						header:{},
 						"Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
@@ -255,7 +307,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						  var history = {};
 				          history.image = banking.you.avatar;
 				          history.userType = "bot";
-				          history.text =  "Sorry, data is not present for the given combination!";
+				          history.text =  "Unfortunately data is not present for the combination of data";
 				          history.user = 'Rosey@Banking';
 				          history.ts =  banking.formatAMPM(new Date());
 				         // banking.conversationHistory.push(history);
@@ -305,10 +357,58 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						}
 					}		
 				
-					if ((data.result.metadata.intentName == "performance_statistics") ||
-							(data.result.metadata.intentName == "performance_statistics_input")||
-							(data.result.metadata.intentName == "monthly_trend_input")||
-							(data.result.metadata.intentName == "monthly_trend")) {
+					if (data.result.metadata.intentName == "what are my options") {
+						var outputAPI = JSON.stringify(data.result.speech);
+						var outputAPISubstring = outputAPI;
+						outputAPISubstring = outputAPISubstring.substring(1, outputAPISubstring.indexOf("<"));
+
+						var outputData = [];
+
+						var i = 0,
+						j = 0,
+						z = 1;
+						for (i in outputAPI) {
+							var startSymbol = nth_occur_fordot(outputAPI, ".", z);
+							var endSymbol = nth_occur(outputAPI, "<br />", z);
+							if (endSymbol == -1)
+								break;
+							else {
+								outputData[j] = outputAPI.substring(startSymbol, endSymbol);
+								j++;
+								z++;
+
+							}
+						}
+						
+						//For buttons
+			            var history = {};
+			            var jsonData = {
+			                'openingText' : outputAPISubstring,
+			                'buttonNames' : outputData,
+			                'callBackFn' : 'banking.buttonCallBackFunction'    
+			            }
+			            var control = chatService.getHtmlForButtons(jsonData); 
+			            history.image = banking.you.avatar;
+			            history.userType = "bot";
+			            history.user = 'Rosey@Banking';
+			            history.text = $sce.trustAsHtml(control);
+			            history.ts = banking.formatAMPM(new Date());
+			           // banking.conversationHistory.push(history);
+			        		
+
+				
+					}else if ((data.result.metadata.intentName == "Account_Count_fieldwise") ||
+							(data.result.metadata.intentName == "Account_Count_fieldwise_context") ||
+							(data.result.metadata.intentName == "Achievement_fieldwise") ||
+							(data.result.metadata.intentName == "Achievement_fieldwise_context") ||
+							(data.result.metadata.intentName == "CustomerCount_fieldwise") ||
+							(data.result.metadata.intentName == "CustomerCount_fieldwise_context") ||
+							(data.result.metadata.intentName == "Top_performing_branches_fieldwise") ||
+							(data.result.metadata.intentName == "Top_performing_branches_fieldwise_context") ||
+							(data.result.metadata.intentName == "Unique_customers_addition_fieldwise") ||
+							(data.result.metadata.intentName == "Unique_customers_addition_fieldwise_context") ||
+							(data.result.metadata.intentName == "Variance_fieldwise") ||
+							(data.result.metadata.intentName == "Variance_fieldwise_context")) {
 						var initspeech = JSON.stringify(data.result.speech);
 						var startspeech = initspeech;
 						startspeech = startspeech.substring(1, startspeech.indexOf("<"));
@@ -396,7 +496,18 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
           history.ts =  banking.formatAMPM(new Date());
           banking.conversationHistory.push(history);
       
-          
+      
+          //User Interaction
+         /*var history = {};
+          history.user = 'Sheldon Fernandes';
+          history.image = banking.me.avatar;
+          control = 'Get me banking data';
+          history.text =  $sce.trustAsHtml(control);
+          history.ts = banking.formatAMPM(new Date());
+          banking.conversationHistory.push(history);*/
+    	  	
+    	  
+           
         
               //Scroll to the bottom of the screen
               $timeout(function() {
@@ -406,3 +517,4 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
       }
 	      banking.init();
 	}]);
+

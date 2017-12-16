@@ -1,0 +1,47 @@
+ <div ng-controller = "insuranceInnternalCtrl as insurance">
+
+    <div id="boxBody" class="box-body"  ng-class="{'alignment-with-padding':insurance.isMobile,'alignment':!insurance.isMobile}">
+
+      <div class="direct-chat-messages no-x-scroll">
+          <div data-ng-repeat="history in insurance.conversationHistory track by $index">
+              <div ng-if="history.userType == 'bot'"  ng-hide="history.text==insurance.typing && $index!=insurance.conversationHistory.length-1 " class="direct-chat-msg">
+                  <div class="direct-chat-info clearfix" ng-if="history.text!=''">
+                      <span class="direct-chat-timestamp pull-right">{{history.ts}}</span>
+                  </div>
+
+                  <div class="direct-chat-msg" ng-if="history.text!=''">
+                      <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                      <div class="direct-chat-text" compile="history.text"></div>
+                  </div>
+
+                  <div  ng-class="{'direct-chat-text-no-arrow':history.dataType=='graph'}"  ng-if="history.addnData!=''" compile="history.addnData"> </div>
+                  <div ng-if="history.dataType=='map'">
+                      <div class="direct-chat-text padding-0" my-map="" marker="{{history.marker}}"></div>
+                  </div>
+              </div>
+
+              <div ng-if="history.userType == 'me'" class="direct-chat-msg right">
+                  <div class="direct-chat-info clearfix">
+                      <span class="direct-chat-timestamp pull-left">{{history.ts}}</span>
+                  </div>
+
+                  <div>
+                    <img class="direct-chat-img" src={{history.image}} alt="message user image">
+                    <div class="direct-chat-text" compile="history.text"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>
+
+  <div class="box-footer" style="position:fixed;" resize ng-class="{'right-margin-footer':width>520}">
+      <div class="input-group">
+          <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="insurance.sendUserQuery()" ng-model="insurance.userText">
+          <span style="padding-left:15px !important;" class="input-group-btn">
+              <button class="message-button btn icon-only" ng-click="insurance.sendUserQuery()">
+                    <i class="fa fa-send-o send-button" class="send-button"></i>
+              </button>
+          </span>
+      </div>
+  </div>
+</div>

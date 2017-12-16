@@ -1,37 +1,39 @@
-app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', 
+app.controller('insuranceInternalCtrl ', ['$scope', '$compile','chatService','$sce','$http','$timeout', 
 	                               function($scope,$compile,chatService,$sce,$http,$timeout) {
+		//add controller name	
+		//controllerName as insurance
 			
 		
 		var input;
 		sessionid = Date.now();
 		
 		
-	      var banking = this;
-	      banking.conversationHistory = [];
+	      var insurance = this;
+	      insurance.conversationHistory = [];
 	  
-	      banking.me = {avatar: "https://randomuser.me/api/portraits/med/men/83.jpg"};
+	      insurance.me = {avatar: "https://randomuser.me/api/portraits/med/men/83.jpg"};
 
-	      banking.you = {avatar: "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg"};
+	      insurance.you = {avatar: "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg"};
 	       
 	      //
-	      banking.buttonCallBackFunction = function(e){
+	      insurance.buttonCallBackFunction = function(e){
 	    	  var buttonValue = e.target.getAttribute('value');
 	            console.log("Button was clicked");
 	            var history = {};
 	            history.user = 'Sheldon Fernandes';
-	            history.image = banking.me.avatar;
+	            history.image = insurance.me.avatar;
 	            history.userType = "me";
 	            control = buttonValue;
 	            history.text =  $sce.trustAsHtml(control);
-	            history.ts = banking.formatAMPM(new Date());
-	            banking.conversationHistory.push(history);
-	            banking.execute(control);
+	            history.ts = insurance.formatAMPM(new Date());
+	            insurance.conversationHistory.push(history);
+	            insurance.execute(control);
 	            
 	      	  
 	      }
 	      
 	      //Function to format date displayed on screen
-	      banking.formatAMPM = function(date) {
+	      insurance.formatAMPM = function(date) {
 	            var hours = date.getHours();
 	            var minutes = date.getMinutes();
 	            var ampm = hours >= 12 ? 'PM' : 'AM';
@@ -44,16 +46,16 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	      
 	      
 	      //Function to display user query on screen{
-	      banking.insertChat = function(){
+	      insurance.insertChat = function(){
 	          //User Interaction
 	    	  var history = {};
 	            history.user = 'Sheldon Fernandes';
-	            history.image = banking.me.avatar;
+	            history.image = insurance.me.avatar;
 	            history.userType = "me";
-	            control = banking.userText;
+	            control = insurance.userText;
 	            history.text =  $sce.trustAsHtml(control);
-	            history.ts = banking.formatAMPM(new Date());
-	            banking.conversationHistory.push(history);
+	            history.ts = insurance.formatAMPM(new Date());
+	            insurance.conversationHistory.push(history);
 	        
 	            $timeout(function() {
 	              var scroller = document.getElementById("boxBody");
@@ -64,21 +66,21 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	      
 	      
 	      //User query to be displayed on chat screen
-	      banking.sendUserQuery = function(){
-	          var text = banking.userText;
+	      insurance.sendUserQuery = function(){
+	          var text = insurance.userText;
 	          if (text !== "") {
-	              banking.insertChat("me", text);
+	              insurance.insertChat("me", text);
 	              history.userType = "me";
-	              banking.userText = "";
+	              insurance.userText = "";
 	              input = text;
-				  banking.execute(text);
+				  insurance.execute(text);
 	          }            
 	      };
 	      
 	      
-	      banking.setIsGraph = function(graphFlag,index){
+	      insurance.setIsGraph = function(graphFlag,index){
 	          graphFlag = !graphFlag;
-	          banking.conversationHistory[index].showGraph = graphFlag;
+	          insurance.conversationHistory[index].showGraph = graphFlag;
 	      }
 	      
 	      
@@ -93,11 +95,11 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	  	}
 
 		
-		banking.execute= function(text)
+		insurance.execute= function(text)
 		{
 			   	  
 	    	//hit api.ai on the user input
-	  		var accessToken = "4fdb9c28ee9a48ed9e4b1bcf18d16512";
+	  		var accessToken = "1535f11175524f9eb220cd54ed6508b5";
 	  		var baseUrl = "https://api.api.ai/v1/";
 	  		$http({
 
@@ -113,16 +115,14 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	  			}),
 	  		}).
 	  		success(function(data, status) {
-	  			var obj = JSON.parse(JSON.stringify(data));	  		
+	  			var obj = JSON.parse(JSON.stringify(data));	  			  		
 	  			
 	  			
-	  			
-	  		//done specifies whether the api does not require any further information from the user and can hit the data base to get the required data to showcase to the user
-	  			if (obj.result.speech == "Done!"){
+					if (obj.result.speech == "Done!"){
 
 					$http({
 						method: "POST",
-						url: "http://40.71.38.237:8080/NewIntents/apiai/data",
+						url: "http://40.71.38.237:8080/InsuranceIntents/apiai/data",
 						data: JSON.stringify(obj),
 						header:{},
 						"Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
@@ -200,11 +200,11 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 	        
 							//For graph and table
 				            var history = {};
-				            history.image = banking.you.avatar;
+				            history.image = insurance.you.avatar;
 				            history.userType = "bot";
-				            history.user = 'Rosey@Banking';
+				            history.user = 'Rosey@InsuranceInternal';
 				            //history.text = $sce.trustAsHtml(control);
-				            history.ts = banking.formatAMPM(new Date());
+				            history.ts = insurance.formatAMPM(new Date());
 				            history.graph = true;
 				            history.showGraph = true;
 				        
@@ -217,20 +217,20 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 				              }
 
 				              var fnData = {
-				                    'callBackFn' : 'banking.setIsGraph'     
+				                    'callBackFn' : 'insurance.setIsGraph'     
 				              }
 
 				              var btnData = {
 	                                'openingText' : '',
 	                                'buttonNames' : ['Print','Email','Save as JPEG','Save as PNG'],
-	                                'callBackFn' : 'banking.buttonCallBackFunction' 
+	                                'callBackFn' : 'insurance.buttonCallBackFunction' 
 	                            }
 				             
-				             banking.chartIndex=banking.chartIndex+1;
-				              banking.containerId='chart-container-' + banking.chartIndex;
-				              banking.chartId='revenue-chart-' + banking.chartIndex;  
+				             insurance.chartIndex=insurance.chartIndex+1;
+				              insurance.containerId='chart-container-' + insurance.chartIndex;
+				              insurance.chartId='revenue-chart-' + insurance.chartIndex;  
 
-				            /* Html for Graph*/ control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,banking.containerId,banking.chartId,'history.showGraph');    
+				            /* Html for Graph*/ control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,insurance.containerId,insurance.chartId,'history.showGraph');    
 				             
 				             /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
 				                  
@@ -238,7 +238,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 				              control=control+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
 				        	  control=control+chatService.getHtmlForScrollButtons(btnData);
 				              history.text = $sce.trustAsHtml(control);
-				              //banking.conversationHistory.push(history);			
+				              //insurance.conversationHistory.push(history);			
 				              if ($scope.$$phase) { // most of the time it is "$digest"
 						            applyFn(history);
 						      } else {
@@ -253,12 +253,12 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						else{
 						
 						  var history = {};
-				          history.image = banking.you.avatar;
+				          history.image = insurance.you.avatar;
 				          history.userType = "bot";
 				          history.text =  "Sorry, data is not present for the given combination!";
-				          history.user = 'Rosey@Banking';
-				          history.ts =  banking.formatAMPM(new Date());
-				         // banking.conversationHistory.push(history);
+				          history.user = 'Rosey@InsuranceInternal';
+				          history.ts =  insurance.formatAMPM(new Date());
+				         // insurance.conversationHistory.push(history);
 				      	
 						}
 					}).
@@ -305,10 +305,8 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						}
 					}		
 				
-					if ((data.result.metadata.intentName == "performance_statistics") ||
-							(data.result.metadata.intentName == "performance_statistics_input")||
-							(data.result.metadata.intentName == "monthly_trend_input")||
-							(data.result.metadata.intentName == "monthly_trend")) {
+						if ((data.result.metadata.intentName == "login_issuance") ||
+								(data.result.metadata.intentName == "login_issuance_input")) {
 						var initspeech = JSON.stringify(data.result.speech);
 						var startspeech = initspeech;
 						startspeech = startspeech.substring(1, startspeech.indexOf("<"));
@@ -336,26 +334,26 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 			            var jsonData = {
 			                'openingText' : startspeech,
 			                'buttonNames' : str007,
-			                'callBackFn' : 'banking.buttonCallBackFunction' 
+			                'callBackFn' : 'insurance.buttonCallBackFunction' 
 			            }
 			            var control = chatService.getHtmlForButtons(jsonData); 
-			            history.image = banking.you.avatar;
+			            history.image = insurance.you.avatar;
 			            history.userType = "bot";
-			            history.user = 'Rosey@Banking';
+			            history.user = 'Rosey@InsuranceInternal';
 			            history.text = $sce.trustAsHtml(control);
-			            history.ts = banking.formatAMPM(new Date());
-			           // banking.conversationHistory.push(history);
+			            history.ts = insurance.formatAMPM(new Date());
+			           // insurance.conversationHistory.push(history);
 			        	
 						
 					}else {
 						test = data.result.speech;
 						var history = {};
-				          history.image = banking.you.avatar;
+				          history.image = insurance.you.avatar;
 				          history.userType = "bot";
 				          history.text =  test;
-				          history.user = 'Rosey@Banking';
-				          history.ts =  banking.formatAMPM(new Date());
-				         // banking.conversationHistory.push(history);
+				          history.user = 'Rosey@InsuranceInternal';
+				          history.ts =  insurance.formatAMPM(new Date());
+				         // insurance.conversationHistory.push(history);
 						
 					}				
 				}
@@ -374,29 +372,30 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 		}
 
 		var applyFn = function (history) {
-	        banking.conversationHistory.push(history);
+	        insurance.conversationHistory.push(history);
 	    };
 	  
 	  
-      banking.init = function(){
+      insurance.init = function(){
     	  
-    	  banking.isMobile=chatService.getIsMobile();
-          console.log('isMobile detected',banking.isMobile);
+    	  insurance.isMobile=chatService.getIsMobile();
+          console.log('isMobile detected',insurance.isMobile);
 
-          banking.typing="...";
+          insurance.typing="...";
 
     	  var control;
-          banking.chartIndex=0;
+          insurance.chartIndex=0;
         
           var history = {};
-          history.image = banking.you.avatar;
+          history.image = insurance.you.avatar;
           history.userType = "bot";
           history.text =  'Hi Rosey here. How can I help you!';
-          history.user = 'Rosey@Banking';
-          history.ts =  banking.formatAMPM(new Date());
-          banking.conversationHistory.push(history);
-      
-          
+          history.user = 'Rosey@InsuranceInternal';
+          history.ts =  insurance.formatAMPM(new Date());
+          insurance.conversationHistory.push(history);
+       	
+    	  
+           
         
               //Scroll to the bottom of the screen
               $timeout(function() {
@@ -404,5 +403,5 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
                   scroller.scrollTop = scroller.scrollHeight;
               }, 0, false);
       }
-	      banking.init();
+	      insurance.init();
 	}]);

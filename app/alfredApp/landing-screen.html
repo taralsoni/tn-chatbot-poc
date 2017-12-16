@@ -15,7 +15,7 @@
 							</div>
 					</div>
 					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('banking')">
+							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('banking_internal')">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
 									<div style="color: #000000cc;padding-top: 5px;	">
 											Banking Internal
@@ -25,7 +25,7 @@
 			</div>
 			<div class="row landing-row">
 					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('insurance')">
+							<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('insurance_customer')">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
 									<div style="color: #000000cc;padding-top: 5px;	">
 											Insurance Customer
@@ -33,7 +33,7 @@
 							</div>
 					</div>
 					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-							<div class="btn btn-success landing-button" style="text-align:center;"  ng-click="ctrl.goToBot('fintech')">
+							<div class="btn btn-success landing-button" style="text-align:center;"  ng-click="ctrl.goToBot('insurance_internal')">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
 									<div style="color: #000000cc;padding-top: 5px;	">
 											Insurance Internal
@@ -49,13 +49,13 @@
 		<div ng-if="ctrl.selectedBot=='banking_customer'">
 			<div ng-include src="'alfredApp/insurance.html'"></div>
 		</div>
-		<div ng-if="ctrl.selectedBot=='fintech'">
-			<div ng-include src="'alfredApp/insurance.html'"></div>
+		<div ng-if="ctrl.selectedBot=='insurance_internal'">
+			<div ng-include src="'alfredApp/insurance_internal.html'"></div>
 		</div>
-		<div ng-if="ctrl.selectedBot=='banking'">
+		<div ng-if="ctrl.selectedBot=='banking_internal'">
 			<div ng-include src="'alfredApp/banking.html'"></div>
 		</div>
-		<div ng-if="ctrl.selectedBot=='insurance'">
+		<div ng-if="ctrl.selectedBot=='insurance_customer'">
 			<div ng-include src="'alfredApp/insurance.html'"></div>
 		</div>
 	</div>
