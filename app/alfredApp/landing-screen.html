@@ -46,18 +46,21 @@
 	<div ng-if="ctrl.selectedBot!=undefined && ctrl.selectedBot!=''">
 		<img  resize ng-show="width <= 520"  class="bck-btn margin-top-5" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
 		<img  resize ng-show="width > 520" class="bck-btn margin-top-30" src="alfredApp/images/back.png" ng-click="ctrl.goBackToLandingScreen()" alt="Go Back">
+		
 		<div ng-if="ctrl.selectedBot=='banking_customer'">
 			<div ng-include src="'alfredApp/insurance.html'"></div>
 		</div>
+		<div ng-if="ctrl.selectedBot=='insurance_customer'">
+			<div ng-include src="'alfredApp/insurance.html'"></div>
+		</div>
+
 		<div ng-if="ctrl.selectedBot=='insurance_internal'">
 			<div ng-include src="'alfredApp/insurance_internal.html'"></div>
 		</div>
 		<div ng-if="ctrl.selectedBot=='banking_internal'">
 			<div ng-include src="'alfredApp/banking.html'"></div>
 		</div>
-		<div ng-if="ctrl.selectedBot=='insurance_customer'">
-			<div ng-include src="'alfredApp/insurance.html'"></div>
-		</div>
+		
 	</div>
 
 </div>

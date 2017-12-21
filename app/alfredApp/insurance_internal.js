@@ -208,7 +208,8 @@ app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sc
 				        
 				            
 				             var jsonData = {
-				                'displayString' : 'Displaying data for'+"<br/>"+formattedData,   
+				                'displayString' : 'Displaying data for'+"<br/>",
+				                'formattedData':formattedData,   
 				                'data': {
 				                    'graphData' : chartValues
 				                    }
@@ -228,16 +229,16 @@ app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sc
 				              insurance.containerId='chart-container-' + insurance.chartIndex;
 				              insurance.chartId='revenue-chart-' + insurance.chartIndex; 
 
+							control=chatService.getHtmlForScrollButtons(btnData);
 				            // Html for Graph 
-				            control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,insurance.containerId,insurance.chartId,'history.showGraph');    
+				            control=control+chatService.getHtmlForGraph2(jsonData.displayString,jsonData.formattedData,jsonData.data.graphData,insurance.containerId,insurance.chartId,'history.showGraph');    
 				             
 				             // Html for Graph
 				            control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
 				                  
 				              //html for toggle button 
 				              control=control+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
-				        	  control=control+chatService.getHtmlForScrollButtons(btnData);
-				              history.text = $sce.trustAsHtml(control);
+				        	  history.text = $sce.trustAsHtml(control);
 				              //insurance.conversationHistory.push(history);			
 				              if ($scope.$$phase) { // most of the time it is "$digest"
 						            applyFn(history);
@@ -330,11 +331,15 @@ app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sc
 						}
 						
 						//For buttons
+						var callBackFn=[];
+						for(var i=0;i<str007.length;i++){
+							callBackFn[i]='insurance.buttonCallBackFunction';
+						}
 			            var history = {};
 			            var jsonData = {
 			                'openingText' : startspeech,
 			                'buttonNames' : str007,
-			                'callBackFn' : 'insurance.buttonCallBackFunction' 
+			                'callBackFn' : callBackFn 
 			            }
 			            var control = chatService.getHtmlForButtons(jsonData); 
 			            history.image = insurance.you.avatar;
@@ -389,7 +394,7 @@ app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sc
           var history = {};
           history.image = insurance.you.avatar;
           history.userType = "bot";
-          history.text =  'Hi Rosey here. How can I help you!';
+          history.text =  'Hi! I am Morpheus. I can help you with anything related to Insurance ';
           history.user = 'Rosey@InsuranceInternal';
           history.ts =  insurance.formatAMPM(new Date());
           insurance.conversationHistory.push(history);

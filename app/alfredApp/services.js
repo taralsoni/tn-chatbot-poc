@@ -1,6 +1,5 @@
 app.service('chatService', function(){
        var control,botType,isMobile;
-       var csScope=this;
        return{
             getHtmlForList:function(displayString,list){
 
@@ -153,7 +152,7 @@ app.service('chatService', function(){
             },
             getHtmlForScrollButtons:function(jsonData){
 
-                control =jsonData.openingText + '<br>' +
+                control =jsonData.openingText  +
                  '<div>';
                 control = control + '<div class="scroll-row">';
                 for(var i=0;i<jsonData.buttonNames.length;i++){
@@ -170,69 +169,25 @@ app.service('chatService', function(){
                 control ='<div class="vertical-btn-div">';
                 control=control+'<div class="vertical-btn-hdr">'+jsonData.openingText+'</div>';
                 for(var i=0;i<jsonData.buttonNames.length;i++){                    
-                    control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn + '($event)">';//'<button class="multiple-buttons">';
+                    control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn[i] + '($event)">';//'<button class="multiple-buttons">';
                     control = control + jsonData.buttonNames[i] + '</div>';
                 }
                 control = control + ' </div>';
                 return control;
             },
 
-            getHtmlForGraph2:function(displayString,graphJson,chartId,containerId,varShowGraph){
-                var graphJsonWithoutHeader=[];
-                for(var i=1;i<graphJson.length;i++){
-                    graphJsonWithoutHeader[i-1]=graphJson[i];
-                }
-
-                control= '<strong>'+displayString + '</strong><br>'+
-
-
-                    '<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
-
-                    //'<div ng-show="' + varShowGraph + '" id="'+ containerId +'"></div>';
-
-                    if ( FusionCharts(chartId)){
-                         FusionCharts(chartId).dispose();
-                    }
-
-                        FusionCharts.ready(function() {
-                            var revenueChart = new FusionCharts({
-                                id: chartId,//'revenue-chart',
-                                type:'column3d' , //column3d',//pie2d
-                                renderAt: containerId,//'chart-container',
-                                dataFormat: 'json',
-                                width: "100%",
-                                height: "100%",
-                                dataSource: {
-                                  // Chart data goes here
-                                    chart: {
-                                        caption: "",
-                                        subcaption: "",
-                                        startingangle: "120",
-                                        showlabels: "1",
-                                        showlegend: "1",
-                                        enablemultislicing: "0",
-                                        slicingdistance: "15",
-                                        showpercentvalues: "1",
-                                        showpercentintooltip: "0",
-                                        plottooltext: "$label : $datavalue", //"Age group : $label Total visit : $datavalue",
-                                        theme: "fint"
-                                    },
-
-                                    data: graphJsonWithoutHeader
-
-                                }
-                            });
-
-
-                        revenueChart.render();
-                        revenueChart = FusionCharts('revenue-chart');
-                    });
-
-                return control+'<br>';
+            getHtmlForGraph2:function(displayString,formattedData,graphJson,chartId,containerId,varShowGraph){
+                
+                 /*'<strong>'+displayString + '</strong>'+*/
+                  control='<div>' + formattedData + '</div>'+
+                  '<div style="overflow-x:scroll" ng-show="' + varShowGraph + '">'+
+                '<svg  id="'+ containerId +'"></svg></div>';
+                this.getNvD3Graph(graphJson,containerId);
+                return control;
             },
             getHtmlForTable2:function(displayString,graphJson,chartId,containerId,varShowGraph){
                 control=
-                 '<div ng-hide="'+ varShowGraph + '" class="box-body">'+
+                 '<div ng-hide="'+ varShowGraph + '" >'+
 
                     '<table  class="table table-bordered table-striped">'+
                         '<thead>'+
@@ -347,29 +302,7 @@ app.service('chatService', function(){
                 }
                 control = control + '</div>';
                 return control;
-            },  /*      
-            getHtmlForCard:function(attachment){
-                var card;
-                control = '<div  style="height:100px !important;">';
-                control = control + '<div>';
-                control = control + '<carousel interval="3000">';
-                for(var i=0;i<attachment.data.length;i++){
-                    card=attachment.data[i];
-                    control = control + ' <slide style="height:100px !important; background-color: #f39c12; border-radius: 5px;">';
-                    control = control + '<img class="card-image"  src="' + card.image +'">';
-                    control = control +
-                                  '<div class="carousel-caption">' +
-                                      '<div class="row card-header">';
-                    control = control + card.title +
-                                  '</div>' +
-                                      '<div class="row card-text">' + card.description +
-                                       '</div>' +
-                                          '<div class="row card-text card-text-bottom">' + card.postText +
-                                          '</div> </div> </slide>';
-                }
-                control = control + '</carousel> </div> </div>';
-                return control;
-            },*/
+            },
             getHtmlForDblColCard:function(attachment){
               control =  '<div class="direct-chat-msg" style="margin-left:50px; margin-bottom:2px !important;">';
               control = control + '<div>';
@@ -550,5 +483,43 @@ app.service('chatService', function(){
 
             },
             /** Neha end **/
+
+            //kriti-new graph
+            getNvD3Graph:function(graphJson,containerId){
+               var graphJsonWithoutHeader=[];
+                for(var i=1;i<graphJson.length;i++){
+                    graphJsonWithoutHeader[i-1]=graphJson[i];
+                }
+
+                var graphData=[{key:"",values:graphJsonWithoutHeader}];
+                
+                nv.addGraph(function() {
+                  var chart = "";
+                  chart=nv.models.discreteBarChart()
+                      .x(function(d) { return d.label })    
+                      .y(function(d) { return d.value })
+                      .staggerLabels(true)      
+                      .showValues(false)                        
+                      ;
+
+                  d3.select('#'+ containerId)
+                      .datum(graphData)
+                      .call(chart)
+                      ;
+
+                  chart.margin({bottom: 20});
+                    var xTicks = d3.selectAll('.nv-x.nv-axis');// > g').selectAll('g');
+                    xTicks
+                      .selectAll('text')
+                      .attr('transform', function(d,i,j) {                        
+                        return 'translate (0, 0) rotate(-40 0,0) '                          
+                       })
+                      .attr('style',function(){return 'font-size: 8px !important; text-anchor: end;'}) ; 
+
+                  //nv.utils.windowResize(chart.update);
+            
+                  return chart;
+                });        
+            }
        }
     })

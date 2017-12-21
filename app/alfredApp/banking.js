@@ -210,7 +210,8 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 				        
 				            
 				             var jsonData = {
-				                'displayString' : 'Displaying data for'+"<br/>"+formattedData,   
+				                'displayString' : 'Displaying data for',
+				                'formattedData':formattedData,   
 				                'data': {
 				                    'graphData' : chartValues
 				                    }
@@ -230,13 +231,13 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 				              banking.containerId='chart-container-' + banking.chartIndex;
 				              banking.chartId='revenue-chart-' + banking.chartIndex;  
 
-				            /* Html for Graph*/ control=chatService.getHtmlForGraph2(jsonData.displayString,jsonData.data.graphData,banking.containerId,banking.chartId,'history.showGraph');    
-				             
-				             /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
+								control=chatService.getHtmlForScrollButtons(btnData);
+				            /* Html for Graph*/ control=control+chatService.getHtmlForGraph2(jsonData.displayString,jsonData.formattedData,jsonData.data.graphData,banking.containerId,banking.chartId,'history.showGraph');    
+				            /* Html for Graph*/ control=control+chatService.getHtmlForTable2(jsonData.displayString,jsonData.data.graphData,jsonData.containerId,jsonData.chartId,'history.showGraph');
 				                  
 				              /*html for toggle button */
 				              control=control+'<div class="row"><span type="submit" ng-click="' + fnData.callBackFn + '(' + 'history.showGraph,$index' + ')"' + ' class="toggle-btn">  Toggle </span></div>';
-				        	  control=control+chatService.getHtmlForScrollButtons(btnData);
+				        	  
 				              history.text = $sce.trustAsHtml(control);
 				              //banking.conversationHistory.push(history);			
 				              if ($scope.$$phase) { // most of the time it is "$digest"
@@ -332,11 +333,15 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
 						}
 						
 						//For buttons
+						var callBackFn=[];
+						for(var i=0;i<str007.length;i++){
+							callBackFn[i]='banking.buttonCallBackFunction';
+						}
 			            var history = {};
 			            var jsonData = {
 			                'openingText' : startspeech,
 			                'buttonNames' : str007,
-			                'callBackFn' : 'banking.buttonCallBackFunction' 
+			                'callBackFn' : callBackFn 
 			            }
 			            var control = chatService.getHtmlForButtons(jsonData); 
 			            history.image = banking.you.avatar;
@@ -391,7 +396,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
           var history = {};
           history.image = banking.you.avatar;
           history.userType = "bot";
-          history.text =  'Hi Rosey here. How can I help you!';
+          history.text =  'Hi! I am Morpheus. I can help you with anything related to Banking ';
           history.user = 'Rosey@Banking';
           history.ts =  banking.formatAMPM(new Date());
           banking.conversationHistory.push(history);

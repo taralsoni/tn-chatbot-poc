@@ -67,7 +67,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             vm.botType=chatService.getBotType();
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
 
-            if(vm.botType=='insurance'){
+            if(vm.botType=='insurance_customer'){
                 vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
@@ -81,7 +81,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             });
 
             var history = {};
-            if(vm.botType=='insurance'){
+            if(vm.botType=='insurance_customer'){
                 history.user = 'Rosey@Insurance';
                 history.text =  'Hi! I am Morpheus. I can help you with anything related to Insurance ';
             }else if(vm.botType=='fintech'){
@@ -262,6 +262,11 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                             else if(text.msgBdy.attachments[i].type=='buttons'){
                                 history.addnData=history.addnData + chatService.getHtmlForButtons5(text.msgBdy.attachments[i]);
+                            }
+
+                            else if(text.msgBdy.attachments[i].type=='buttons_vertical'){
+                               // history.addnData=history.addnData + chatService.getHtmlForButtons(text.msgBdy.attachments[i]);
+                               control=chatService.getHtmlForButtons(text.msgBdy.attachments[i]);
                             }
                             /** end **/
                         }
