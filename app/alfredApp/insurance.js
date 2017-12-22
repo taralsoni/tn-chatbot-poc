@@ -1,4 +1,4 @@
-app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout','$rootScope', function($scope,$compile,chatService,$sce,http,$timeout,$rootScope) {
+app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout','$rootScope','Pubnub', function($scope,$compile,chatService,$sce,http,$timeout,$rootScope,Pubnub) {
         var vm = this;
         vm.conversationHistory = [];
 
@@ -171,6 +171,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             }
             else{
 
+
                 history.userType = "bot";
                 history.user = 'Rosey@Fintech';
                 history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
@@ -195,6 +196,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         history.marker="";
 
                         control=chatService.getHtmlForDesc(text.msgBdy.text);
+                        vm.sayIt(text.msgBdy.text);
 
                         /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
                         if(text.msgBdy.text=='Send me your location'){
@@ -403,6 +405,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
          * as you want.
          */
         vm.displayTranscript=function() {
+            console.log('displayTranscript called:',$rootScope.transcript);
 
             vm.userText = $rootScope.transcript;
 
@@ -410,7 +413,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             if (!$scope.$$phase) {
                 $scope.$digest();
             }
+            vm.sendUserQuery();
         }
+
+        vm.sayIt = function (text) {
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        };
 
 
         vm.init();
