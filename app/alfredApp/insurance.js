@@ -1,4 +1,4 @@
-app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
+app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout','$rootScope','Pubnub', function($scope,$compile,chatService,$sce,http,$timeout,$rootScope,Pubnub) {
         var vm = this;
         vm.conversationHistory = [];
 
@@ -175,6 +175,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             }
             else{
 
+
                 history.userType = "bot";
                 history.user = 'Rosey@Fintech';
                 history.image = "alfredApp/images/bot.jpg";
@@ -199,6 +200,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                         history.marker="";
 
                         control=chatService.getHtmlForDesc(text.msgBdy.text);
+                        vm.sayIt(text.msgBdy.text);
 
                         /**kriti-if bot asks for location, dont show msg bubble and pass current location*/
                         if(text.msgBdy.text=='Send me your location'){
@@ -397,5 +399,31 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                }
              })
         }
+
+
+
+        /**
+         * Handle the received transcript here.
+         * The result from the Web Speech Recognition will
+         * be set inside a $rootScope variable. You can use it
+         * as you want.
+         */
+        vm.displayTranscript=function() {
+            console.log('displayTranscript called:',$rootScope.transcript);
+
+            vm.userText = $rootScope.transcript;
+
+            //This is just to refresh the content in the view.
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+            vm.sendUserQuery();
+        }
+
+        vm.sayIt = function (text) {
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        };
+
+
         vm.init();
 }]);
