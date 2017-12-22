@@ -4,7 +4,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         vm.me = {
 
-            avatar: "https://randomuser.me/api/portraits/med/men/83.jpg"
+           // avatar: ""
+            avatar: "alfredApp/images/sachin.png"
         };
 
         vm.you = {
@@ -68,7 +69,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
 
             if(vm.botType=='insurance_customer'){
-                vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
+                //vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
+                vm.accessToken='f23810635d23414a952540e54d5d70b6';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
             }else if(vm.botType=='banking_customer'){
@@ -83,17 +85,19 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             var history = {};
             if(vm.botType=='insurance_customer'){
                 history.user = 'Rosey@Insurance';
-                history.text =  'Hi! I am Morpheus. I can help you with anything related to Insurance ';
+               // history.text =  'Hi! I am Mike. I can help you with anything related to Insurance ';
+                history.text = 'Good Afternoon! Am I speaking with Mr Sachin Goel';
             }else if(vm.botType=='fintech'){
                 history.user = 'Rosey@Fintech';
-                history.text =  'Hi! I am Morpheus. I can help you with anything related to Fintech ';
+                history.text =  'Hi! I am Mike. I can help you with anything related to Fintech ';
             }else if(vm.botType=='banking_customer'){
                 history.user = 'Rosey@CustomerBanking';
-                history.text =  'Hi! I am Morpheus. I can help you with anything related to Customer Banking ';
+                history.text =  'Hi! I am Mike. I can help you with anything related to Customer Banking ';
             }
 
-            history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
-            
+            history.image = "alfredApp/images/bot.jpg";
+             // "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
+           
             history.ts =  vm.formatAMPM(new Date());
             history.userType = "bot";
             history.addnData="";
@@ -173,7 +177,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 history.userType = "bot";
                 history.user = 'Rosey@Fintech';
-                history.image = "https://avatars.slack-edge.com/2017-10-26/262107400931_186974c9c8dbba10863a_48.jpg";
+                history.image = "alfredApp/images/bot.jpg";
 
                 if(text==vm.typing){
                     control=chatService.getHtmlForDesc(text);

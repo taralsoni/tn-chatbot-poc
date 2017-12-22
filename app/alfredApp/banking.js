@@ -396,7 +396,7 @@ app.controller('bankingCtrl', ['$scope', '$compile','chatService','$sce','$http'
           var history = {};
           history.image = banking.you.avatar;
           history.userType = "bot";
-          history.text =  'Hi! I am Morpheus. I can help you with anything related to Banking ';
+          history.text =  'Hi! I am Mike. I can help you with anything related to Banking ';
           history.user = 'Rosey@Banking';
           history.ts =  banking.formatAMPM(new Date());
           banking.conversationHistory.push(history);

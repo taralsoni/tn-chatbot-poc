@@ -394,7 +394,7 @@ app.controller('insuranceInternalCtrl', ['$scope', '$compile','chatService','$sc
           var history = {};
           history.image = insurance.you.avatar;
           history.userType = "bot";
-          history.text =  'Hi! I am Morpheus. I can help you with anything related to Insurance ';
+          history.text =  'Hi! I am Mike. I can help you with anything related to Insurance ';
           history.user = 'Rosey@InsuranceInternal';
           history.ts =  insurance.formatAMPM(new Date());
           insurance.conversationHistory.push(history);
