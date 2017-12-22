@@ -36,6 +36,8 @@
       </div>
 </div>
 
+
+
   <div class="box-footer" style="position:fixed;" resize ng-class="{'right-margin-footer':width>520}">
       <div class="input-group">
           <input type="text" name="message" placeholder="Ask me anything...." class="message-css form-control ng-valid ng-dirty ng-empty ng-touched" ng-enter="vm.sendUserQuery()" ng-model="vm.userText">
@@ -43,7 +45,13 @@
               <button class="message-button btn icon-only" ng-click="vm.sendUserQuery()">
                     <i class="fa fa-send-o send-button" class="send-button"></i>
               </button>
+              <button class="message-button btn icon-only" style="margin-left: 10px;" ng-speech-recognition-start ng-speech-recognition-end="vm.displayTranscript()">
+                    <i class="fa fa-microphone mic-button" class="mic-button"></i>
+              </button>
+
           </span>
       </div>
   </div>
+
+  
 </div>

@@ -169,7 +169,9 @@ app.service('chatService', function(){
                 control ='<div class="vertical-btn-div">';
                 control=control+'<div class="vertical-btn-hdr">'+jsonData.openingText+'</div>';
                 for(var i=0;i<jsonData.buttonNames.length;i++){                    
-                    control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn[i] + '($event)">';//'<button class="multiple-buttons">';
+                    control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="' + jsonData.callBackFn[i] + '($event)">'  ;
+                    //control = control + '<div class="vertical-btns" value="'+jsonData.buttonNames[i]+'" ng-click="vm.callIntent(\'' + jsonData.callBackFn[i] + '\')">'  ;
+                    
                     control = control + jsonData.buttonNames[i] + '</div>';
                 }
                 control = control + ' </div>';

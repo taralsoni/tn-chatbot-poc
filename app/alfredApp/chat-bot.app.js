@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize'])
+var app = angular.module('TN_App.alfredApp', ['ui.router','ngSanitize','app.directives'])
 
     .config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
         $stateProvider.state('fintech', {

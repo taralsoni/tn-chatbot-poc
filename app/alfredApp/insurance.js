@@ -1,4 +1,4 @@
-app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout', function($scope,$compile,chatService,$sce,http,$timeout) {
+app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$http','$timeout','$rootScope', function($scope,$compile,chatService,$sce,http,$timeout,$rootScope) {
         var vm = this;
         vm.conversationHistory = [];
 
@@ -393,5 +393,25 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                }
              })
         }
+
+
+
+        /**
+         * Handle the received transcript here.
+         * The result from the Web Speech Recognition will
+         * be set inside a $rootScope variable. You can use it
+         * as you want.
+         */
+        vm.displayTranscript=function() {
+
+            vm.userText = $rootScope.transcript;
+
+            //This is just to refresh the content in the view.
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        }
+
+
         vm.init();
 }]);

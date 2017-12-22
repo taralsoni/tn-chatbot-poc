@@ -1142,6 +1142,22 @@ text{
     text-align: left !important;
 }
 
+.message-button:hover,
+.message-button:active,
+.message-button.hover {
+    background-color: #ffa500 !important;
+    color: white;
+    border-radius: 100% !important;
+    border-color: #ffa500 !important;
+    width: 35px;
+    height: 35px;
+    text-align: left;
+    background-image: none;
+    outline: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
 
 .send-button{
     color: #ffdf00;
@@ -1151,6 +1167,27 @@ text{
     margin-top: 2px;
 }
 
+.send-button:hover,
+.send-button:active,
+.send-button.hover {
+    color: white;
+}
+
+
+
+.mic-button{
+    color: #ffdf00;
+    font-size: large;
+    width: 35px;
+    margin-left: 0px;
+    margin-top: 2px;
+}
+
+.mic-button:hover,
+.mic-button:active,
+.mic-button.hover {
+    color: white;
+}
 
 .direct-chat-text-no-arrow {
     font-size: 14px;
