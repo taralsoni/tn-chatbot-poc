@@ -86,7 +86,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             if(vm.botType=='insurance_customer'){
                 history.user = 'Rosey@Insurance';
                // history.text =  'Hi! I am Mike. I can help you with anything related to Insurance ';
-                history.text = 'Good Afternoon! Am I speaking with Mr Sachin Goel';
+                history.text = 'Good Afternoon! Am I speaking with Mr Sachin Goel?';
+                //vm.sayIt(history.text);
+                //vm.sayIt('Build natural and rich conversational experiences.Give users new ways to interact with your product by building engaging voice and text-based conversational interfaces powered by AI. Connect with users on the Google Assistant, Amazon Alexa, Facebook Messenger, and other popular platforms and devices.Provide us with examples of what a user might say when interacting with your product. Using years of domain knowledge and natural language understanding, we analyze and understand the users intent to help you respond in the most useful way.');
             }else if(vm.botType=='fintech'){
                 history.user = 'Rosey@Fintech';
                 history.text =  'Hi! I am Mike. I can help you with anything related to Fintech ';
@@ -117,7 +119,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             //     alert('Unable to get location: ' + error.message);
             // }, options);
 
-            vm.conversationHistory.push(history);
+            //vm.conversationHistory.push(history);
 
         }
 
@@ -421,9 +423,96 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
         }
 
         vm.sayIt = function (text) {
-          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+          
+            var voices = speechSynthesis.getVoices();
+            // Loop through each of the voices.
+            voices.forEach(function(voice, i) {
+                //console.log('voice:',voice);
+            });
+
+            var msg = new SpeechSynthesisUtterance(text);
+            msg.volume = 1; // 0 to 1
+            msg.rate = 1; // 0.1 to 10
+            msg.pitch = 1; //0 to 2
+            msg.lang = 'hi-IN';
+            msg.voice=voices[8];
+           
+           //window.speechSynthesis.speak(msg);
+
+            //pass it into the chunking function to have it played out.
+            //you can set the max number of characters by changing the chunkLength property below.
+            //a callback function can also be added that will fire once the entire text has been spoken.
+            speechUtteranceChunker(msg, {
+                chunkLength: 200
+            }, function () {
+                //some code to execute when done
+                console.log('done');
+            });
+            
+            
+
         };
 
+        var speechUtteranceChunker = function (utt, settings, callback) {
+            settings = settings || {};
+            var newUtt;
+            var txt = (settings && settings.offset !== undefined ? utt.text.substring(settings.offset) : utt.text);
+            if (utt.voice && utt.voice.voiceURI === 'native') { // Not part of the spec
+                newUtt = utt;
+                newUtt.text = txt;
+                newUtt.addEventListener('end', function () {
+                    if (speechUtteranceChunker.cancel) {
+                        speechUtteranceChunker.cancel = false;
+                    }
+                    if (callback !== undefined) {
+                        callback();
+                    }
+                });
+            }
+            else {
+                var chunkLength = (settings && settings.chunkLength) || 160;
+                var pattRegex = new RegExp('^[\\s\\S]{' + Math.floor(chunkLength / 2) + ',' + chunkLength + '}[.!?,]{1}|^[\\s\\S]{1,' + chunkLength + '}$|^[\\s\\S]{1,' + chunkLength + '} ');
+                var chunkArr = txt.match(pattRegex);
+
+                if (chunkArr[0] === undefined || chunkArr[0].length <= 2) {
+                    //call once all text has been spoken...
+                    if (callback !== undefined) {
+                        callback();
+                    }
+                    return;
+                }
+                var chunk = chunkArr[0];
+                newUtt = new SpeechSynthesisUtterance(chunk);
+                //newUtt.voice=voices[8];
+                newUtt.lang="hi-IN";
+                var x;
+                for (x in utt) {
+                    if (utt.hasOwnProperty(x) && x !== 'text') {
+                        newUtt[x] = utt[x];
+                    }
+                }
+                newUtt.addEventListener('end', function () {
+                    if (speechUtteranceChunker.cancel) {
+                        speechUtteranceChunker.cancel = false;
+                        return;
+                    }
+                    settings.offset = settings.offset || 0;
+                    settings.offset += chunk.length - 1;
+                    speechUtteranceChunker(utt, settings, callback);
+                });
+            }
+
+            if (settings.modifier) {
+                settings.modifier(newUtt);
+            }
+            console.log(newUtt); //IMPORTANT!! Do not remove: Logging the object out fixes some onend firing issues.
+            //placing the speak invocation inside a callback fixes ordering and onend issues.
+            setTimeout(function () {
+                window.speechSynthesis.speak(newUtt);
+            }, 0);
+        };
+
+      
 
         vm.init();
 }]);
