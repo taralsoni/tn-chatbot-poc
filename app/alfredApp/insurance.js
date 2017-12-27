@@ -430,25 +430,41 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 //console.log('voice:',voice);
             });
 
-            var msg = new SpeechSynthesisUtterance(text);
+            
+            var sentences = text.split(".");
+            var msgs=[sentences.length];
+            for (var i = 0; i < sentences.length; i++) {              
+              msgs[i] = new SpeechSynthesisUtterance(sentences[i]);
+              msgs[i].volume = 1; // 0 to 1
+              msgs[i].rate = 0.98; // 0.1 to 10
+              msgs[i].pitch = 1; //0 to 2
+              msgs[i].lang = 'hi-IN';
+              //msgs[i].voice=voices[8];
+            }
+            for (var i = 0; i < msgs.length; i++) {      
+              window.speechSynthesis.speak(msgs[i]);
+            }
+
+            /*var msg = new SpeechSynthesisUtterance(text);
             msg.volume = 1; // 0 to 1
-            msg.rate = 1; // 0.1 to 10
-            msg.pitch = 1; //0 to 2
+            msg.rate = 0.9; // 0.1 to 10
+            msg.pitch = 0; //0 to 2
             msg.lang = 'hi-IN';
-            msg.voice=voices[8];
+            msg.voiceURI = 'native';*/
+            //msg.voice=voices[8];
            
            //window.speechSynthesis.speak(msg);
 
             //pass it into the chunking function to have it played out.
             //you can set the max number of characters by changing the chunkLength property below.
             //a callback function can also be added that will fire once the entire text has been spoken.
-            speechUtteranceChunker(msg, {
-                chunkLength: 200
+            /*speechUtteranceChunker(msg, {
+                chunkLength: 00
             }, function () {
                 //some code to execute when done
                 console.log('done');
             });
-            
+            */
             
 
         };
@@ -485,6 +501,10 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 newUtt = new SpeechSynthesisUtterance(chunk);
                 //newUtt.voice=voices[8];
                 newUtt.lang="hi-IN";
+                newUtt.volume = 1; // 0 to 1
+                newUtt.rate = 0.9; // 0.1 to 10
+                newUtt.pitch = 0; //0 to 2
+                newUtt.voiceURI = 'native';
                 var x;
                 for (x in utt) {
                     if (utt.hasOwnProperty(x) && x !== 'text') {
