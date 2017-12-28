@@ -174,6 +174,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 history.image = vm.me.avatar;
                 control =  text;
                 history.userType = "me";
+                vm.stopSaying();
             }
             else{
 
@@ -469,7 +470,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         };
 
-        var speechUtteranceChunker = function (utt, settings, callback) {
+
+        vm.stopSaying=function(){
+            window.speechSynthesis.cancel();
+        }
+
+       /* var speechUtteranceChunker = function (utt, settings, callback) {
             settings = settings || {};
             var newUtt;
             var txt = (settings && settings.offset !== undefined ? utt.text.substring(settings.offset) : utt.text);
@@ -530,7 +536,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             setTimeout(function () {
                 window.speechSynthesis.speak(newUtt);
             }, 0);
-        };
+        };*/
 
       
 
