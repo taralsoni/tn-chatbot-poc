@@ -409,9 +409,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
          * Handle the received transcript here.
          * The result from the Web Speech Recognition will
          * be set inside a $rootScope variable. You can use it
-         * as you want.
+         * as you want.- using PUBNUB -commenting bcz press and hold
          */
-        vm.displayTranscript=function() {
+        /*vm.displayTranscript=function() {
             console.log('displayTranscript called:',$rootScope.transcript);
 
             vm.userText = $rootScope.transcript;
@@ -421,7 +421,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 $scope.$digest();
             }
             vm.sendUserQuery();
-        }
+        }*/
 
         vm.sayIt = function (text) {
           
@@ -445,27 +445,6 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             for (var i = 0; i < msgs.length; i++) {      
               window.speechSynthesis.speak(msgs[i]);
             }
-
-            /*var msg = new SpeechSynthesisUtterance(text);
-            msg.volume = 1; // 0 to 1
-            msg.rate = 0.9; // 0.1 to 10
-            msg.pitch = 0; //0 to 2
-            msg.lang = 'hi-IN';
-            msg.voiceURI = 'native';*/
-            //msg.voice=voices[8];
-           
-           //window.speechSynthesis.speak(msg);
-
-            //pass it into the chunking function to have it played out.
-            //you can set the max number of characters by changing the chunkLength property below.
-            //a callback function can also be added that will fire once the entire text has been spoken.
-            /*speechUtteranceChunker(msg, {
-                chunkLength: 00
-            }, function () {
-                //some code to execute when done
-                console.log('done');
-            });
-            */
             
 
         };
@@ -475,70 +454,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             window.speechSynthesis.cancel();
         }
 
-       /* var speechUtteranceChunker = function (utt, settings, callback) {
-            settings = settings || {};
-            var newUtt;
-            var txt = (settings && settings.offset !== undefined ? utt.text.substring(settings.offset) : utt.text);
-            if (utt.voice && utt.voice.voiceURI === 'native') { // Not part of the spec
-                newUtt = utt;
-                newUtt.text = txt;
-                newUtt.addEventListener('end', function () {
-                    if (speechUtteranceChunker.cancel) {
-                        speechUtteranceChunker.cancel = false;
-                    }
-                    if (callback !== undefined) {
-                        callback();
-                    }
-                });
-            }
-            else {
-                var chunkLength = (settings && settings.chunkLength) || 160;
-                var pattRegex = new RegExp('^[\\s\\S]{' + Math.floor(chunkLength / 2) + ',' + chunkLength + '}[.!?,]{1}|^[\\s\\S]{1,' + chunkLength + '}$|^[\\s\\S]{1,' + chunkLength + '} ');
-                var chunkArr = txt.match(pattRegex);
+        /*code for checking iOS mic permission*/
 
-                if (chunkArr[0] === undefined || chunkArr[0].length <= 2) {
-                    //call once all text has been spoken...
-                    if (callback !== undefined) {
-                        callback();
-                    }
-                    return;
-                }
-                var chunk = chunkArr[0];
-                newUtt = new SpeechSynthesisUtterance(chunk);
-                //newUtt.voice=voices[8];
-                newUtt.lang="hi-IN";
-                newUtt.volume = 1; // 0 to 1
-                newUtt.rate = 0.9; // 0.1 to 10
-                newUtt.pitch = 0; //0 to 2
-                newUtt.voiceURI = 'native';
-                var x;
-                for (x in utt) {
-                    if (utt.hasOwnProperty(x) && x !== 'text') {
-                        newUtt[x] = utt[x];
-                    }
-                }
-                newUtt.addEventListener('end', function () {
-                    if (speechUtteranceChunker.cancel) {
-                        speechUtteranceChunker.cancel = false;
-                        return;
-                    }
-                    settings.offset = settings.offset || 0;
-                    settings.offset += chunk.length - 1;
-                    speechUtteranceChunker(utt, settings, callback);
-                });
-            }
-
-            if (settings.modifier) {
-                settings.modifier(newUtt);
-            }
-            console.log(newUtt); //IMPORTANT!! Do not remove: Logging the object out fixes some onend firing issues.
-            //placing the speak invocation inside a callback fixes ordering and onend issues.
-            setTimeout(function () {
-                window.speechSynthesis.speak(newUtt);
-            }, 0);
-        };*/
-
-        window.onload = function() {
+        /*window.onload = function() {
 
           // Normalize the various vendor prefixed versions of getUserMedia.
           navigator.getUserMedia = (navigator.getUserMedia ||
@@ -562,6 +480,12 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             // Success Callback
             function(localMediaStream) {
                 console.log('The video played ');
+                // Get a reference to the video element on the page.
+                var vid = document.getElementById('camera-stream');
+
+                // Create an object URL for the video stream and use this 
+                // to set the video source.
+                vid.src = window.URL.createObjectURL(localMediaStream);
             },
 
             // Error Callback
@@ -572,8 +496,51 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
           );
 
         } else {
-          alert('Sorry, your browser does not support getUserMedia');
-        }
+          alert(' Sorry, your browser does not support getUserMedia');
+        }*/
+
+        /*code for checking iOS mic permission*/
+
+
+        /*code for recoring voice-tts by just pressing btn*/
+
+          vm.rec = new webkitSpeechRecognition();
+          vm.interim = [];
+          vm.final = '';
+          
+          
+          vm.rec.continuous = false;
+          vm.rec.lang = 'en-US';
+          vm.rec.interimResults = true;
+          vm.rec.onerror = function(event) {
+            console.log('error!');
+          };
+
+          vm.startRecording = function() {
+            vm.rec.start();
+          };
+          
+          vm.rec.onresult = function(event) {
+            vm.final="";
+            for(var i = event.resultIndex; i < event.results.length; i++) {
+              if(event.results[i].isFinal) {
+                vm.final = vm.final.concat(event.results[i][0].transcript);
+                //console.log(event.results[i][0].transcript);            
+                 vm.userText=event.results[i][0].transcript;
+                //This is just to refresh the content in the view.
+                if (!$scope.$$phase) {
+                    $scope.$digest();
+                }
+                vm.sendUserQuery();
+
+              } else {
+                vm.interim.push(event.results[i][0].transcript);
+                //console.log('interim ' + event.results[i][0].transcript);                               
+              }
+            }
+        };
+
+        /*code for recoring voice-tts by just pressing btn*/
       
 
         vm.init();

@@ -1,5 +1,7 @@
 <div  ng-controller = "insuranceCtrl as vm">
 
+
+
     <div id="boxBody" class="box-body" ng-class="{'alignment-with-padding':vm.isMobile,'alignment':!vm.isMobile}">
 
       <div class="direct-chat-messages no-x-scroll">
@@ -45,12 +47,18 @@
               <button class="message-button btn icon-only" ng-click="vm.sendUserQuery()">
                     <i class="fa fa-send-o send-button" class="send-button"></i>
               </button>
-              <button class="message-button btn icon-only" style="margin-left: 10px;" ng-speech-recognition-start ng-speech-recognition-end="vm.displayTranscript()" >
+              <!-- <button class="message-button btn icon-only" style="margin-left: 10px;" ng-speech-recognition-start ng-speech-recognition-end="vm.displayTranscript()" >
                     <i class="fa fa-microphone mic-button" class="mic-button"></i>
+              </button> -->
+              <button class="message-button btn icon-only" ng-click="vm.startRecording()">
+                <i class="fa fa-microphone mic-button" class="mic-button"></i>
               </button>
+              
 
           </span>
       </div>
+
+
   </div>
 
   
