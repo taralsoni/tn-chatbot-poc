@@ -70,6 +70,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
             if(vm.botType=='insurance_customer'){
                 //vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
+                //vm.accessToken='f23810635d23414a952540e54d5d70b6';
                 vm.accessToken='f23810635d23414a952540e54d5d70b6';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
@@ -437,7 +438,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             for (var i = 0; i < sentences.length; i++) {              
               msgs[i] = new SpeechSynthesisUtterance(sentences[i]);
               msgs[i].volume = 1; // 0 to 1
-              msgs[i].rate = 0.98; // 0.1 to 10
+              msgs[i].rate = 1.1; // 0.1 to 10
               msgs[i].pitch = 1; //0 to 2
               msgs[i].lang = 'hi-IN';
               //msgs[i].voice=voices[8];
