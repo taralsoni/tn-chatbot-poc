@@ -75,7 +75,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
             }else if(vm.botType=='banking_customer'){
-                vm.accessToken='69b965b353f24a1ea522bc52c506b548';
+                //vm.accessToken='69b965b353f24a1ea522bc52c506b548';
+                vm.accessToken='2900ddc671ed47bf84c7eabbc9915ef0';
             }
 
 
@@ -134,7 +135,9 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 },
 
                 // Success Callback
-                function(localMediaStream) {},
+                function(localMediaStream) {
+                    alert('you can start using microphone');
+                },
 
                 // Error Callback
                 function(err) {
