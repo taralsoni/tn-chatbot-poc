@@ -457,7 +457,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         /*code for checking iOS mic permission*/
 
-        /*window.onload = function() {
+
+        window.onload = function() {
 
           // Normalize the various vendor prefixed versions of getUserMedia.
           navigator.getUserMedia = (navigator.getUserMedia ||
@@ -474,31 +475,31 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
           navigator.getUserMedia(
             // Constraints
             {
-              video: true,
+              //video: true,
               audio: true
             },
 
             // Success Callback
             function(localMediaStream) {
-                console.log('The video played ');
+                alert('The video played ');
                 // Get a reference to the video element on the page.
-                var vid = document.getElementById('camera-stream');
+                //var vid = document.getElementById('camera-stream');
 
                 // Create an object URL for the video stream and use this 
                 // to set the video source.
-                vid.src = window.URL.createObjectURL(localMediaStream);
+                //vid.src = window.URL.createObjectURL(localMediaStream);
             },
 
             // Error Callback
             function(err) {
               // Log the error to the console.
-              console.log('The following error occurred when trying to use getUserMedia: ' + err);
+              alert('The following error occurred when trying to use getUserMedia: ' + err);
             }
           );
 
         } else {
           alert(' Sorry, your browser does not support getUserMedia');
-        }*/
+        }
 
         /*code for checking iOS mic permission*/
 
