@@ -113,42 +113,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 enableHighAccuracy: true
             };
 
-            /*code for checking iOS mic permission*/
-            window.onload = function() {
 
-              // Normalize the various vendor prefixed versions of getUserMedia.
-              navigator.getUserMedia = (navigator.getUserMedia ||
-                                        navigator.webkitGetUserMedia ||
-                                        navigator.mozGetUserMedia || 
-                                        navigator.msGetUserMedia);
-
-            }
-
-            // Check that the browser supports getUserMedia.
-            // If it doesn't show an alert, otherwise continue.
-            if (navigator.getUserMedia) {
-              // Request the camera.
-              navigator.getUserMedia(
-                // Constraints
-                {
-                  audio: true
-                },
-
-                // Success Callback
-                function(localMediaStream) {
-                    alert('you can start using microphone');
-                },
-
-                // Error Callback
-                function(err) {
-                  alert('The following error occurred when trying to use getUserMedia: ' + err);
-                }
-              );
-
-            } else {
-              alert(' Sorry, your browser does not support getUserMedia');
-            }
-            /*code for checking iOS mic permission*/
         }
 
 
@@ -525,6 +490,55 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
         /*code for recoring voice-tts by just pressing btn*/
       
+
+
+
+
+
+
+            /*code for checking iOS mic permission*/
+            window.onload = function() {
+
+              // Normalize the various vendor prefixed versions of getUserMedia.
+              navigator.getUserMedia = (navigator.getUserMedia ||
+                                        navigator.webkitGetUserMedia ||
+                                        navigator.mozGetUserMedia || 
+                                        navigator.msGetUserMedia);
+
+            }
+
+            // Check that the browser supports getUserMedia.
+            // If it doesn't show an alert, otherwise continue.
+            if (navigator.getUserMedia) {
+              // Request the camera.
+              navigator.getUserMedia(
+                // Constraints
+                {
+                  audio: true
+                },
+
+                // Success Callback
+                function(localMediaStream) {
+                    alert('you can start using microphone');
+                },
+
+                // Error Callback
+                function(err) {
+                  alert('The following error occurred when trying to use getUserMedia: ' + err);
+                }
+              );
+
+            } else {
+              alert(' Sorry, your browser does not support getUserMedia');
+            }
+            /*code for checking iOS mic permission*/
+
+
+
+
+
+
+
 
         vm.init();
 }]);
