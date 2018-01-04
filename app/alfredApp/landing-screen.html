@@ -3,9 +3,9 @@
 
 	<div ng-if="ctrl.selectedBot==undefined || ctrl.selectedBot==''">
 
-			<div class="select-bot-text"> Select your Bot</div>
+			<!-- <div class="select-bot-text"> Select your Bot</div> -->
 
-			<div class="row landing-row">
+			<!-- <div class="row landing-row">
 					<div class="col-xs-6" style="text-align:center; padding-right: 0px; padding-left: 0px;" ng-click="ctrl.goToBot('banking_customer')">
 							<div class="btn btn-success landing-button" style="text-align:center;">
 									<img src="alfredApp/images/banking_icon.png" class="bot-logo-size">
@@ -40,6 +40,17 @@
 									</div>
 							</div>
 					</div>
+			</div> -->
+
+			<div class="row landing-row" style="margin-top: 50px">
+				<div style="text-align:center; padding-right: 0px; padding-left: 0px;">
+						<div class="btn btn-success landing-button" style="text-align:center;" ng-click="ctrl.goToBot('insurance_customer')">
+								<img src="alfredApp/images/speech.png" class="bot-logo-size">
+								<div style="color: #000000cc;padding-top: 5px; font-size: 14px !important;	">
+										Outbound Call Center Agent
+								</div>
+						</div>
+				</div>
 			</div>
 	</div>
 

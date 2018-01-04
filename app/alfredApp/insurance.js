@@ -70,8 +70,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
             if(vm.botType=='insurance_customer'){
                 //vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
-                //vm.accessToken='f23810635d23414a952540e54d5d70b6';
-                vm.accessToken='1474901570aa430d8c86402e7b89b90b';
+                vm.accessToken='f23810635d23414a952540e54d5d70b6';
+                //vm.accessToken='1474901570aa430d8c86402e7b89b90b';
             }else if(vm.botType=='fintech'){
                 vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';
             }else if(vm.botType=='banking_customer'){
@@ -497,7 +497,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
 
             /*code for checking iOS mic permission*/
-            window.onload = function() {
+            /*window.onload = function() {
 
               // Normalize the various vendor prefixed versions of getUserMedia.
               navigator.getUserMedia = (navigator.getUserMedia ||
@@ -530,7 +530,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
             } else {
               alert(' Sorry, your browser does not support getUserMedia');
-            }
+            }*/
             /*code for checking iOS mic permission*/
 
 
