@@ -112,16 +112,40 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
                 enableHighAccuracy: true
             };
 
-            // navigator.geolocation.getCurrentPosition(function(pos) {
-            //     vm.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-            //     //console.log(pos.coords.latitude, pos.coords.longitude);
-            // },
-            // function(error) {
-            //     alert('Unable to get location: ' + error.message);
-            // }, options);
+            /*code for checking iOS mic permission*/
+            window.onload = function() {
 
-            //vm.conversationHistory.push(history);
+              // Normalize the various vendor prefixed versions of getUserMedia.
+              navigator.getUserMedia = (navigator.getUserMedia ||
+                                        navigator.webkitGetUserMedia ||
+                                        navigator.mozGetUserMedia || 
+                                        navigator.msGetUserMedia);
 
+            }
+
+            // Check that the browser supports getUserMedia.
+            // If it doesn't show an alert, otherwise continue.
+            if (navigator.getUserMedia) {
+              // Request the camera.
+              navigator.getUserMedia(
+                // Constraints
+                {
+                  audio: true
+                },
+
+                // Success Callback
+                function(localMediaStream) {},
+
+                // Error Callback
+                function(err) {
+                  alert('The following error occurred when trying to use getUserMedia: ' + err);
+                }
+              );
+
+            } else {
+              alert(' Sorry, your browser does not support getUserMedia');
+            }
+            /*code for checking iOS mic permission*/
         }
 
 
@@ -455,53 +479,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
             window.speechSynthesis.cancel();
         }
 
-        /*code for checking iOS mic permission*/
-
-
-        window.onload = function() {
-
-          // Normalize the various vendor prefixed versions of getUserMedia.
-          navigator.getUserMedia = (navigator.getUserMedia ||
-                                    navigator.webkitGetUserMedia ||
-                                    navigator.mozGetUserMedia || 
-                                    navigator.msGetUserMedia);
-
-        }
-
-        // Check that the browser supports getUserMedia.
-        // If it doesn't show an alert, otherwise continue.
-        if (navigator.getUserMedia) {
-          // Request the camera.
-          navigator.getUserMedia(
-            // Constraints
-            {
-              //video: true,
-              audio: true
-            },
-
-            // Success Callback
-            function(localMediaStream) {
-                alert('The video played ');
-                // Get a reference to the video element on the page.
-                //var vid = document.getElementById('camera-stream');
-
-                // Create an object URL for the video stream and use this 
-                // to set the video source.
-                //vid.src = window.URL.createObjectURL(localMediaStream);
-            },
-
-            // Error Callback
-            function(err) {
-              // Log the error to the console.
-              alert('The following error occurred when trying to use getUserMedia: ' + err);
-            }
-          );
-
-        } else {
-          alert(' Sorry, your browser does not support getUserMedia');
-        }
-
-        /*code for checking iOS mic permission*/
+        
 
 
         /*code for recoring voice-tts by just pressing btn*/
