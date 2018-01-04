@@ -519,7 +519,7 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
                 // Success Callback
                 function(localMediaStream) {
-                    alert('you can start using microphone');
+                    //alert('you can start using microphone');
                 },
 
                 // Error Callback
