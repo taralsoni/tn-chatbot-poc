@@ -66,7 +66,8 @@ app.controller('insuranceCtrl', ['$scope', '$compile','chatService','$sce','$htt
 
             vm.chartIndex=0;
             vm.botType=chatService.getBotType();
-            vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
+            vm.accessToken='99a9cd7afbed48d8a479266795b58f81';
+            //vm.accessToken='66f53a3b0e5f45a0b6f6efbafb0f6a46';//default fintech
 
             if(vm.botType=='insurance_customer'){
                 //vm.accessToken='3bb6c6b79135440184319e7c6db96ecd';
